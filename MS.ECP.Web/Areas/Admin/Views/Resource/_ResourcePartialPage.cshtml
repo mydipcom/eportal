@@ -1,0 +1,55 @@
+﻿@using System.Globalization
+@using MS.ECP.Web.Areas.Admin.WebHelp
+@using MS.ECP.Web.WebHelp
+@using MS.ECP.Web.WebPager
+@model MS.ECP.Web.WebPager.PagedList<MS.ECP.Model.SysResource>  
+<table cellpadding="1" cellspacing="1">
+    <tr>
+        <td class="td_title" width="12%">ID</td>
+        <td class="td_title" width="14%">Resource Page</td>
+        <td class="td_title" width="14%">Resource Key</td>
+                <td class="td_title" width="50%">Resource Content</td>
+        <td class="td_title" width="10%">Operate</td>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.ID</td>
+            <td>@item.ResourcePage</td>
+            <td>@item.ResourceKey</td>
+              <td>
+              @Html.ActionLink(@item.ResourceValue, "AddorUpdate", "Resource", new {lanid = @item.ResourceKey,currentpage=Model.CurrentPageIndex },new{ title="Edit"})
+            </td>
+            <td>
+             @Html.ActionLink("Edit", "AddorUpdate", "Resource", new {lanid = @item.ResourceKey,currentpage=Model.CurrentPageIndex },new{ title="Edit"})
+        </tr>
+    }
+    <tr>
+        <td colspan="5" class="text_td td_submit">
+            <p>
+                <div style="width: 200px; float: left">
+                    Total : <span class="eyeText">@Model.TotalPageCount</span> &nbsp;&nbsp; Page : <span class="eyeText">@Model.CurrentPageIndex</span> / @Model.TotalPageCount &nbsp;&nbsp;&nbsp;&nbsp; 
+                </div>
+                <div style="float: left">
+                    @Ajax.Pager(Model, new PagerOptions
+                    {
+                        PageIndexParameterName = "id",
+                        ShowPageIndexBox = false,
+                        CurrentPagerItemWrapperFormatString = "<a class='page_locked'>{0}</a>",
+                        FirstPageText = "First",
+                        LastPageText = "End",
+                        PrevPageText = "Pre",
+                        NextPageText = "Next",
+                        ShowGoButton = false
+                    }, new MvcAjaxOptions
+                    {
+                        UpdateTargetId = "listload",
+                        HttpMethod = "Post",
+                        DataFormId = "searchForm"
+                    })
+                </div>
+            </p>
+            <div style="clear: both"></div>
+        </td>
+    </tr>
+</table>

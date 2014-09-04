@@ -1,0 +1,117 @@
+﻿    <!--
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    .ponebox {
+        border: 0px solid #999999;
+        width: 100%;
+        margin-bottom: 2px;
+        margin-top: 1px;
+        overflow: hidden;
+    }
+    -->
+
+    .lineNewstitle {
+        border-top: 1px solid #cacaca;
+        margin: 10px 0 0;
+        text-align: center;
+    }
+
+    .content_5 {
+        width: 984px;
+        background-color: #F7FBFB;
+        float: left;
+        margin-bottom: 10px;
+        padding-bottom: 10px;
+    }
+
+    .listform dl {
+        width: 920px;
+        float: left;
+        margin: 0;
+        padding: 0;
+        margin-left: 30px;
+        padding-bottom: 30px;
+    }
+
+        .listform dl dd {
+            margin: 0;
+            padding: 0;
+            float: left;
+        }
+
+    .reg_tit {
+        width: 230px;
+        float: left;
+        font-size: 16px;
+        margin: 20px 10px 0 0;
+        font-family: Georgia, "Times New Roman", Times, serif;
+    }
+
+    .reg_con {
+        width: 650px;
+        float: left;
+        margin: 20px 0 0 0;
+    }
+
+    .ipt_w {
+        border: 0;
+        width: 280px;
+        height: 22px;
+        float: left;
+        border: solid 1px #E3E3E3;
+        color: #8C9696;
+        padding-left: 5px;
+        margin-right: 10px;
+        font-family: Tahoma, Geneva, sans-serif;
+        line-height: 22px;
+    }
+
+    .PrivacyPolicy a {
+        text-decoration: underline;
+        color: #2CAD9E;
+    }
+
+        .PrivacyPolicy a:hover {
+            color: #249589;
+        }
+
+    .chenkbox {
+        vertical-align: middle;
+    }
+
+    .mandatory {
+        font-size: 12px;
+        margin-top: 50px;
+    }
+
+    .btn_t a {
+        text-align: center;
+        font: bold;
+        width: 200px;
+        height: 34px;
+        line-height: 34px;
+        background-image: url(../images/left_11.png);
+        float: left;
+        padding: 0px 15px;
+        font-size: 14px;
+        font-weight: 500;
+        color: #fff;
+        text-decoration: none;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        font-family: Georgia, "Times New Roman", Times, serif;
+    }
+
+        .btn_t a:hover {
+            background-image: url(../images/left_12.png);
+            color: #fff;
+            text-decoration: none;
+        }
+
+    .red_mark {
+        color: red;
+        font-size: x-large;
+    }

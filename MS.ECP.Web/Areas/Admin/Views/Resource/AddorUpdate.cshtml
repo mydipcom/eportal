@@ -1,0 +1,129 @@
+﻿@using MS.ECP.Web.Areas.Admin.WebHelp
+@using MS.ECP.Web.WebHelp
+@model MS.ECP.Web.Areas.Admin.Models.ResourceViewModel
+@Html.GetValidationJavascriptInAdmin()
+
+@{
+    ViewBag.NavTitle = "Resource Manage";
+}
+
+<script type="text/javascript">
+    var i, j;
+    function ChangePanel(j) {
+        for (i = 1; i < 3; i++) {
+            document.getElementById("show_AddContent" + i).style.display = "none";
+            document.getElementById("language" + i).className = "change_panel";
+        }
+        document.getElementById("show_AddContent" + j).style.display = "block";
+        document.getElementById("language" + j).className = "change_panel_locked";
+    }
+</script>
+
+
+<div class="content_title">Edit Resource</div>
+<div class="operate_action">
+    @Html.ActionLink("Resource Manage", "List", "Resource", new{ id=@ViewData["Currentpage"]  }, new { @class = "operate_action_submit" })&nbsp;&nbsp;
+</div>
+<div class="clear"></div>
+<div class="bline"></div>
+<div class="wline"></div>
+
+
+@using (Html.BeginForm("AddorUpdate", "Resource", FormMethod.Post))
+{
+    <!--  change pannel  -->
+    <div class="add_body">
+        <table cellpadding="1" cellspacing="1" class="add_table">
+            <tr>
+                <td width="11%" class="add_title">
+                    <div class="change_panel_locked" id="language1" onclick=" ChangePanel('1') ">English</div>
+                </td>
+                <td width="11%" class="add_title">
+                    <div class="change_panel" id="language2" onclick=" ChangePanel('2') ">中文</div>
+                </td>
+                <td width="78%" class="add_title">Edit Resource</td>
+            </tr>
+            <tr>
+                <td colspan="3" class="text_td td_submit"></td>
+            </tr>
+        </table>
+    </div>
+    <!--  end change pannel  -->
+
+
+
+    <!-- show add content(EN)  -->
+    <div class="add_body change_panel_content" id="show_AddContent1">
+        <table cellpadding="1" cellspacing="1" class="add_table">
+            <tr>
+                <td class="add_title" width="22%">@Html.DisplayName(m => m.EnResourcePage)</td>
+                <td class="text_td" width="78%">
+                    @Html.DisplayFor(m => m.EnResourcePage)
+                </td>
+            </tr>
+            <tr>
+                <td class="add_title" width="22%">@Html.DisplayName(m => m.EnResourceKey)</td>
+                <td class="text_td" width="78%">
+                    @Html.DisplayFor(m => m.EnResourceKey)
+                </td>
+            </tr>
+            <tr>
+                <td class="add_title" width="22%">@Html.DisplayName(m => m.EnResourceValue)</td>
+                <td class="text_td" width="78%">
+                    @Html.TextAreaFor(m => m.EnResourceValue, new { style = "width:406px;;height: 200px; " })
+                    @Html.ValidationMessageFor(m => m.EnResourceValue)
+                </td>
+            </tr>
+        </table>
+    </div>
+    <!-- end show add content(EN)  -->
+
+
+
+    <!-- show add content(CN)  -->
+    <div class="add_body change_panel_content" id="show_AddContent2" style="display: none;">
+        <table cellpadding="1" cellspacing="1" class="add_table">
+            <tr>
+                <td class="add_title" width="22%">@Html.DisplayName(m => m.ResourcePage)</td>
+                <td class="text_td" width="78%">
+                    @Html.DisplayFor(m => m.ResourcePage)
+                </td>
+            </tr>
+            <tr>
+                <td class="add_title" width="22%">@Html.DisplayName(m => m.ResourceKey)</td>
+                <td class="text_td" width="78%">
+                    @Html.DisplayFor(m => m.ResourceKey)
+                </td>
+            </tr>
+            <tr>
+                <td class="add_title" width="22%">@Html.DisplayName(m => m.ResourceValue)</td>
+                <td class="text_td" width="78%">
+                    @Html.TextAreaFor(m => m.ResourceValue, new { style = "width:406px;;height: 200px; " })
+                    @Html.ValidationMessageFor(m => m.ResourceValue)
+                </td>
+            </tr>
+        </table>
+    </div>
+    <!-- end show add content(CN)  -->
+
+
+
+    <!--  submit  -->
+    <div class="add_body change_panel_save">
+        <table cellpadding="1" cellspacing="1" class="add_table">
+            <tr>
+                @Html.Hidden("currentpage", ViewData["Currentpage"])
+                @Html.HiddenFor(m => m.EnId)
+                @Html.HiddenFor(m => m.EnResourceKey)
+                @Html.HiddenFor(m => m.EnResourcePage)
+                @Html.HiddenFor(m => m.ZhId)
+                @Html.HiddenFor(m => m.ResourcePage)
+                @Html.HiddenFor(m => m.ResourceKey)
+                <td colspan="3" class="text_td td_submit">
+                    <input type="submit" value="Save" class="submit" />
+                </td>
+            </tr>
+        </table>
+    </div>
+    <!--  end submit  -->
+}

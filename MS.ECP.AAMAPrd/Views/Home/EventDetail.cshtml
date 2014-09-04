@@ -1,0 +1,41 @@
+﻿@using MS.ECP.Utility;
+@model MS.ECP.Model.CMS.Event
+@{ 
+    ResourcesHelper reHelper = new ResourcesHelper("Common");
+    ViewBag.alertJson = reHelper.GetAllPopupJson(); 
+}
+
+<script type="text/javascript" src="@Url.Content("~/Scripts/my.register.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery-1.7.min.js")"></script>
+
+
+<link type="text/css" href="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/css/newsdetail.css")" rel="stylesheet" />
+
+<link type="text/css" href="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/css/flexslider.css")" rel="stylesheet" />
+<script type="text/javascript" src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/js/jquery.flexslider.js")"></script>
+
+
+
+
+
+<div class="centcontent">
+    <div id="detail_main" class="wrapper">
+        <div style="text-align: center;">
+            <h1><b>@Model.Title</b></h1>
+            <div class="lineNewstitle"></div>
+        </div>
+        <div style="height: 30px;"></div>
+        <div  class="left">
+             <div>
+                 <div >  
+                     @Html.Raw(Model.Content)
+                 </div>
+                 
+             </div>
+        </div>
+
+        <div class="clear"></div>
+    </div>
+
+</div>
+

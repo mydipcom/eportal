@@ -1,0 +1,80 @@
+﻿@using MS.ECP.Utility;
+@using MS.ECP.BLL;
+@using MS.ECP.Model;
+@using System.Data;
+@using MS.ECP.Web.WebHelp
+@model MS.ECP.Web.Models.FooterPartialViewModel
+<!-- missionsky info -->
+<div class="shadow_pic"></div>
+<div class="missionsky_container">
+    <div class="missionsky_info">
+        <div class="about_missionsky">
+            <div class="missionsky_info_title">@LanageCommon.FootLblAboutusCaption</div>
+            <div class="missionsky_pic">
+                <div class="show_missionsky_pic">
+                    <img src="@Url.Content("~/Content/Image/missionsky01.jpg")" width="138" height="68" />
+                    <img src="@Url.Content("~/Content/Image/missionsky02.jpg")" width="138" height="68" />
+                    <img src="@Url.Content("~/Content/Image/missionsky03.jpg")" width="138" height="68" />
+                </div>
+            </div>
+            <div class="show_missionsky_info">
+                @LanageCommon.FootLblAboutus<br />
+            </div>
+            <div class="more_text"><a class="more" href="@Url.Action("Aboutus", "home")">@LanageCommon.SysLabReadmore >></a></div>
+        </div>
+        <div class="news_missionsky">
+            <div class="missionsky_info_title">@LanageCommon.FootLblNewsCaption</div>
+            <div class="news_list_missionsky">
+                <ul>
+                        @foreach (var topnew in Model.Newses)
+                        {
+                            <li>
+                                @Html.ActionLink(topnew.Title, "NewsDetail", "Home", new {langGuid = topnew.LangGuid}, new {title = topnew.Title})
+                                <span class="news_date">@topnew.CreateDate.ToString("yyyy/MM/dd")</span>
+                            </li>
+                        }
+                </ul>
+            </div>
+            <div class="clear"></div>
+            <div class="more_text"><a class="more" href="@Url.Action("News", "Home")">@LanageCommon.SysLabReadmore >></a></div>
+        </div>
+        <div class="follow_missionsky">
+            <div class="missionsky_info_title">@LanageCommon.FootLblFollowCaption</div>
+            <div class="follow_text">@LanageCommon.FootLblFollow</div>
+            <div class="follow_pic">
+                <img src="@Url.Content("~/Content/Image/weixin.jpg")" style="width:138px; height:138px">
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>
+<!-- end missionsky info -->
+
+<!-- footer info -->
+<div class="footer">
+    <div class="footer_container">
+        <span class="footer_nav_text">
+            <a href="@Url.Action("index", "home")">@LanageCommon.MenuLblHomepage</a>
+                @foreach (var caitem in Model.Categories)
+                {
+                    if (LanageCommon.MenuLblTechnologies == caitem.CategoryName)
+                    {
+                        @Html.Raw("&nbsp;/&nbsp;")
+                        <a href="@Url.Action("Technologies", "home", new {languid = caitem.Guid, currentGuid = LanageCommon.CurrenLanage})" >@LanageCommon.MenuLblTechnologies</a>
+                    }
+
+                    else if (LanageCommon.MenuLblSolutions == caitem.CategoryName)
+                    {
+                        @Html.Raw("&nbsp;/&nbsp;")
+                        <a href="@Url.Action("Solutions", "home", new {languid = caitem.Guid, currentGuid = LanageCommon.CurrenLanage})">@LanageCommon.MenuLblSolutions</a>
+                    }
+                }
+            &nbsp;/&nbsp;
+                <a href="@Url.Action("Aboutus", "home")">@LanageCommon.MenuLblAboutus</a>
+            &nbsp;/&nbsp;
+                <a href="@Url.Action("Workwithus", "home")">@LanageCommon.MenuLblWorkwithus</a>
+        </span>
+        <br />
+        <span class="footer_copyright">@LanageCommon.FootLblCopyright Missionsky.com</span> 
+    </div>
+</div>

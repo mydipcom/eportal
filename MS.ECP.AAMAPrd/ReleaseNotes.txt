@@ -1,0 +1,23 @@
+﻿/*
+ * Copyright©,2013-,AAMA 
+ * Encoding:UTF-8
+ * Version: 1.0
+ * Create Date:  2013-12-16 
+ * Author: Amanda Shen
+ * Description: The program version and functional description
+*/
+
+功能描述：
+	前端：www.aamaprd.com
+		1、中英文切换（默认英文）
+		2、首页(Home)：活动图片滚动、近期活动选中跳转、活动选中跳转、合作伙伴网站链接
+		3、关于我们(About Us)：CMS管理（AboutUs Manage）
+		4、活动(Events)：CMS管理（Events Manage）
+		5、近期活动(UpComing Event)：CMS管理（News Manage）
+		6、联系我们(Contact Us)：地图
+	
+	Admin端：www.aamaprd.com/admin
+		1、管理员登陆
+		2、资源（WebSite资源修改）：清空缓存按钮
+		3、添加|修改 内容：Tab进行语言切换。
+		4、删除内容

@@ -1,0 +1,61 @@
+﻿@model MS.ECP.AAMAPrd.Areas.Admin.Models.NewsInputViewModel
+
+@{
+    ViewBag.Title = "NewsInput Add";
+}
+
+
+     
+ <div style="margin: 50px 0 0 0;">
+             @using (Html.BeginForm("Add", "NewsCampaign", FormMethod.Post))
+             {
+                 <div>
+                     <div>
+                         <p>
+                             @Html.LabelFor(m => m.Inputtitle)
+                             @Html.TextBoxFor(m => m.Inputtitle)
+                             @Html.ValidationMessageFor(m => m.Inputtitle)
+                         </p>
+                         <p>
+                             @Html.LabelFor(m => m.InputType)
+                             @Html.DropDownListFor(m => m.InputType, new[]
+                             {
+                                 new SelectListItem()
+                                 {
+                                     Text = "文本框", Value = "1"
+                                 },
+                                 new SelectListItem()
+                                 {
+                                     Text = "文本域", Value = "2"
+                                 },
+                                 new SelectListItem()
+                                 {
+                                     Text = "单选按钮", Value = "3"
+                                 }
+                             })
+                             @Html.ValidationMessageFor(m => m.InputType)
+                         </p>
+                         <p>
+                             @Html.LabelFor(m => m.InputValue)
+                             @Html.TextBoxFor(m => m.InputValue)
+                             @Html.ValidationMessageFor(m => m.InputValue)
+                         </p>
+                         <p>
+                             @Html.LabelFor(m => m.IsAllowNull)
+                             @Html.CheckBoxFor(m => m.IsAllowNull)
+                             @Html.ValidationMessageFor(m => m.IsAllowNull)
+                         </p>
+                         @Html.HiddenFor(m => m.LangGuid)
+                     </div>
+                     <!--end content_block-->
+                 </div>
+
+                 @Html.AntiForgeryToken()
+                 @Html.ValidationSummary()
+                 <p>
+                     <input  name="submit" type="submit" value="Submit"  /> 
+                     <input  name="back" type="button" value="Reset" onclick=" location.href = '' " />
+                 </p>
+             }
+        <!--end content-->
+     </div>

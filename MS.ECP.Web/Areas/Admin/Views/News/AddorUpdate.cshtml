@@ -1,0 +1,175 @@
+﻿@using MS.ECP.Web.Areas.Admin.WebHelp
+@using MS.ECP.Web.WebHelp
+@model MS.ECP.Web.Areas.Admin.Models.NewsViewModel
+@{
+               ViewBag.NavTitle = "News Manage";
+}
+
+@Html.GetValidationJavascriptInAdmin()
+
+<script src="@Url.Content("~/Scripts/UEditor/editor_config.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/UEditor/_examples/editor_api.js")" type="text/javascript"></script>
+
+<script type="text/javascript">
+    var cneditor;
+    var eneditor;
+    $(function () {
+        cneditor = UE.getEditor('@Model.ZhContentDivId');
+        eneditor = UE.getEditor('@Model.EnContentDivId');
+    });
+
+
+    function formValidationSubmitted(el) {
+        $("#" + '@Model.EnContentDivId').val(eneditor.getContent());
+        $("#" + '@Model.ZhContentDivId').val(cneditor.getContent());
+        formSubmitted(el);
+    }
+
+    var i, j;
+    function ChangePanel(j) {
+        for (i = 1; i < 3; i++) {
+            document.getElementById("show_AddContent" + i).style.display = "none";
+            document.getElementById("language" + i).className = "change_panel";
+        }
+        document.getElementById("show_AddContent" + j).style.display = "block";
+        document.getElementById("language" + j).className = "change_panel_locked";
+    }
+</script> 
+
+
+ <div class="content_title">@ViewBag.Operation News</div> 
+<div class="operate_action">
+    @Html.ActionLink("News Manage", "List", "News", null ,new { @class = "operate_action_submit" })&nbsp;&nbsp;
+    @if (ViewBag.Operation == "Edit")
+    {
+        @Html.ActionLink("Add News", "AddorUpdate", "News", new{ operation="Add" }, new { @class = "operate_action_submit" })
+    }
+</div>
+    <div class="clear"></div>
+    <div class="bline"></div>
+<div class="wline"></div>
+
+          
+@using (Html.BeginForm("AddorUpdate", "News", FormMethod.Post))
+{
+    <!--  change pannel  -->
+    <div class="add_body">
+        <table cellpadding="1" cellspacing="1" class="add_table">
+            <tr>
+                <td width="11%" class="add_title">
+                    <div class="change_panel_locked" id="language1" onclick=" ChangePanel('1') ">English</div>
+                </td>
+                <td width="11%" class="add_title">
+                    <div class="change_panel" id="language2" onclick=" ChangePanel('2') ">中文</div>
+                </td>
+                <td width="78%" class="add_title">@ViewBag.Operation News</td>
+            </tr>
+            <tr>
+                <td colspan="3" class="text_td td_submit"></td>
+            </tr>
+        </table>
+    </div>
+    <!--  end change pannel  -->
+
+
+
+    <!-- show add content(EN)  -->
+    <div class="add_body change_panel_content" id="show_AddContent1">
+        <table cellpadding="1" cellspacing="1" class="add_table">
+            <tr>
+                <td colspan="2" class="add_title" width="22%">@Html.DisplayName(m => m.EnTitle)</td>
+                <td class="text_td" width="78%">
+                    @Html.TextBoxFor(m => m.EnTitle, new { @class = "table_input" })
+                    @Html.ValidationMessageFor(m => m.EnTitle)
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="add_title">@Html.DisplayName(m => m.EnContent)</td>
+                <td class="text_td">
+                    @Html.TextAreaFor(m => m.EnContent, new { width = "700", height = "200", id = Model.EnContentDivId })
+                    @Html.ValidationMessageFor(m => m.EnContent)
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="add_title" width="22%">@Html.DisplayName(m => m.EnTxtKeywords)</td>
+                <td class="text_td" width="78%">
+                    @Html.TextBoxFor(m => m.EnTxtKeywords, new { @class = "table_input" })
+                       @Html.ValidationMessageFor(m => m.EnTxtKeywords)
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="add_title" width="22%">@Html.DisplayName(m => m.EnTxtHits) </td>
+                <td class="text_td" width="78%">
+                    @Html.TextBoxFor(m => m.EnTxtHits, new { @class = "table_input" })
+                      @Html.ValidationMessageFor(m => m.EnTxtHits)
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="add_title" width="22%">@Html.DisplayName(m => m.EnTxtDesc)</td>
+                <td class="text_td" width="78%">
+                    @Html.TextBoxFor(m => m.EnTxtDesc, new { @class = "table_input" })
+                     @Html.ValidationMessageFor(m => m.EnTxtDesc)
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    <!-- end show add content(EN)  -->
+
+
+
+    <!-- show add content(CN)  -->
+    <div class="add_body change_panel_content" id="show_AddContent2" style="display: none;">
+        <table cellpadding="1" cellspacing="1" class="add_table">
+            <tr>
+                <td colspan="2" class="add_title" width="22%">@Html.DisplayName(m => m.ZhTitle) </td>
+                <td class="text_td" width="78%">
+                    @Html.TextBoxFor(m => m.ZhTitle, new { @class = "table_input" })
+                       @Html.ValidationMessageFor(m => m.ZhTitle)
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="add_title">@Html.DisplayName(m => m.ZhContent) </td>
+                <td class="text_td">
+                    @Html.TextAreaFor(m => m.ZhContent, new { width = "700", height = "200", id = Model.ZhContentDivId })
+                    @Html.ValidationMessageFor(m => m.ZhContent)
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="add_title" width="22%">@Html.DisplayName(m => m.TxtKeywords) </td>
+                <td class="text_td" width="78%">
+                    @Html.TextBoxFor(m => m.TxtKeywords, new { @class = "table_input" })
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="add_title" width="22%">@Html.DisplayName(m => m.TxtHits) </td>
+                <td class="text_td" width="78%">
+                    @Html.TextBoxFor(m => m.TxtHits, new { @class = "table_input" })
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="add_title" width="22%">@Html.DisplayName(m => m.TxtDesc)</td>
+                <td class="text_td" width="78%">
+                    @Html.TextBoxFor(m => m.TxtDesc, new { @class = "table_input" })
+                </td>
+            </tr>
+        </table>
+    </div>
+    <!-- end show add content(CN)  -->
+
+
+
+    <!--  submit  -->
+    <div class="add_body change_panel_save">
+        <table cellpadding="1" cellspacing="1" class="add_table">
+            <tr>
+                @Html.HiddenFor(m => m.EnId)
+                @Html.HiddenFor(m => m.ZhId)
+                <td colspan="3" class="text_td td_submit">
+                    <input type="submit" value="Save" class="submit" />
+                </td>
+            </tr>
+        </table>
+    </div>
+    <!--  end submit  -->
+}

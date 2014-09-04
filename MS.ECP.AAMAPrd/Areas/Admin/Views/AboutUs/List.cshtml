@@ -1,0 +1,89 @@
+﻿@using System.Data;
+@using System.Globalization
+@using MS.ECP.BLL;
+@using MS.ECP.Utility;
+
+@model IList<MS.ECP.Model.CMS.Aboutus> 
+@{
+    ViewBag.Title = " Abouts Us List ";
+}
+
+@section scripts 
+ {
+    <script type="text/javascript">
+        jQuery(function() {
+            jQuery(".listtr").each(function(i) {
+                var mod = (i + 2) % 2;
+
+                if (mod == 0) {
+                    jQuery(this).children('th').addClass("spec");
+                } else {
+                    jQuery(this).children('th').addClass("specalt");
+                    jQuery(this).children("td").addClass("alt");
+                }
+            });
+
+            jQuery("a.delete").click(function() {
+                return confirm("Confirm delete this item?");
+            });
+        });
+
+    </script>
+}
+
+<form runat="server" id="myfrm">
+    <div id="content_detail">
+        <div class="jquery_tab">
+            <div class="content_block">
+                <h2 class="jquery_tab_title">Abouts Us Management</h2>
+                <div id="newspaging">
+                    <table style="table-layout: fixed">
+                        <caption style="text-align: right">
+                           @Html.ActionLink("Add", "Add") Table : Abouts Us Management
+                        </caption>
+                        <tr>
+                            <th>Language
+                            </th>
+                            <th>Title 
+                            </th>
+                            <th style="width: 500px; text-align: center">Content
+                            </th>
+                            <th>Display Sort 
+                            </th>
+                            <th>Operate
+                            </th>
+                        </tr>
+                        @foreach (var item in Model)
+                        {
+                            <tr class="listtr">
+                                <th class="spec">
+                                    @Html.Label(item.LanguageCode)
+                                </th>
+                                <td>
+                                    @Html.Label(item.LinkTitle)
+                                </td>
+                                <td>
+                                    <div style="overflow-y: hidden; max-height: 200px; max-width: 500px; overflow-x: hidden;">
+                                        @Html.Raw(item.Content)
+                                    </div>
+                                </td>
+                                <td>
+                                    @Html.Label(item.SortOrder.ToString())
+                                </td>
+                                <td>
+
+                                    @Html.ActionLink("Edit", "Edit", new { languid = item.LangGuid })  | 
+                                    @Html.ActionLink("Delete", "Del",
+                                    new { id = item.ID.ToString(CultureInfo.InvariantCulture) }, new { @class = "delete" })
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </div>
+            <!--end content_block-->
+        </div>
+        <!--end jquery tab-->
+    </div>
+    <!--end content-->
+</form>

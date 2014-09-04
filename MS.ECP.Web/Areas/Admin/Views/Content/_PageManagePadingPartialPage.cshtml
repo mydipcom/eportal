@@ -1,0 +1,61 @@
+﻿@using System.Globalization
+@using System.Text
+@using MS.ECP.Utility
+@using MS.ECP.Web.Areas.Admin.WebHelp
+@using MS.ECP.Web.WebHelp
+@using MS.ECP.Web.WebPager
+@model MS.ECP.Web.WebPager.PagedList<MS.ECP.Web.Areas.Admin.Models.PageContents> 
+<table cellpadding="1" cellspacing="1">
+    <tr>
+        <td class="td_title" width="12%">ID</td>
+        <td class="td_title" width="30%">Title</td>
+        <td class="td_title" width="30%">Category</td>
+        <td class="td_title" width="10%">Add Time</td>
+        <td class="td_title" width="18%">Operate</td>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Id</td>
+            <td>
+                @Html.ActionLink(@item.Title, "AddorUpdate", "Content", new { lanid = @item.LanageId, operation = "Edit", currentpage = Model.CurrentPageIndex }, new { title = "Edit" })
+            </td>
+            <td>@Html.Raw(item.Category)</td>
+            <td>@item.CreateDate</td>
+            <td>
+            @Html.ActionLink("Edit", "AddorUpdate", "Content", new { lanid = @item.LanageId, operation = "Edit", currentpage = Model.CurrentPageIndex }, new { title = "Edit" })
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            @Html.ActionLink("Delete", "Del", new { id = item.Id,lan=item.LanCode }, new { @class = "a_del", onclick = "deleteconfim(this);return false;" })
+        </tr> 
+    }
+    <tr>
+        <td colspan="5" class="text_td td_submit">
+            <p>
+                <div style="width: 200px; float: left">
+                    Total : <span class="eyeText">@Model.TotalPageCount</span> &nbsp;&nbsp; Page : <span class="eyeText">@Model.CurrentPageIndex</span> / @Model.TotalPageCount &nbsp;&nbsp;&nbsp;&nbsp; 
+                </div>
+                <div style="float: left">
+                    @Ajax.Pager(Model, new PagerOptions
+                    {
+                        PageIndexParameterName = "id",
+                        ShowPageIndexBox = false,
+                        CurrentPagerItemWrapperFormatString = "<a class='page_locked'>{0}</a>",
+                        FirstPageText = "First",
+                        LastPageText = "End",
+                        PrevPageText = "Pre",
+                        NextPageText = "Next",
+                        ShowGoButton = false
+                    }, new MvcAjaxOptions
+                    {
+                        UpdateTargetId = "listload",
+                        HttpMethod = "Post",
+                        DataFormId = "searchForm"
+                    })
+                </div>
+            </p>
+            <div style="clear: both"></div>
+        </td>
+    </tr>
+</table>
+
+

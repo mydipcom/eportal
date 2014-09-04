@@ -1,0 +1,31 @@
+﻿ <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Content List</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+
+    <link rel="stylesheet" href="@Url.Content("~/Content/admin/css/Style_Content.css")" type="text/css" media="screen" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/admin/css/style_all.css")" type="text/css" media="screen" />
+@*     <link rel="stylesheet" href="@Url.Content("~/Content/admin/css/jquery-ui.css")" type="text/css" media="screen" />*@
+@*    <link rel="stylesheet" href="@Url.Content("~/Content/admin/css/style_all.css")" type="text/css" media="screen" />*@
+@*    <link rel="stylesheet" href="@Url.Content("~/Content/admin/css/jquery.wysiwyg.css")" type="text/css" media="screen" />*@
+     @RenderSection("csses", required: false) 
+
+
+
+    <script type='text/javascript' src='@Url.Content("~/Scripts/jquery-1.7.2.min.js")'></script>
+    <script type='text/javascript' src='@Url.Content("~/Content/Admin/js/custom.js")'></script>
+
+@*    <script type='text/javascript' src='@Url.Content("~/Content/Admin/js/jquery.js")'></script>
+    <script type='text/javascript' src='@Url.Content("~/Content/Admin/js/jquery-ui.js")'></script>
+    <script type='text/javascript' src='@Url.Content("~/Content/Admin/js/jquery.wysiwyg.js")'></script>*@
+ 
+  
+    @RenderSection("scripts", required: false)
+
+</head>
+<body>
+            @RenderBody()
+</body>
+</html>

@@ -1,0 +1,36 @@
+﻿@using MS.ECP.Web.Areas.Admin.WebHelp
+@using MS.ECP.Web.WebHelp
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>MissionskyAdmin</title>
+    <link rel="stylesheet" href="@Url.Content("~/Areas/Admin/Content/Css/global.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/Areas/Admin/Content/Css/login.css")" />
+</head>
+
+<body style="background-color: #1e242b;">
+    <div class="navbar">
+        <ul>
+            <li>
+                <img src="/Areas/Admin/Content/Image/user.jpg" width="12" height="12" alt="" />&nbsp;&nbsp;@ViewBag.UserName
+            </li>
+            <li>
+                <img src="/Areas/Admin/Content/Image/dashboard.jpg" width="12" height="12" alt=""/>&nbsp;&nbsp;
+                @Html.ActionLink("Dashboard","Content","Shared",null,new{ target="MainContent"})
+            </li>
+            <li>
+                <img src="/Areas/Admin/Content/Image/out.jpg" width="12" height="12" alt="" />&nbsp;&nbsp;
+          <a href="@Html.UrlLink("LogOut", "Account")" title="Logout" target="_top">Logout</a></li>
+            <li style="border-left: 1px solid #37414b; border-right: none;"></li>
+        </ul>
+        <span class="copyright_Text">Copyright © 2013 Missionsky.com</span>
+    </div>
+</body>
+</html>
+
+

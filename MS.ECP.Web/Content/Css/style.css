@@ -1,0 +1,143 @@
+﻿/*  ====    header    ====  */
+.header{ width:100%; height:90px; background:url(../Image/header_bg.png) repeat-x; position:absolute; top:0px; z-index:888;}
+.top_container{ width:978px; height:86px; line-height:86px; margin:auto; background:url(../Image/logo.jpg) left center no-repeat;}
+.logo{ width:168px; height:86px; line-height:86px; float:left; position:relative;}
+.logo a.logo_link{ width:96px; height:50px; position:absolute; left:0px; bottom:18px;}
+.language_type{ position:absolute; left:116px; top:18px; display:block; width:128px; height:38px;}
+.language_type a { color: #444; text-decoration: none;}
+.language_type a.lan_en { font-family:Arial, Tahoma, Verdana, Helvetica, Sans-serif;}
+.language_type a.lan_cn, .lan_line  { font-family:"Microsoft YaHei", "微软雅黑", Arial, "宋体", Helvetica, Verdana, Sans-serif;}
+.language_type a:hover { color:#7b5835;} 
+.menu{ height:86px; float:right; font-size:14px; text-align:right;}
+.menu a{ display:block; float:left; padding:0px 29px; color:#444; line-height:86px; background:url(../Image/menu_line.jpg) right center no-repeat; position:relative; z-index:6;}
+.menu a.menu_last{ background:none;}
+.menu a:hover{ color:#fff; background-image:none; background-color:#7b5835; text-decoration:none; padding-left:30px; margin-left:-1px; position:relative; z-index:8;}
+.menu a.menu_locked{ color:#fff; background-image:none; background-color:#7b5835; padding-left:30px; margin-left:-1px; position:relative; z-index:12;}
+
+
+
+
+/*  ====    banner    =====  */
+.banner{ margin-top:86px; z-index:58;}
+#slide-index{ min-width:1000px;width:auto; height:452px; overflow:hidden; position:relative;}
+#slide-index .slides{ min-width:1000px; width:auto; height:452px; }
+#slide-index .slide{ min-width:1000px; height:452px; float:left; position:relative; }
+#slide-index .image{ z-index:1;position:absolute; }
+#slide-index .text, #slide-index .button { z-index:2;position:absolute; top:-500px; }
+#slide-index .button{ display:none; width:138px;}
+#slide-index .control{ position:absolute; bottom:0px; width:100%; text-align:center; height:8px; cursor:pointer; z-index:40; overflow:hidden;}
+#slide-index .control a{ width:326px; height:8px; cursor:pointer; display:inline-block; background-repeat:no-repeat; background:#fff; opacity:0.68; filter:alpha(opacity=68);}
+#slide-index .control a:hover, #slide-index .control a.active{ background:#7b5835; opacity:1; filter:alpha(opacity=100);}
+.autoMaxWidth{ overflow:hidden; position:relative;height:232px; }
+
+/*  == banner text  */
+.banner_text_position{ width:978px; position:absolute; top:80px; left:50%; z-index:8; margin-left:-489px;}
+.banner_cloud_container{ width:538px; font-size:14px;}
+.banner_business_container{ width:448px; font-size:14px;}
+.banner_data_container{ width:448px; font-size:14px;}
+.banner_text_title{ font-size:36px; line-height:36px; color:#7b5835; font-weight:bold; width:518px;}
+.banner_text_info{ height:92px; padding-top:28px; font-size:14px; overflow:hidden;}
+.banner_text_more{ padding-right:18px; padding-top:28px; font-size:18px; text-align:right;}
+.banner_text_more a{ color:#7b5835; text-decoration: none;}
+.banner_text_more a:hover { color:#7b5835; text-decoration:underline;}
+
+
+
+
+/*  ====    sub banner    =====  */
+.sub_banner{ margin-top:86px; z-index:58; width:100%; height:180px; background:url(../Image/sub_banner_bg.png) repeat; position:relative;}
+
+
+
+
+/*  ====    sub content container   =====  */
+.white_background{ width:1074px; height:80px; margin:auto; margin-top:-80px; background-color:#fff; position:relative; z-index:68;}
+.content_container{ width:978px; min-height:258px; margin:auto; overflow:hidden; position:relative; margin-top:-26px; z-index:78;}
+.title_container{ width:100%; padding-bottom:11px; border-bottom:solid 1px #eee;}
+.show_title{ font-size:18px; float:left;}
+.content_title_list{ float:right;}
+.content_title_list a{ display:block; float:left; padding-left:38px; padding-right:38px; height:32px; line-height:32px; margin-left:4px; text-align:center; background-color:#f2f2f2; cursor:pointer;}
+.content_title_list a:hover{ background-color:#7b5835; color:#fff; text-decoration:none;}
+.content_title_list a.li_locked{ background-color:#7b5835; color:#fff; cursor:default;}
+.show_content{ margin-top:58px; width:978px; overflow:hidden;}
+.company_pic{ width:1018px; margin-bottom:12px;}
+.company_pic img{ margin-right:30px;}
+.content_info{ margin:0px 0px 58px 0px;}
+.sub_content{ margin-top:54px; width:100%; overflow:hidden;}
+
+
+
+/*  ====    join us    =====  */
+.job_content ul{ width:50%; float:left;}
+.job_list{ width:958px; padding-left:18px; margin-top:0px; background:url(../Image/job_list.gif) left center no-repeat; position:relative;}
+.job_list_display{ display:none; padding-bottom:0px;}
+.line_margin{ margin:58px 0px;}
+.job_info{ padding-bottom:58px; margin-bottom:58px; border-bottom:solid 1px #eee;}
+.page_list{ margin-top:28px;}
+.page_list a{ margin-right:28px;}
+.page_list a.page_locked{ color:#fff; background-color:#7b5835; text-decoration:none; cursor:default; padding:2px 6px;}
+
+
+
+/*  ====    news    =====  */
+.news_pic{ width:306px; height:138px; float:left; overflow:hidden; margin-bottom:58px;}
+.news_summary{ width:642px; height:138px; margin-top:-2px;; margin-bottom:58px; float:right; overflow:hidden; position:relative;}
+.news_title{  color:#7b5835; font-size:18px; margin-bottom:18px;}
+.news_info{ width:642px; height:66px; overflow:hidden;}
+.news_more{ position:absolute; right:0px; bottom:-5px;}
+* html .news_more{ position:absolute; right:0px; bottom:-4px;}   /*  ie6  */
+.news_update_time{ color:#bbb; font-size:12px;}
+
+
+
+/*  ====    technical    =====  */
+.plan_info{ width:726px; float:left; overflow:hidden;}
+.plan_list{ width:222px; float:right;}
+.plan_type_title{ font-size:14px;}
+.plan_type a{ width:192px; line-height:28px; padding-left:30px; background:url(../Image/job_list.gif) 18px center no-repeat; display:block; overflow: hidden; white-space: nowrap; -o-text-overflow: ellipsis; text-overflow: ellipsis; }
+.plan_type a:hover{ background:url(../Image/job_list_hover.gif) 16px center no-repeat; background-color:#7b5835; color:#fff; text-decoration:none;}
+.plan_type a.plan_locked{ background:url(../Image/job_list_hover.gif) 16px center no-repeat; background-color:#7b5835; color:#fff; text-decoration:none; cursor:default;}
+
+
+
+/*  ====    business    =====  */
+.business{ width:978px; margin:auto; margin-top:55px; overflow:hidden;}
+.business_container{ width:1008px;}
+.business_type{ width:306px; float:left; margin-right:30px;}
+.business_title{ font-size:18px; color:#7b5835;}
+.business_pic{ padding:16px 0px 12px 0px;}
+
+
+
+
+/*  ====    missionsky info    =====  */
+.shadow_pic{ width:100%; height:18px; margin:auto; margin-top:47px; background:url(../Image/footer_bg.jpg) center no-repeat; position:relative; z-index:3; }
+.missionsky_container{ width:100%; height:212px; padding:55px 0px 58px 0px; background-color:#f2efec; margin-top:-1px; position:relative; z-index:2;}
+.missionsky_info{ width:978px; margin:auto; overflow:hidden;}
+.about_missionsky{ width:474px; float:left; margin-right:30px;}
+.news_missionsky{ width:306px; float:left; margin-right:30px;}
+.news_list_missionsky{ width:306px; position:relative; overflow:hidden; padding-bottom:12px; margin-top:-6px;}
+.news_list_missionsky ul li{ width:206px; height:24px; padding-left:12px; float:left; background:url(../Image/news_list_icon.gif) left center no-repeat; overflow:hidden; white-space: nowrap; -o-text-overflow: ellipsis; text-overflow: ellipsis;}
+.news_date{ color:#bbb; position:absolute; right:0px;}
+* html .news_date{ color:#bbb; position:absolute; right:0px; margin-top:-4px;} 
+.follow_missionsky{ width:138px; float:left;}
+.follow_text{ margin-top:-6px;}
+.follow_pic{ margin-top:7px;} 
+.missionsky_info_title{ font-size:18px; margin-bottom:15px;}
+.missionsky_pic{ width:474px; overflow:hidden;}
+.show_missionsky_pic{ width:506pc;}
+.missionsky_pic img{ margin-right:30px;}
+.show_missionsky_info{ margin-top:4px; height:72px; overflow:hidden;}
+
+
+
+
+/*  ====    footer info    =====  */
+.footer{ width:100%; height:152px; background-color:#3d367c;}
+.footer_container{ width:978px; height:94px; margin:auto; padding-top:52px; overflow:hidden; background:url(../Image/footer_logo.jpg) right center no-repeat;}
+.footer_container a{ color:#b8b4c8;}
+.footer_container a:hover{ color:#b8b4c8; text-decoration:underline;}
+.footer_nav_text{ color:#b8b4c8;}
+.footer_copyright{ color:#6c6892;}
+
+

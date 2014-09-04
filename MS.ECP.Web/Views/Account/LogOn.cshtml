@@ -1,0 +1,82 @@
+﻿@using MS.ECP.Utility;
+@using MS.ECP.Web.WebHelp
+
+@model MS.ECP.Web.Models.LogOnModel
+@{
+    ViewBag.Title = "登录";    
+}
+
+@section scripts
+{
+    @WebUiHelp.GetJavscriptbyLanager(Html, "jquery.validate.min.js")
+    @WebUiHelp.GetJavscriptbyLanager(Html, "jquery.validate.unobtrusive.min.js")
+}
+
+
+<div id="templatemo_title_wrapper">
+    <div id="templatemo_title" class="wrapper">
+        <img src="@WebUiHelp.GetimagesbyLanager("unlock.png")" class="Title_image" alt="missionsky" /> 
+    </div>
+</div>
+
+<div class="wrapper">
+    <div class="content_layer_logon">
+
+        <p>
+            请输入用户名和密码。如果您没有帐户，请<a href="@Url.Action("Register", "Account")">注册</a>。
+        </p>
+
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary()
+   
+
+        @using (Html.BeginForm("LogOn","Account", FormMethod.Post))
+        {
+            <div>
+                <fieldset>
+                    <legend>帐户信息</legend>
+                    <div class="content_login_cent">
+                        <div class="editor-label">
+                            @Html.LabelFor(m => m.UserName)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(m => m.UserName)
+                            @Html.ValidationMessageFor(m => m.UserName)
+                        </div>
+
+                        <div class="editor-label">
+                            @Html.LabelFor(m => m.Password)
+                        </div>
+                        <div class="editor-field">
+                            @Html.PasswordFor(m => m.Password)
+                            @Html.ValidationMessageFor(m => m.Password)
+                        </div>
+
+                        <div class="editor-label">
+                            @Html.CheckBoxFor(m => m.RememberMe)
+                            @Html.LabelFor(m => m.RememberMe)
+                        </div>
+                        <p>
+                            <input type="submit" class="content_login_cent" value="登录" />
+                        </p>
+                    </div>
+                </fieldset>
+            </div>
+        }
+    </div>
+</div>
+<script type="text/javascript" 
+        src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js"
+        data-appid="100567239"
+     data-redirecturi="http://www.missionsky.com" charset="utf-8" ></script>
+
+<span id="qqLoginBtn" ></span>
+
+<script type="text/javascript">
+	QC.Login({
+		btnId : "qqLoginBtn",//插入按钮的html标签id
+		size : "B_M",//按钮尺寸
+		scope : "get_user_info",//展示授权，全部可用授权可填 all
+		display : "pc"//应用场景，可选
+	});
+</script>

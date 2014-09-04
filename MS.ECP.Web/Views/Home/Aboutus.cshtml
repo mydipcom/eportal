@@ -1,0 +1,158 @@
+﻿@using MS.ECP.Utility;
+@model MS.ECP.Web.Models.Feedback
+@using MS.ECP.Web.WebHelp
+@{
+
+    if (!String.IsNullOrEmpty(LanageCommon.AboutusSeoTitle))
+    {
+        ViewBag.Title = LanageCommon.AboutusSeoTitle;
+    }
+
+    if (!String.IsNullOrEmpty(LanageCommon.AboutusSeoKeywords))
+    {
+        ViewBag.Keywords = LanageCommon.AboutusSeoKeywords;
+    }
+
+
+    if (!String.IsNullOrEmpty(LanageCommon.AboutusSeoDescription))
+    {
+        ViewBag.Description = LanageCommon.AboutusSeoDescription;
+    }
+
+}
+
+@section scripts
+{
+    <script src="@Url.Content("/Content/Scripts/jquery.validate.min.js")"></script>
+    <script src="@Url.Content("/Content/Scripts/jquery.validate.unobtrusive.min.js")"></script>
+    <script type="text/javascript">
+        var i, j;
+
+        function ChangeAbout(j) {
+            for (i = 1; i < 4; i++) {
+                document.getElementById("company_info" + i).style.display = "none";
+                document.getElementById("about_panel" + i).className = "";
+            }
+            document.getElementById("company_info" + j).style.display = "block";
+            document.getElementById("about_panel" + j).className = "li_locked";
+        }
+
+        $(function() {
+            @{
+                var isback = null != Model && Model.IsValidBack;
+            }
+
+            if ('@isback'.toLowerCase() == 'true') {
+                ChangeAbout(3);
+            }
+        });
+    </script>
+}
+
+ 
+<!-- sub banner -->
+<div class="sub_banner"></div>
+<!-- end sub banner -->
+
+
+
+
+<!-- content White_background -->
+<div class="white_background"></div>
+<!-- end content White_background -->
+
+
+
+
+<!-- content container -->
+<div class="content_container">
+    <div class="title_container">
+        <div class="show_title">@LanageAbout.MenuLblAboutus</div>
+        <!-- change panel -->
+        <div class="content_title_list">
+                <a href="javascript:void(0)" class="li_locked" id="about_panel1" onclick="ChangeAbout('1')">@LanageAbout.AboutusLblProfileCaption</a>
+                <a   href="javascript:void(0)"  id="about_panel2" onclick="ChangeAbout('2')">@LanageAbout.MenuLblAboutus</a>
+                <a  href="javascript:void(0)"  id="about_panel3" onclick="ChangeAbout('3')">@LanageAbout.AboutusLblFeedbackCaption</a>
+        </div>
+        <!-- end change panel -->
+        <div class="clear"></div>
+    </div>
+    <!-- show content  -->
+
+    <!-- company info -->
+   <div class="show_content" id="company_info1">
+        <div class="company_pic">
+            <img src="@Url.Content("~/Content/Image/company01.jpg")" width="306" height="230"  alt="aboutus"/>
+            <img src="@Url.Content("~/Content/Image/company02.jpg")" width="306" height="230"   alt="aboutus"/>
+            <img src="@Url.Content("~/Content/Image/company03.jpg")" width="306" height="230"   alt="aboutus"/>
+        </div>
+        <div class="content_info">
+           @Html.Raw(LanageAbout.AboutusLblProfile) 
+        </div>
+        <div class="line"></div>
+        <div class="sub_content">
+            <span class="bigText">@LanageAbout.AboutusLblIdeaCaption</span><br />
+            <br />
+            @LanageAbout.AboutusLblIdea
+        </div>
+    </div>
+    <!-- end company info -->
+     
+    <!-- contact info -->
+    <div class="show_content" id="company_info2" style="display:none;">
+            <div class="content_info">
+        <iframe width="978" height="458" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://ditu.google.com/maps?f=q&amp;source=s_q&amp;hl=zh-CN&amp;geocode=&amp;q=%E4%B8%AD%E5%9B%BD%E6%B7%B1%E5%9C%B3%E5%B8%82%E7%A6%8F%E7%94%B0%E5%8C%BA%E6%B3%B0%E7%84%B6%E4%B9%9D%E8%B7%AF%E6%B3%B0%E7%84%B6%E5%B7%A5%E8%B4%B8%E5%9B%AD213%E6%A0%8B&amp;aq=&amp;sll=22.533488,114.026241&amp;sspn=0.002222,0.004128&amp;brcurrent=3,0x3403f434c7e2d8d1:0x34978a57d771623d,0,0x3403f3f633f78ad9:0x7a30a41e1da40b9e%3B5,0,0&amp;ie=UTF8&amp;hq=%E6%B3%B0%E7%84%B6%E5%B7%A5%E8%B4%B8%E5%9B%AD213%E6%A0%8B&amp;hnear=%E5%B9%BF%E4%B8%9C%E7%9C%81%E6%B7%B1%E5%9C%B3%E5%B8%82%E7%A6%8F%E7%94%B0%E5%8C%BA%E6%B3%B0%E7%84%B6%E4%B9%9D%E8%B7%AF&amp;ll=22.533964,114.026137&amp;spn=0.006295,0.006295&amp;t=m&amp;output=embed"></iframe>
+               </div>
+        <div class="line"></div>
+        <div class="sub_content">
+            <span class="bigText">@LanageAbout.CommonLblCompanyname</span><br /><br /> 
+            @LanageAbout.AboutusLblFeedbackContactAddress : @LanageAbout.AboutusLblAddress<br />
+            E-mail：job@missionsky.com <br /> 
+            @LanageAbout.AboutusLblFeedbackContactPhone：0755 - 82804171
+        </div>
+    </div>
+    <!-- end contact info -->
+    
+
+    <!-- contact info -->
+    <div class="show_content" id="company_info3" style="display: none;">
+        @using (Html.BeginForm())
+        {
+            <div class="content_info">
+                <span class="bigText">@LanageAbout.AboutusLblFeedbackRemark</span>
+            </div>
+            <div class="line"></div>
+            <div class="sub_content">
+                @LanageAbout.AboutusLblFeedbackName @Html.Raw(":") 
+                <p>
+                    @Html.TextBoxFor(m => m.UserName, new {@class = "notebook_input",})
+                    @Html.ValidationMessageFor(m => m.UserName) 
+                </p>
+                <p>  @LanageAbout.AboutusLblFeedbackSubject @Html.Raw(":")</p>
+                <p>
+                    @Html.TextBoxFor(m => m.Subject, new {@class = "notebook_input"})
+                    @Html.ValidationMessageFor(m => m.Subject) 
+                </p>
+                <p>@LanageAbout.AboutusLblFeedbackBody @Html.Raw(":")</p>
+                <p>
+                    @Html.TextAreaFor(m => m.Body, new {@class = "notebook"})
+                    @Html.ValidationMessageFor(m => m.Body) 
+                </p>
+                <p>
+                    @Html.ValidationSummary(true)
+                </p>
+                <input type="submit" class="submit" value="提交" />
+            </div>
+        }
+    </div> 
+    <!-- end contact info -->
+
+    <!-- end show content  -->
+</div>
+<!-- end content container -->
+
+
+
+
+
+

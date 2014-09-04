@@ -1,0 +1,83 @@
+﻿@using System.Text
+@using System.Web.UI.WebControls
+@using MS.ECP.Utility;
+@using MS.ECP.BLL;
+@using System.Data;
+@using MS.ECP.Web.WebHelp
+@using MS.ECP.Web.WebPager
+@model MS.ECP.Web.Models.NewsViewModel
+
+@{
+    if (!String.IsNullOrEmpty(LanageCommon.NewsSeoTitle))
+    {
+        ViewBag.Title = LanageCommon.NewsSeoTitle;
+    }
+
+    if (!String.IsNullOrEmpty(LanageCommon.NewsSeoKeywords))
+    {
+        ViewBag.Keywords = LanageCommon.NewsSeoKeywords;
+    }
+
+
+    if (!String.IsNullOrEmpty(LanageCommon.NewsSeoDescription))
+    {
+        ViewBag.Description = LanageCommon.NewsSeoDescription;
+    }
+}
+
+@section scripts
+{
+    <script src="@Url.Content("~/Content/Scripts/webpager.js")"></script>
+}
+
+<!-- sub banner -->
+<div class="sub_banner"></div>
+<!-- end sub banner -->
+
+<!-- content White_background -->
+<div class="white_background"></div>
+<!-- end content White_background -->
+
+
+<!-- content container -->
+<div class="content_container">
+    <div class="title_container">
+        <div class="show_title">@LanageCommon.FootLblNewsCaption</div>
+        <!-- change panel -->
+        <div class="content_title_list">
+            <a href="javascript:void(0)" class="li_locked">@LanageCommon.NewsLblTabNews</a>
+        </div>
+        <!-- end change panel -->
+        <div class="clear"></div>
+    </div>
+    <!-- show content  -->
+    
+    <!-- company info -->
+    <div class="show_content">
+        <div class="news_pic">
+            <img src="@Url.Content("~/Content/Image/news_pic.jpg")" width="306" alt="news" /> 
+        </div>
+        <div class="news_summary">
+            <div class="news_title">@Model.CurrentNews.Title&nbsp;&nbsp;/&nbsp;&nbsp;<span class="news_update_time">@Model.CurrentNews.CreateDate.ToString("yyyy/MM/dd")</span></div>
+            <div class="news_info">
+              @{
+                  var content = WebUiHelp.RemoveSpaceHtmlTag(Model.CurrentNews.Content); 
+                  var shorcontent = content.Length >300 ? content.Substring(0, 300) + "..." : content;
+              }
+              @shorcontent
+            </div>
+            @Html.ActionLink(LanageCommon.SysLabReadmore+" >>","NewsDetail","Home", new {langGuid = Model.CurrentNews.LangGuid},new{ @class="more news_more" })
+        </div>
+        <div class="clear"></div>
+        <div class="line"></div>
+        <div id="content_detail">
+                @Html.Partial("_NewTitlePartialPage",Model)
+        </div>
+        
+    </div>
+    <!-- end company info -->
+    
+    <!-- end show content  -->
+</div>
+<!-- end content container -->
+

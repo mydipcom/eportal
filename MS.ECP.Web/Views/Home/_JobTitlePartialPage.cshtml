@@ -1,0 +1,68 @@
+﻿@using System.Globalization
+@using System.Text
+@using MS.ECP.Utility
+@using MS.ECP.Web.WebHelp
+@using MS.ECP.Web.WebPager
+
+@model MS.ECP.Web.Models.JobViewModel
+           
+<script src="@Url.Content("/Content/Scripts/showJob.js")"></script>
+<script type="text/javascript">
+    jQuery.noConflict();
+    jQuery(function() {
+        @{
+            var pagesiz = Model.JobTitles.PageSize - 1;
+        }
+        new Accordian('job-accordian', '@pagesiz', 'job_list_display');
+    });
+</script>
+
+
+@for (int i = 0; i < Model.JobTitles.Count; i++)
+{
+    var fistclass = i == 0 ? "job_list job_list_display" : "job_list";
+    var titleid = i == 0 ? "job-list" : "job" + i.ToString(CultureInfo.InvariantCulture) + "-list";
+    var contentid = i == 0 ? "job-content" : "job" + i.ToString(CultureInfo.InvariantCulture) + "-content";
+     
+    var item = Model.JobTitles[i];
+    <div id="@titleid" class="@fistclass"><a href="javascript:void(0);">@item.JobTitle</a><span class="news_date">@item.CreateDate.ToString("yyyy/MM/dd")</span></div>
+    <div id="@contentid" class="job_content"> 
+       @if (i != 0)
+       {
+            <div class="line line_margin"></div>
+       }
+        <span class="bigText">@String.Format("{0}( {1}人 )", item.JobTitle, item.NeedNum)</span><br /><br />  
+        <ul>
+            <li>@LanageCommon.WorkaboutusLblJobWorkplace：@item.Workplace</li>
+            <li>@LanageCommon.WorkaboutusLblJobSalary：@item.Salary</li>
+        </ul> 
+        <ul>
+            <li>@LanageCommon.WorkaboutusLblJobLanguage：@item.LanguageRequired</li>
+            <li>@LanageCommon.WorkaboutusLblJobReleasetime：@item.CreateDate.ToString("yyyy/MM/dd")</li>
+        </ul> 
+        <div class="clear"></div>
+        <div class="job_info">                                                                                                                  
+            <b>@LanageCommon.WorkaboutusLblJobResponsibilities：</b><br /> 
+            @item.JobBligation
+            <br /><br />  
+            <b>@LanageCommon.WorkaboutusLblJobFunctional：</b><br /> 
+            @Html.Raw(item.JobDesc)
+        </div>
+    </div> 
+}
+
+        <!-- page_list -->
+        <div class="page_list">
+     @Ajax.Pager(Model.JobTitles,new PagerOptions
+    {
+        PageIndexParameterName = "id",
+        ShowPageIndexBox = false,
+        ShowGoButton = false,
+        ShowFirstLast=false,
+        ShowNumericPagerItems=true,
+         CurrentPagerItemWrapperFormatString = "<a href='#' class='page_locked'>{0}</a>",
+         PagerItemsSeperator="",
+         ShowPrevNext=false
+    },new MvcAjaxOptions{UpdateTargetId="job-accordian"})
+        </div>
+        <!-- end page_list -->

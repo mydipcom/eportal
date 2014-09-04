@@ -1,0 +1,123 @@
+﻿@using System.Data;
+@using MS.ECP.BLL;
+@using MS.ECP.Utility;
+
+@{
+    ViewBag.Title = " User List ";
+    Layout = null;
+
+    MS.ECP.BLL.UserInfo bll = new UserInfo();
+    
+    DataTable dt = bll.GetList(" 1=1 ").Tables[0]; 
+    
+}
+
+ @section scripts
+ {
+     <script type="text/javascript">
+         jQuery(function() {
+             kriesi_tab('#content', '.jquery_tab_title', '.jquery_tab'); /*remove this if you dont want to have jquery tabs*/
+             kriesi_closeable_divs(".closeable"); /*remove this if you dont want message box to be closeable*/
+             //jQuery("#dialog").dialog(); //pop up dialog window on pageopen.
+             jQuery('.richtext').wysiwyg(); //rich text editor for textareas
+
+             jQuery(".listtr").each(function(i) {
+                 var mod = (i + 2) % 2;
+
+                 if (mod == 0) {
+                     jQuery(this).children('th').addClass("spec");
+                 } else {
+                     jQuery(this).children('th').addClass("specalt");
+                     jQuery(this).children("td").addClass("alt");
+                 }
+             });
+
+             jQuery("a.delete").click(function() {
+                 return confirm("Confirm delete this item?");
+             });
+         });
+     </script>
+ }
+
+    <form runat="server" id="myfrm">
+        <div id="content_detail">
+            <div class="jquery_tab">
+                <div class="content_block">
+                    <h2 class="jquery_tab_title">Job Manage</h2>
+                    <table id="table_liquid" cellspacing="0">
+                        <caption>
+                            <a href="@Url.Action("Add", "User")">Add</a> Table : User Manage
+                        </caption>
+                        <tr>
+                            <th>ID
+                            </th>
+                            <th>UserName
+                            </th>
+                            <th>Email
+                            </th>
+                            <th>FirstName
+                            </th>
+                            <th>LastName
+                            </th>
+                            <th>Phone Number
+                            </th>
+                            <th>UserType
+                            </th>
+                            <th>Status
+                            </th>
+                            <th>CreateDate
+                            </th>
+                            <th>Operate
+                            </th>
+                        </tr>
+                        @foreach (DataRow dr in dt.Rows)
+                        {
+                            <tr class="listtr">
+                                <th class="spec">
+                                    @Html.Label(dr["ID"].ToString())
+                                </th>
+                                <td>
+                                    @Html.Label(dr["UserName"].ToString())
+                                </td>
+                                <td>
+                                    @Html.Label(dr["Email"].ToString())
+                                </td>
+                                <td>
+                                    @Html.Label(dr["FirstName"].ToString())
+                                </td>
+                                <td>
+                                    @Html.Label(dr["LastName"].ToString())
+                                </td>
+                                <td>
+                                    @Html.Label(dr["PhoneNumber"].ToString())
+                                </td>
+                                <td>
+                                    @Html.Label(dr["UserType"].ToString())
+                                </td>
+                                <td>
+                                    @Html.Label(dr["Status"].ToString())
+                                </td>
+                                <td>
+                                    @Html.Label(dr["CreateDate"].ToString())
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Edit", "Edit", new { id = dr["ID"] }) | @Html.ActionLink("Delete", "Del", new { id = dr["ID"].ToString() }, new { @class="delete"})
+                                </td>
+                            </tr>                    
+                        }
+                    </table>
+                    <div class="page_box">
+                        <div id="pageContent" class="flickr right" runat="server">
+                        </div>
+                        <div class="left">
+                            JobList
+                        </div>
+                    </div>
+                </div>
+                <!--end content_block-->
+            </div>
+            <!--end jquery tab-->
+        </div>
+        <!--end content-->
+    </form>
+

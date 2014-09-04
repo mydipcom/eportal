@@ -1,0 +1,41 @@
+﻿@using System.Text
+@using MS.ECP.Utility;
+@model IList<MS.ECP.Model.CMS.Aboutus>  
+@{
+    var reHelper = new ResourcesHelper("Common");
+}
+
+<style type="text/css">
+    <!--
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    .ponebox {
+        border: 0px solid #999999;
+        width: 100%;
+        margin-bottom: 2px;
+        margin-top: 1px;
+        overflow: hidden;
+    }
+-->
+</style>
+
+
+
+<div class="centcontent">
+    <div id="detail_main" class="wrapper">
+        <div > 
+       
+                @Html.Raw(Model.LastOrDefault().Content)
+        
+
+        </div>
+
+        <div class="clear"></div>
+    </div>
+
+</div>
+
+

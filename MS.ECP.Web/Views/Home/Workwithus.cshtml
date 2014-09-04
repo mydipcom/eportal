@@ -1,0 +1,52 @@
+﻿@using MS.ECP.Utility;
+@using System.Data;
+@using MS.ECP.Model;
+@using MS.ECP.Web.WebHelp
+
+@model MS.ECP.Web.Models.JobViewModel
+
+@{
+    if (!String.IsNullOrEmpty(LanageCommon.WorkwithusSeoTitle))
+    {
+        ViewBag.Title = LanageCommon.WorkwithusSeoTitle;
+    }
+
+    if (!String.IsNullOrEmpty(LanageCommon.WorkwithusSeoKeywords))
+    {
+        ViewBag.Keywords = LanageCommon.WorkwithusSeoKeywords;
+    }
+
+
+    if (!String.IsNullOrEmpty(LanageCommon.WorkwithusSeoDescription))
+    {
+        ViewBag.Description = LanageCommon.WorkwithusSeoDescription;
+    }
+}
+
+
+    <!-- sub banner -->
+    <div class="sub_banner"></div>
+    <!-- end sub banner -->
+
+
+    <!-- content White_background -->
+    <div class="white_background"></div>
+    <!-- end content White_background -->
+
+
+<!-- content container -->
+    <div class="content_container">
+        <div class="title_container">
+            <div class="show_title">@LanageCommon.MenuLblWorkwithus</div>
+            <div class="content_title_list">
+                <a href="javascript:void(0)" class="li_locked">@LanageCommon.WorkaboutusLblParentTitle</a> 
+            </div>
+            <div class="clear"></div>
+        </div>
+        <!-- show content  -->
+        <div class="show_content" id="job-accordian">
+             @Html.Partial("_JobTitlePartialPage",Model) 
+        </div>
+        <!-- end show content  -->
+    </div>
+    <!-- end content container -->

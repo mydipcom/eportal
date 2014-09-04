@@ -1,0 +1,96 @@
+
+/*  ====  login   ===  */
+body{ background-color:#2E363F;}
+.loginbox{ width:452px; height:288px; margin:auto; margin-top:148px; padding-top:30px; border-top:solid #3f4954 1px;}
+.logo{ background:url(../Image/logo.jpg) no-repeat center; height:32px;}
+.username{ width:378px; height:30px; text-align:right; margin:auto; margin-top:38px; background:url(../Image/usericon.jpg) 22px center no-repeat #28b779;}
+*+html .username{ width:378px; height:32px; text-align:right; margin:auto; margin-top:38px; background:url(../Image/usericon.jpg) 22px center no-repeat #28b779;}
+.username input{ height:30px; border:0px; width:308px; padding:0px 8px 0px 8px; line-height:28px; color:#aaa;}
+.password{ width:378px; height:30px; text-align:right; margin:auto; margin-top:38px; background:url(../Image/pwdicon.jpg) 23px center no-repeat #ffb848;}
+*+html .password{ width:378px; height:32px; text-align:right; margin:auto; margin-top:38px; background:url(../Image/pwdicon.jpg) 23px center no-repeat #ffb848;}
+.error_info{ width:378px; line-height:24px; text-align:center; margin:auto; color:#ff6666; padding-top:18px;}
+.password input{ height:30px; border:0px; width:308px; padding:0px 8px 0px 8px; line-height:28px; color:#aaa;}
+.action_button{ width:452px; height:288px; margin:auto; margin-top:38px; padding-top:38px; border-top:solid #3f4954 1px;}
+
+
+
+/*  ====  sidebar   ===  */
+.menuBody{ width:222px; background-color:#2e363f;}
+.s_logo{ width:222px; height:78px; background:url(../Image/alogo.jpg) center no-repeat #1e242b; position:relative;}
+.s_logo a{ width:185px; height:38px; position:absolute; left:30px; top:20px;}
+.menu{ width:222px; color:#939da8;}
+.menu ul{ border-bottom:1px solid #37414b;}
+.menu ul li ul{ border-bottom:1px solid #27a9e3; display:none;}
+.menu ul li a{ color:#939da8; height:38px; line-height:38px; display:block; padding-left:42px; border-top: 1px solid #37414b; border-bottom: 1px solid #1f262d;}
+.menu ul li a.clearMenu1{ background:url(../Image/case.jpg) no-repeat 18px center;}
+.menu ul li a.clearMenu1:hover{ background:url(../Image/case_on.jpg) no-repeat 18px center; background-color:#27a9e3;}
+.menu ul li a.clearMenu2{ background:url(../Image/news.jpg) no-repeat 18px center;}
+.menu ul li a.clearMenu2:hover{ background:url(../Image/news_on.jpg) no-repeat 18px center; background-color:#27a9e3;}
+.menu ul li a.clearMenu3{ background:url(../Image/system.jpg) no-repeat 18px center;}
+.menu ul li a.clearMenu3:hover{ background:url(../Image/system_on.jpg) no-repeat 18px center; background-color:#27a9e3;}
+.menu ul li a:hover{ color:#fff; background-color:#27a9e3;}
+.menu .activeMenu{ color:#fff; background:url(../Image/menuBG.jpg) no-repeat;}
+.menu ul li ul li a{ color:#939da8; height:38px; line-height:38px; display:block; padding-left:38px; border:none; border:0px; background-color:#1e242b;}
+.menu ul li ul li a:hover{ color:#fff; background-color:#28b779;}
+
+
+
+/*  ====  navbar   ===  */
+.navbar{ height:38px; border-left: 1px solid #000; color:#888;}
+.navbar ul li{ height:38px; line-height:38px; border-left: 1px solid #37414b; border-right: 1px solid #000; padding:0px 18px; _padding-top:10px; float:left;}
+.navbar ul li a{ color:#888;}
+.navbar ul li a:hover{ color:#fff;}
+.copyright_Text{ line-height:38px; float:right; color:#474c50; padding-right:18px;}
+
+
+
+/*  ====  Index  ====  */
+.Dashboard{ margin-top:38px;}
+.Dashboard table{ width:100%;}
+.Dashboard table td{ padding:0px 8px; line-height:32px; height:158px; cursor:pointer;}
+.Dashboard table td:hover{ background-color:#1e252d;}
+.Dashboard table .td_AddContent{ background-color:#27b779; text-align:center; vertical-align:middle; font-weight:bold; line-height:28px; color:#fff;}
+.Dashboard table .td_AddJob{ background-color:#28a9e2; text-align:center; font-weight:bold; line-height:28px; color:#fff;}
+.Dashboard table .td_AddNews{ background-color:#ffb748; text-align:center; font-weight:bold; line-height:28px; color:#fff;}
+.Dashboard table .td_Clear{ background-color:#da542e; text-align:center; font-weight:bold; line-height:28px; color:#fff;}
+.Dashboard a, .Dashboard a:hover{ color:#fff;}
+
+
+
+/*  ====  content   ===  */
+.nav_now{ height:38px; line-height:38px; background-color:#fff; padding:0px 18px;}
+.content_body{ padding:0px 18px;}
+.content_title{ line-height:38px; padding:18px 0px; font-size:18px; font-weight:bold; width:30%; float:left;}
+.operate_action{ padding-top:28px; width:68%; float:right; text-align:right;}
+.table_body{ margin-top:38px;}
+.table_body table{ background-color:#cdcdcd; width:100%;}
+.table_body table tr{ background-color:#f9f9f9;}
+.table_body table tr:hover{ background-color:#eef7fa;}
+.table_body table .td_title{ background-color:#efefef; text-align:center; font-weight:bold; line-height:28px;}
+.table_body table td{ padding:0px 8px; line-height:32px;}
+.table_body table td .a_del:hover{ color:#ff6666;}
+.td_submit{ height:58px; background-color:#f6f6f6;}
+.td_submit:hover{ height:58px; background-color:#f6f6f6;}
+.add_body{ margin-top:38px; margin-bottom:38px;}
+.add_table{ background-color:#cdcdcd; width:100%;}
+.add_table tr{ background-color:#f9f9f9;}
+.add_body .add_title{ background-color:#efefef; text-align:center; font-weight:bold; line-height:28px; position:relative;}
+.add_body .text_td{ padding:6px 8px; line-height:32px;}
+.table_input{ line-height:24px; border:solid 1px #ccc; width:388px; height:22px; padding:2px 8px;}
+.sub_table_input{ line-height:24px; border:solid 1px #ccc; width:128px; height:22px; padding:2px 8px; margin-right:4px;}
+.table_textarea{ line-height:24px; border:solid 1px #ccc; width:568px; height:88px; padding:2px 8px;}
+.change_panel_content{ margin-top:-72px;}
+.change_panel_save{ margin-top:-39px;}
+.change_panel{ width:100%; cursor:pointer;}
+.change_panel_locked{ width:100%; padding:0px 1px; _padding:0px 0px 0px 1px; height:30px; background-color:#f6f6f6; position:relative; margin-left:-1px; margin-bottom:-2px; color:#dca557;}
+
+
+
+/*  ====  upload   ===  */
+.loadBody{ text-align:center;}
+.loadBody table{ background-color:#cdcdcd; width:99%; height:158px;}
+.loadBody table tr{ background-color:#f9f9f9;}
+.loadBody table .load_td{ padding:6px 8px; line-height:32px;}
+.loadBody table .load_title{ background-color:#efefef; text-align:center; font-weight:bold; line-height:28px;}
+
+

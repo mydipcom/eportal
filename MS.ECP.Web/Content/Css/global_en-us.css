@@ -1,0 +1,35 @@
+body { margin: 0px; padding: 0px; color: #444; font: 12px/24px Tahoma, Verdana, Helvetica, Arial, Sans-serif; }
+
+
+ol, ul { list-style: none; margin:0px; padding:0px;}
+li {  margin: 0px; padding:0px;}
+select{  color: #444; font-size: 12px; outline:none; padding:1px 8px; border:solid 1px #bbb; font-family:Tahoma, Verdana, Helvetica, Arial, Sans-serif; margin:0px;
+}
+form{ margin:0px; padding:0px;}
+input{ color: #444; font-size: 12px; height:12px; outline:none; font-family:Tahoma, Verdana, Helvetica, Arial, Sans-serif;}
+textarea{ color: #444; font-size: 12px; outline:none; padding:8px 18px 8px 18px; border:solid 1px #ccc; font-family:Tahoma, Verdana, Helvetica, Arial, Sans-serif; margin:0px; }
+img{ border:0; margin:0px; padding:0px; font-size:100%; }
+.line{ width:978px; height:1px; overflow:hidden; background-color:#eee;}
+.list_line{ height:1px; overflow:hidden; background:url(../Image/list_line.gif) repeat; margin:10px 0px;} 
+.submit{ width:118px; height:32px; background-color:#7b5835; color:#fff; border:none; cursor:pointer;}
+.submit:hover{ background-color:#684a2c;}
+
+
+a { color: #444; text-decoration: none;}
+a:hover { color:#7b5835; text-decoration:underline;}
+.menu a{font-family:Arial, Tahoma, Verdana, Helvetica, Sans-serif;}
+.more{ color:#7b5835;}
+.more:hover{ text-decoration:underline;}
+.eyeText{ color:#7b5835;}
+.bigText{ color:#7b5835; font-size:22px;}
+
+
+.clear { clear: both; font: 1px/1px sans-serif; height: 1px; overflow: hidden;}
+
+
+.notebook{ width:688px; height:228px; line-height:24px; padding:2px 8px; background-color:#f6f6f6;}
+.notebook_input{ line-height:24px; border:solid 1px #ccc; width:458px; height:22px; padding:2px 8px; background-color:#f6f6f6;}
+
+
+/*       EN FONT-FAMILY       */
+.business_title, .missionsky_info_title, .more, .footer_container a, .show_title, .bigText, .plan_type_title, .content_title_list{font-family:Arial, Tahoma, Verdana, Helvetica, Sans-serif;}

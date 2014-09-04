@@ -1,0 +1,129 @@
+DIV.wysiwyg {
+	BORDER-BOTTOM: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; PADDING-BOTTOM: 5px; BACKGROUND-COLOR: #ffffff; PADDING-LEFT: 5px; PADDING-RIGHT: 5px; BORDER-TOP: #cccccc 1px solid; BORDER-RIGHT: #cccccc 1px solid; PADDING-TOP: 5px
+}
+DIV.wysiwyg * {
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+DIV.wysiwyg UL.panel {
+	BORDER-BOTTOM: #cccccc 1px solid; PADDING-BOTTOM: 4px; PADDING-LEFT: 0px; WIDTH: 100%; PADDING-RIGHT: 0px; FLOAT: left; PADDING-TOP: 0px
+}
+DIV.wysiwyg UL.panel LI {
+	LIST-STYLE-TYPE: none; MARGIN: 0px 2px; BACKGROUND: #ffffff; FLOAT: left
+}
+DIV.wysiwyg UL.panel LI.separator {
+	BORDER-LEFT: #cccccc 1px solid; MARGIN: 0px 4px; HEIGHT: 16px
+}
+DIV.wysiwyg UL.panel LI A {
+	PADDING-BOTTOM: 1px; BORDER-RIGHT-WIDTH: 0px; PADDING-LEFT: 1px; WIDTH: 16px; PADDING-RIGHT: 1px; DISPLAY: block; BACKGROUND: url(../images/jquery.wysiwyg.gif) no-repeat -64px -80px; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; HEIGHT: 16px; BORDER-LEFT-WIDTH: 0px; CURSOR: pointer; PADDING-TOP: 1px; opacity: 0.6
+}
+DIV.wysiwyg UL.panel LI A:hover {
+	opacity: 0.99
+}
+DIV.wysiwyg UL.panel LI A.active {
+	opacity: 0.99
+}
+DIV.wysiwyg UL.panel LI A.active {
+	BORDER-BOTTOM: #cccccc 1px solid; BORDER-LEFT: #aaaaaa 1px solid; PADDING-BOTTOM: 0px; BACKGROUND-COLOR: #f9f9f9; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; BORDER-TOP: #aaaaaa 1px solid; BORDER-RIGHT: #cccccc 1px solid; PADDING-TOP: 0px
+}
+DIV.wysiwyg UL.panel LI A.bold {
+	BACKGROUND-POSITION: 1px -15px
+}
+DIV.wysiwyg UL.panel LI A.italic {
+	BACKGROUND-POSITION: -15px -15px
+}
+DIV.wysiwyg UL.panel LI A.strikeThrough {
+	BACKGROUND-POSITION: -32px -16px
+}
+DIV.wysiwyg UL.panel LI A.underline {
+	BACKGROUND-POSITION: -48px -16px
+}
+DIV.wysiwyg UL.panel LI A.justifyLeft {
+	BACKGROUND-POSITION: 0px 0px
+}
+DIV.wysiwyg UL.panel LI A.justifyCenter {
+	BACKGROUND-POSITION: -16px 0px
+}
+DIV.wysiwyg UL.panel LI A.justifyRight {
+	BACKGROUND-POSITION: -32px 0px
+}
+DIV.wysiwyg UL.panel LI A.justifyFull {
+	BACKGROUND-POSITION: -48px 0px
+}
+DIV.wysiwyg UL.panel LI A.indent {
+	BACKGROUND-POSITION: -64px 0px
+}
+DIV.wysiwyg UL.panel LI A.outdent {
+	BACKGROUND-POSITION: -80px 0px
+}
+DIV.wysiwyg UL.panel LI A.subscript {
+	BACKGROUND-POSITION: -64px -16px
+}
+DIV.wysiwyg UL.panel LI A.superscript {
+	BACKGROUND-POSITION: -80px -16px
+}
+DIV.wysiwyg UL.panel LI A.undo {
+	BACKGROUND-POSITION: 0px -64px
+}
+DIV.wysiwyg UL.panel LI A.redo {
+	BACKGROUND-POSITION: -16px -64px
+}
+DIV.wysiwyg UL.panel LI A.insertOrderedList {
+	BACKGROUND-POSITION: -32px -48px
+}
+DIV.wysiwyg UL.panel LI A.insertUnorderedList {
+	BACKGROUND-POSITION: -16px -48px
+}
+DIV.wysiwyg UL.panel LI A.insertHorizontalRule {
+	BACKGROUND-POSITION: 0px -48px
+}
+DIV.wysiwyg UL.panel LI A.h1 {
+	BACKGROUND-POSITION: 1px -31px
+}
+DIV.wysiwyg UL.panel LI A.h2 {
+	BACKGROUND-POSITION: -15px -31px
+}
+DIV.wysiwyg UL.panel LI A.h3 {
+	BACKGROUND-POSITION: -31px -31px
+}
+DIV.wysiwyg UL.panel LI A.h4 {
+	BACKGROUND-POSITION: -47px -31px
+}
+DIV.wysiwyg UL.panel LI A.h5 {
+	BACKGROUND-POSITION: -63px -31px
+}
+DIV.wysiwyg UL.panel LI A.h6 {
+	BACKGROUND-POSITION: -79px -31px
+}
+DIV.wysiwyg UL.panel LI A.cut {
+	BACKGROUND-POSITION: -32px -64px
+}
+DIV.wysiwyg UL.panel LI A.copy {
+	BACKGROUND-POSITION: -48px -64px
+}
+DIV.wysiwyg UL.panel LI A.paste {
+	BACKGROUND-POSITION: -64px -64px
+}
+DIV.wysiwyg UL.panel LI A.increaseFontSize {
+	BACKGROUND-POSITION: -15px -79px
+}
+DIV.wysiwyg UL.panel LI A.decreaseFontSize {
+	BACKGROUND-POSITION: -32px -79px
+}
+DIV.wysiwyg UL.panel LI A.createLink {
+	BACKGROUND-POSITION: -79px -46px
+}
+DIV.wysiwyg UL.panel LI A.insertImage {
+	BACKGROUND-POSITION: -79px -79px
+}
+DIV.wysiwyg UL.panel LI A.html {
+	BACKGROUND-POSITION: -48px -48px
+}
+DIV.wysiwyg UL.panel LI A.removeFormat {
+	BACKGROUND-POSITION: -79px -63px
+}
+DIV.wysiwyg UL.panel LI A.empty {
+	BACKGROUND-POSITION: -64px -80px
+}
+DIV.wysiwyg IFRAME {
+	BORDER-RIGHT-WIDTH: 0px; MARGIN: 5px 0px 0px; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; CLEAR: left; BORDER-LEFT-WIDTH: 0px
+}

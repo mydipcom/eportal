@@ -1,0 +1,77 @@
+﻿@using System.Text
+@using MS.ECP.Utility;
+@using MS.ECP.BLL;
+@using MS.ECP.Model;
+@using System.Data;
+@using MS.ECP.Web.WebHelp
+
+@model MS.ECP.Web.Models.CategoryViewModel
+@{
+    var currentitem = Model.CurrentPageContent;
+    ViewBag.Keywords = String.IsNullOrEmpty(currentitem.Keywords) ? LanageCommon.SolutionsSeoKeywords : currentitem.Keywords;
+    ViewBag.Description = String.IsNullOrEmpty(currentitem.Description) ? LanageCommon.SolutionsSeoDescription : currentitem.Description;
+    ViewBag.Title = String.IsNullOrEmpty(currentitem.SeoTitle) ? LanageCommon.SolutionsSeoTitle : currentitem.SeoTitle;
+}
+ 
+<!-- sub banner -->
+<div class="sub_banner"></div>
+<!-- end sub banner -->
+
+
+<!-- content White_background -->
+<div class="white_background"></div>
+<!-- end content White_backgroun d -->   
+
+<!-- content container -->
+<div class="content_container">
+    <div class="title_container">
+        <div class="show_title">@LanageCommon.MenuLblSolutions</div>
+        <div class="clear"></div>
+    </div>
+    <!-- show content  -->
+
+    <!-- company info -->
+    <div class="show_content">
+        <div class="plan_info">
+            <span class="bigText">@Model.CurrentPageContent.Item</span><br />
+            <br />
+            @Html.Raw(@Model.CurrentPageContent.ItemContent)
+        </div>
+        <div class="plan_list">
+            @for (int index = 0; index < Model.TitlViewModel.Count; index++)
+            {
+                if (index != 0)
+                {
+                    <div class="list_line"></div>
+                }
+
+                var titleitem = @Model.TitlViewModel[index];
+                <div class="plan_type">
+                    <div class="plan_type_title">@titleitem.TitleCategory.CategoryName</div>
+                    @{
+                        var sb = new StringBuilder();
+                        foreach (var drc in titleitem.TitleList)
+                        {
+                            var itemstr = drc.Item;
+                            var selectclass = Model.CurrentPageContent.Guid == drc.Guid ? "plan_locked" : "";
+                            sb.Append(
+                                Html.ActionLink(itemstr,
+                                    "Solutions", "Home",
+                                    new {currentGuid = drc.Guid, languid = Model.CaridLanguid}, new {@class = selectclass, title = itemstr}));
+                        }
+                        @Html.Raw(sb.ToString())
+                    }
+                </div>
+            }
+        </div>
+        <div class="clear"></div>
+    </div>
+    <!-- end company info -->
+
+    <!-- end show content  -->
+</div>
+<!-- end content container -->
+
+
+
+

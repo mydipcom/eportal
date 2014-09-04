@@ -1,0 +1,58 @@
+﻿@using MS.ECP.Web.Areas.Admin.WebHelp
+@using MS.ECP.Web.WebHelp
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>MissionskyAdmin</title>
+     <link rel="stylesheet" href="@Url.Content("~/Areas/Admin/Content/Css/global.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/Areas/Admin/Content/Css/login.css")" />
+    @Html.GetJqueryInAdmin() 
+    <script type="text/javascript">
+        function UrlRadtion(url, siderindex) {
+            var nvbar = window.parent.frames['Head'];
+            window.location.href = url;
+            nvbar.showMenu(siderindex);
+        }
+
+        function ClearCash(url) {
+            $.post(url,function() {
+                alert("ok");
+            });
+        }
+
+    </script>
+</head>
+
+<body style="background-color:#ededed;">
+<div class="nav_now">Home&nbsp;&nbsp;&nbsp;<b>></b></div>
+<div class="content_body">
+    <div class="content_title">Dashboard</div>
+    <div class="bline"></div>
+    <div class="wline"></div> 
+    <div class="Dashboard">
+        <table cellpadding="1" cellspacing="1">
+            <tr>
+                <td class="td_AddContent" width="25%" onclick="UrlRadtion('@Html.UrlLink("AddorUpdate","Content")','1')" >
+                    <img id="hh" onclick="ie6_img(hh)" src="/Areas/Admin/Content/Image/add_content.png" alt=""/>&nbsp;Add Content 
+                </td>
+                <td class="td_AddJob" width="25%"  onclick="UrlRadtion('@Html.UrlLink("AddorUpdate","Job")','2')">
+                    <img src="/Areas/Admin/Content/Image/add_job.png" alt=""/>&nbsp;Add Job
+                </td>
+                <td class="td_AddNews" width="25%" onclick="UrlRadtion('@Html.UrlLink("AddorUpdate","News")','2')">
+                    <img src="/Areas/Admin/Content/Image/add_news.png" alt=""/>&nbsp;Add News
+                </td>
+                <td class="td_Clear" width="25%" onclick="ClearCash('@Html.UrlLink("ClearCache","Shared")')">
+                    <img src="/Areas/Admin/Content/Image/clear_cache.png" alt=""/>&nbsp;Clear Cache
+                </td>
+            </tr>
+        </table> 
+    </div>
+</div> 
+</body>
+</html>
+

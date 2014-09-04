@@ -1,0 +1,34 @@
+﻿@using System.Text
+@using MS.ECP.Utility
+@using MS.ECP.Web.WebHelp
+@using MS.ECP.Web.WebPager
+
+@model MS.ECP.Web.Models.NewsViewModel
+<div class="sub_content">
+    @foreach (var drc in Model.NewsTitles)
+    {
+        <div class="job_list">
+            @Html.ActionLink(drc.Title, "NewsDetail", "Home", new {langGuid = drc.LangGuid, id = Model.NewsTitles.CurrentPageIndex},null) 
+            <span class="news_date">@drc.CreateDate.ToString("yyyy/MM/dd")</span>
+        </div>
+    }
+
+
+</div>
+
+<!-- page_list -->
+<div class="page_list">
+    @Ajax.Pager(Model.NewsTitles, new PagerOptions
+    {
+        PageIndexParameterName = "id",
+        ShowPageIndexBox = false,
+        ShowGoButton = false,
+        ShowFirstLast = false,
+        ShowNumericPagerItems = true,
+        CurrentPagerItemWrapperFormatString = "<a href='#' class='page_locked'>{0}</a>",
+        PagerItemsSeperator = "",
+        ShowPrevNext = false
+    }, new MvcAjaxOptions { UpdateTargetId = "content_detail" })
+</div>
+<!-- end page_list -->
+

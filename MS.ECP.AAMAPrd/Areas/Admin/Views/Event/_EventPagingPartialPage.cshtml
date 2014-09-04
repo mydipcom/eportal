@@ -1,0 +1,91 @@
+﻿
+
+@using System.Globalization
+@using System.Text
+@using MS.ECP.AAMAPrd.Areas.Admin.WebHelp
+@using MS.ECP.AAMAPrd.WebPager
+@using MS.ECP.Utility
+
+@model MS.ECP.AAMAPrd.WebPager.PagedList<MS.ECP.Model.CMS.Event> 
+           
+
+<table cellspacing="0" style="table-layout: fixed" > 
+    <caption style="text-align: right">
+        <a href="@Url.Action("Add", "Event")">Add</a> Table : Event Management
+    </caption>
+    <tr>
+                            <th>Language
+                            </th>
+                            <th>Title
+                            </th>
+                            <th style="width: 500px;text-align: center">Content
+                            <th>Operate
+                            </th>
+                        </tr>
+    @foreach (var item in Model)
+    {
+          <tr class="listtr">
+                                <th class="spec">
+                                    <div >
+                                    @Html.Label(item.LanguageCode)
+                                     </div>
+                                </th>
+                                <td>
+                                    @Html.Label(item.Title)
+                                </td>
+                                <td >
+                                    <div style="overflow-y: hidden;max-height: 200px; max-width: 500px;overflow-x: hidden;">
+                                     @Html.Raw(item.Content)
+                                    </div> 
+                                </td>
+              <td>
+           
+                   @Html.ActionLink("Edit", "Edit", new { languid=item.LangGuid })  | 
+                  @Html.ActionLink("Delete", "Del", 
+                      new { id =item.ID.ToString(CultureInfo.InvariantCulture) }, new { @class="delete"})
+              </td>
+                            </tr>                        
+    }
+</table>
+     
+<div class="page_box" style="margin-top: 10px;" >
+    <div   style="float:left;width:50%">
+        共 @Model.TotalPageCount 页 @Model.TotalItemCount 条记录，当前为第 @Model.CurrentPageIndex 页
+    </div>
+    @Ajax.Pager(Model,new PagerOptions
+    {
+        PageIndexParameterName = "id",
+        ShowPageIndexBox = true,
+        PageIndexBoxType = PageIndexBoxType.DropDownList,
+        CurrentPagerItemWrapperFormatString = "<span class=\"current\">{0}</span>",
+        ShowGoButton = false 
+    },new MvcAjaxOptions{UpdateTargetId="eventapder",OnSuccess = "paggerajaxloaded"},new{ id="badoopager",style="float:right"})
+</div>
+
+
+<script type="text/javascript">
+    function paggerajaxloaded() {
+        var activeheight = $("#eventapder").height() + 50;
+        window.parent.changeiContentifame(activeheight);
+    }
+</script> 
+@*
+<div id="floaddivd" style="position:fixed;left: -9999px; top:200px;background-color: #5f9ea0;max-height: 500px;max-width: 500px; overflow:scroll"></div> 
+<script type="text/javascript">
+    $(function() {
+        $(".paddinglistshow").hover(function (e) {
+            $("#floaddivd").css("left", e.pageX);
+            $("#floaddivd").css("top", e.pageY);
+            $("#floaddivd").html(($(this).html()));
+            e.stopPropagation();
+        }, function (e) {
+            $("#floaddivd").css("left", -9999);
+            e.stopPropagation();
+        });
+    });
+
+    function paggerajaxloaded() {
+        var activeheight = $("#eventapder").height() + 50;
+        window.parent.changeiContentifame(activeheight);
+    }
+</script>*@

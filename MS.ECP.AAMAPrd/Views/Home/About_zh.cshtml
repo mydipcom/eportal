@@ -1,0 +1,812 @@
+﻿@using MS.ECP.Utility;
+
+@{
+    ResourcesHelper reHelper = new ResourcesHelper("Common");
+    ViewBag.alertJson = reHelper.GetAllPopupJson();   
+}
+<style type="text/css">
+    <!--
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    .ponebox {
+        border: 0px solid #999999;
+        width: 100%;
+        margin-bottom: 2px;
+        margin-top: 1px;
+        overflow: hidden;
+    }
+    -->
+</style>
+
+<link type="text/css" href="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/css/newsdetail.css")" rel="stylesheet" />
+<script type="text/javascript" src="@Url.Content("~/Scripts/my.register.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery-1.7.min.js")"></script>
+
+<script type="text/javascript">
+
+    var LocString = String(window.document.location.href);
+    function GetQueryString(str) {
+        var rs = new RegExp("(^|)" + str + "=([^\&]*)(\&|$)", "gi").exec(LocString), tmp;
+        if (tmp = rs) return tmp[2];
+    }
+
+    //选项卡的个数
+    var num = 5;
+    function getTab(now) {
+        for (var i = 1; i <= num; i++) {
+            if (i == now) {
+                document.getElementById("tab" + i).style.display = "block";
+                document.getElementById("liContent" + i).style.background = "#003746";
+
+
+            } else {
+                document.getElementById("tab" + i).style.display = "none";
+                document.getElementById("liContent" + i).style.background = "white";
+            }
+        }
+    }
+
+    function OpnenMore(moreID, CloseorOpen) {
+        if (document.getElementById(moreID).style.display == "block") {
+            document.getElementById(moreID).style.display = "none";
+            document.getElementById(CloseorOpen).innerText = "更多 。。。";
+
+        }
+        else {
+            document.getElementById(moreID).style.display = "block";
+            document.getElementById(CloseorOpen).innerText = "Close";
+
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#txtRHName").val("请输入姓名");
+        $('#txtRHName').focus(function () {
+            if ($(this).val() == "请输入姓名") {
+                $(this).val("");
+            }
+        }).blur(function () {
+            if ($(this).val() == "") {
+                $(this).val("请输入姓名");
+            }
+        });
+
+        $("#txtRHSex").val("请输入性别");
+        $('#txtRHSex').focus(function () {
+            if ($(this).val() == "请输入性别") {
+                $(this).val("");
+            }
+        }).blur(function () {
+            if ($(this).val() == "") {
+                $(this).val("请输入性别");
+            }
+        });
+
+        $("#txtRHDW").val("请输入工作单位");
+        $('#txtRHDW').focus(function () {
+            if ($(this).val() == "请输入工作单位") {
+                $(this).val("");
+            }
+        }).blur(function () {
+            if ($(this).val() == "") {
+                $(this).val("请输入工作单位");
+            }
+        });
+
+        $("#txtRHZW").val("请输入您的职务");
+        $('#txtRHZW').focus(function () {
+            if ($(this).val() == "请输入您的职务") {
+                $(this).val("");
+            }
+        }).blur(function () {
+            if ($(this).val() == "") {
+                $(this).val("请输入您的职务");
+            }
+        });
+
+        $("#txtRHDZ").val("请输入您的地址");
+        $('#txtRHDZ').focus(function () {
+            if ($(this).val() == "请输入您的地址") {
+                $(this).val("");
+            }
+        }).blur(function () {
+            if ($(this).val() == "") {
+                $(this).val("请输入您的地址");
+            }
+        });
+
+        $("#txtRHTel").val("请输入您的电话");
+        $('#txtRHTel').focus(function () {
+            if ($(this).val() == "请输入您的电话") {
+                $(this).val("");
+            }
+        }).blur(function () {
+            if ($(this).val() == "") {
+                $(this).val("请输入您的电话");
+            }
+        });
+
+        $("#txtRHPhone").val("请输入您的手机");
+        $('#txtRHPhone').focus(function () {
+            if ($(this).val() == "请输入您的手机") {
+                $(this).val("");
+            }
+        }).blur(function () {
+            if ($(this).val() == "") {
+                $(this).val("请输入您的手机");
+            }
+        });
+
+
+        $("#txtRHEmail").val("请输入您的email");
+        $('#txtRHEmail').focus(function () {
+            if ($(this).val() == "请输入您的email") {
+                $(this).val("");
+            }
+        }).blur(function () {
+            if ($(this).val() == "") {
+                $(this).val("请输入您的email");
+            }
+        });
+
+    });
+
+    function ValidaterRuHui() {
+        var fill = true, css = "border-color", redcolor = "red red red red";
+        var msg = "";
+        if ($.trim($("#txtRHName").val()) == "" || $("#txtRHName").val() == "请输入姓名") {
+            $("#txtRHName").css(css, redcolor);
+            fill = false;
+        }
+        else {
+            $("#txtRHName").css(css, "");
+        }
+
+        if ($.trim($("#txtRHEmail").val()) == "" || $.trim($("#txtRHEmail").val()) == "请输入您的email") {
+            $("#txtRHEmail").css(css, redcolor);
+            fill = false;
+        }
+        else {
+            $("#txtRHEmail").css(css, "");
+        }
+
+
+        if (fill == false) {
+            msg = "请填写必填项";
+            alert(msg);
+        }
+        else {
+
+        }
+        return fill;
+    }
+
+    function RuHuiSubmit() {
+
+        if (document.getElementById('btnRHSubmit').innerHTML == "提交完成！") {
+            alert("请勿重复提交！");
+            return;
+        }
+   
+        var chkYHQ = document.getElementById("useYHQ");
+        if (chkYHQ.checked == true) {
+            alert("不存在此优惠券!");
+            return;
+        }
+
+        document.getElementById('btnRHSubmit').innerHTML = "提交中.......";
+        if (!ValidaterRuHui()) {
+            document.getElementById('btnRHSubmit').innerHTML = "提交";
+            return false;
+        }
+        $.ajax({
+            type: "POST",
+            contentType: "application/x-www-form-urlencoded;charset=utf-8",
+            url: CreateAjaxUrl("home/RuHui"),
+            data: $("#frmRuHui").serialize(),
+            dataType: "json",
+            success: function (data) {
+                if (data.result == "1") {
+                    alert("申请入会完成，谢谢您的参与！");
+                    document.getElementById('btnRHSubmit').innerHTML = "提交完成！";
+                }
+                else {
+                    document.getElementById('btnRHSubmit').innerHTML = "提交";
+                    alert(data.errMsg);
+                }
+                return false;
+            }
+        });
+        return false;
+    }
+
+    function UseYHQ() {
+        if (document.getElementById("divYHQ").style.display == "block") {
+            document.getElementById("divYHQ").style.display = "none"
+        }
+        else {
+            document.getElementById("divYHQ").style.display = "block"
+        }
+    }
+</script>
+
+<div class="centcontent">
+    <div id="detail_main" class="wrapper">
+        <div id="content_about" class="left">
+            <div>
+                <div id="tab1" style="display: block">
+                    <h2><b>关于 AAMA</b></h2>
+                    <p>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AAMA（亚杰协会）,全称为Asia America MultiTechnology Association。美国硅谷最大的非营利组织亚杰协会成立于1979年，致力服务于亚洲与美洲的高科技团体。AAMA以“加强企业间联系；促进亚太地区商业发展;促进管理层和领导者成长;弘扬美国商界亚裔成就”为宗旨，是美国硅谷多个科技商务协会中的领军者。                       
+                    </p>
+                    <p>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AAMA对硅谷当地团体和太平洋区区域国家有深厚了解并广泛接触，是一个以硅谷为基础建立及成功发展的组织，尤其在亚洲迅速发展，从2004年于北京、2007年于上海、2010年于韩国首尔、2012年在珠三角及台北分别设立分会，更好地实现硅谷与亚洲之间的桥梁作用。每个分会以当地特色主持事务，努力促进业务关系，同时与硅谷总部紧密合作，以确保每个成员从组织中实现最大收益。
+                    </p>
+                    <p>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AAMA在美国拥有来自大约 2000家公司的 超过10000个会员。这些成员都是互联网、无线技术、电信、计算机、半导体、软件、硬件、电子学和生物科技工业的核心人物。AAMA同时在服务于技术界的各种支持性行业中也有强有力的联系，如风险投资、法律、银行业、行销和公共关系等。
+                    </p>
+                    <p>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AAMA在美国拥有来自大约 2000家公司的 超过10000个会员。这些成员都是互联网、无线技术、电信、计算机、半导体、软件、硬件、电子学和生物科技工业的核心人物。AAMA同时在服务于技术界的各种支持性行业中也有强有力的联系，如风险投资、法律、银行业、行销和公共关系等。
+                    </p>
+                    <br />
+                    <br />
+                    <h2><b>关于AAMA珠三角分会</b></h2>
+                    <p>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AAMA珠三角分会于2012年在香港成立，在珠三角地区创建、聚合并支撑各种有价值的关系网络、论坛和准则，使成员实现在全世界范围内的科技、创新和价值链的播种与增长。为更好地实现硅谷与亚洲之间的桥梁作用，珠三角分会将以当地特色主持事务，努力促进业务关系，同时与硅谷总部紧密合作，以确保每个成员从组织中实现最大收益。亚杰商会设立论坛，通过每月系列专家讲座到硅谷与亚洲的科技年会，实现会员间的沟通、交流与资源分享。
+                    </p>
+                    <p>
+
+                        <img src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/images/content/qdys.png")"  alt="" /><br />
+                        AAMA珠三角分会启动仪式
+                    </p>
+                    <p>
+
+                        <img src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/images/content/fhzx.png")" alt="" /><br />
+                        AAMA珠三角分会主席李本能先生
+                    </p>
+                    <p>
+                        <img src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/images/content/huizhang.png")"  alt="" /><br />
+                        AAMA珠三角分会会长梁颖准先生           
+                    </p>
+                    <p>
+                        <img src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/images/content/qgf.png")"  alt="" /><br />
+                        AAMA珠三角分会董事会受托人之一钱果丰博士        
+                    </p>
+
+                    <br />
+                    <br />
+                    <h2><b>组织架构图</b></h2>
+                    <p>
+                        <img src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/images/content/zzjg.png")"  alt="" /><br />
+                    </p>
+                </div>
+                <div id="tab2" style="display: none">
+                    <h2><b>董事会</b></h2>
+
+                    <div class="ponebox">
+                        <div style="float: left; margin-right: 30px;">
+                            <div style="margin-top: 10px; margin-left: 20px">
+                                <img src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/images/content/robert.png")" style="width:200px;height:300px" alt="" />
+                            </div>
+                            <p style="table-layout: auto; text-align: center;">
+                                 李本能博士<br />
+                                主席 兼 
+                                    <br />
+                               全球受托董事会主席
+                            </p>
+                        </div>
+                        <div>
+                            <p><i>The Chinese University of Hong Kong – 香港中文大学商学院创业实践教授商务创新及全球化研究中心执行董事；Osel, Inc （生物制药）- 董事会董事 ；AAMA (Asia America MultiTechnology Association) – 亚美多科技协会 受托董事长，董事会（硅谷）亚杰商会珠三角(中国)分会主席 。</i></p>
+                        </div>
+                        <div>
+                            <p>
+                              李本能博士是一位有35年全球高科技经验的先锋, 对国际国内市场有着深厚的认识。他事业的上半期在全球100强企业内管理大型机构，下半期是一位多次成功的企业家。他现在是香港中文大学的创业实践教授，他还作为MBA课程副主任,业务创新及全球化（深圳/香港）研究中心执行主任和香港中文大学创业研究中心副主任。直到2012年底大展集团公司被收购前他是大展（中国最大的IT服务公司之一）的执行主席和共同创办人,自2002年初担任其董事长兼首席执行官直到2008年底，该公司规模达到2500人，约2000人是在中国。在2002-2005年，他还是Accela软件公司的首席执行官（1999-2013年董事会董事），并领导该公司成为美国的领先电子政务软件公司。直到2001年底他是Inxight软件公司CEO。Inxight是施乐公司–PARC (帕洛阿尔托研究中心) 的分拆公司（现在是SAP的分公司）。在他的领导下该公司收入迅速增长三倍，并收到风险投资的融资。Inxight公司之前，他是Insignia Solutions董事长兼首席执行官，1995年他带该公司在美国纳斯达克(NASDAQ)上市。在此之前，他是赛门铁克(Symantec)软件公司任执行副总裁（NASDAQ：SYMC - 软件），除了令该公司业务迅速增长,他的成就包括收购和整合6家公司，其中有收购诺顿(Norton)电脑公司的硅谷传奇成功故事。李博士是SMS医疗系统公司高级副总裁（之后被西门子公司收购）,也在IBM（办公系统软件，医疗行业软件，整个软件工程和各系统/通讯软件负责人）和在CSC软件公司多年。李博士目前在Osel公司(生物制药)当董事，并以前在S3公司（NASDAQ：SIII - 半导体）和SONICblue（NASDAQ：SBLU - 数字媒体装置）当董事。他现在还为多家公司和投资基金当顾问, 本人也是一个天使投资者。
+                            </p>             
+                            <p>
+                               <i>李本能博士在香港长大。他拥有加州大学洛杉矶分校博士学位和硕士学位，以及加州大学伯克利分校学士学位(计算机科学)。他住在硅谷，上海和香港。 </i>
+                            </p>               
+                        </div>
+
+                    </div>
+
+                    <div class="ponebox">
+                        <div style="float: left; margin-right: 30px;">
+                            <div style="margin-top: 10px; margin-left: 20px">
+                                <img src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/images/content/lianghy.jpg")" style="width:200px;height:300px" alt="" />
+                            </div>
+                            <p style="table-layout: auto; text-align: center;">
+                                梁颖准
+                                    <br />
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;会长&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            </p>
+                        </div>
+                        <div>
+                            <p>                                
+                                梁颖准先生在互联网、电脑软硬件、数据储存与半导体等行业有三十多年的资深管理经验。他在美国科技公司进入中国及中国企业走出去有着深厚的领导经验。他现任鎰源科技有限公司行政总裁；该企业在信息技术，传媒，新能源及相关技术领域的全球机遇投资。 重点项目在于中国的机遇，尤其以国家政策和中国企业走出去项目为主要焦点。此外，他亦是硅谷创投公司Fenox Venture Capital的顾问，为该创投公司计划开发大中华市场。 Fenox创投公司专门协助北美高新科技创业家实现全球拓展的计划。
+                            </p>
+                            <p>
+                               梁先生曾在康柏电脑担任东亚区总裁、大中华区副总裁、以及中国、香港、台湾、韩国地区分公司的董事。身为东亚区的最高执行领导，他在康柏电脑併购迪吉多和天腾电脑期间负责整合各团队。其他工作经验包括美商Rackable Systems（后更名SGI）亚太区总裁、 博学堂网上书店总裁、 伟易达电脑美国总裁、 美商昆腾公司的亚太区总裁、 及美商超微半导体(AMD)美国与亚洲担任不同的高级行政管理职位。他曾是啟汇科技公司的行政总裁；该企业为美中科技公司进入对方市场提供顾问、管理和创收等方面的双向服务。
+                            </p>
+                            <p>
+                                梁先生现任香港美国商会理事，並于理事会建立中国事务核心小组并出任创组主席，亦曾任该商会信息科技委员会主席。 他在美国商会的工作重点在于促进美国、香港、及中国内地的商贸活动，并加强香港作为国际商业中心的地位。他曾多次率领企业代表团访问及考察北京，上海和其他中国城市，以及华盛顿，硅谷和其他美国城市。他曾在美国商会多次主办非常成功的《中国商务年会》，以及针对中国企业走出去提供的《中国商务简报计划》。
+                            </p>
+                            <p>
+                                梁先生是香港城市大学的协席教授，也偶尔在香港大学、香港理工大学任教。他拥有哈佛大学商学院MBA学位，以及香港大学电机工程学士学位。他曾在亚洲和美国多个城市工作，包括12年於硅谷。
+                            </p>
+                           
+                        </div>
+                    </div>
+
+                    <div class="ponebox">
+                        <div style="float: left; margin-right: 30px;">
+                            <div style="margin-top: 10px; margin-left: 20px">
+                                <img src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/images/content/qiangf.png")" style="width:200px;height:300px"  alt="" />
+                            </div>
+                            <p style="table-layout: auto; text-align: center;">
+                                <a>钱果丰</a><br />
+                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;博士&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                                                     
+                            </p>
+                        </div>
+                        <div>
+                            <p>
+                                钱果丰博士现任香港铁路有限公司主席及恒生银行有限公司董事长兼独立非执行董事，钱博士并担任多家公司之董事，包括香港上海汇丰银行有限公司、利亚零售有限公司、九龙仓集团有限公司、华润电力控股有限公司、Swiss Re Limited及UGL Limited。
+                            </p>
+                            <p>
+                                公职方面，钱博士现为香港特别行政区经济发展委员会委员，中国人民政治协商会议天津市常务委员会委员，香港工业总会名誉会长及前主席。于一九九二年至一九九七年间，钱博士被委任为当时港英政府的行政局议员，并于一九九七至二零零二年六月获委任为香港特别行政区行政会议成员。于二零零四年至二零零九年间，钱博士为亚太经合组织商业咨询委员会香港区成员，并于二零零五年至二零一二年一月三十一日间，钱博士亦担任香港/欧盟经济合作委员会主席。此外，钱博士曾担任廉政公署贪污问题咨询委员会主席、香港/日本经济合作委员会之主席、工业及科技发展局主席及香港工业科技中心主席。
+                            </p>
+                            <p>
+                                钱博士于一九七八年取得美国University of Pennsylvania之经济学博士学位，并于二零零六年出任为该大学之校董会成员。钱博士于一九九三年获委任为太平绅士，一九九四年获颁大英帝国司令勋章，一九九九年获颁金紫荆星章，并于二零零八年八月获法国农业部颁授骑士勋章。
+                            </p>
+                        </div>
+                    </div>
+
+
+                    <div class="ponebox">
+                        <div style="float: left; margin-right: 30px;">
+                            <div style="margin-top: 10px; margin-left: 20px">
+                                <img src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/images/content/lixy.jpg")"  style="width:200px;height:300px" alt="" />
+                            </div>
+                            <p style="table-layout: auto; text-align: center;">
+                                <a>杨向阳先生</a><br />                                
+                            </p>
+                        </div>
+                        <div>
+                            <p>
+                                杨向阳先生现任深圳市源政投资发展有限公司董事长和深圳市源兴生物医药科技有限公司总裁，是一位拥有逾20年经验的企业家及天使投资人。
+                            </p>
+                            <p>
+                                杨先生1987年从清华大学毕业后进入深圳大学任教，后自己创办企业，先后参与创办及投资了十多家生物医药、健康医疗及信息技术等领域的高科技企业，包括与清华控股有限公司联合创办的拥有多项自主研发基因治疗及细胞治疗技术平台的源兴生物，拥有世界第一个肿瘤基因治疗新药的赛百诺，全球产销规模最大的肝素钠原料药生产商海普瑞，干细胞临床治疗研究世界领先的北科生物，中国领先的第三代网络游戏企业麒麟游戏等。
+                            </p>
+                            <p>
+                                杨先生是深圳市第四、五届政协委员，清华企业家协会理事、前任主席，深圳市创新总裁俱乐部常务副会长，以及SAIF Partners的投资合伙人。
+                            </p>
+                            <p>
+                                杨先生毕业于清华大学应用数学系，获理学学士和硕士学位。
+                            </p>
+                        </div>
+                    </div>
+
+
+                    <div class="ponebox">
+                        <div style="float: left; margin-right: 30px;">
+                            <div style="margin-top: 10px; margin-left: 20px">
+                                <img src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/images/content/zhuangjx.jpg")" alt="" />
+                            </div>
+                            <p style="table-layout: auto; text-align: center;">
+                                <a>庄锦祥</a><br />
+                                副会长 兼<br />
+                           规划委员会联席主席<br />
+                            </p>
+                        </div>
+                        <div>
+                            <p>
+                               庄锦祥先生从牛津大学获得工程科学学士学位、斯坦福大学获得MBA学位。自2011年七月担任百年集团（Century Group）的董事长。之前，庄先生曾任艾睿电子公司的营销副总裁、安捷伦科技公司的营销和业务发展总监、以及Oak Technology的营销和策略规划总监。
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="ponebox">
+                        <div style="float: left; margin-right: 30px;">
+                            <div style="margin-top: 10px; margin-left: 20px">
+                                <img src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/images/content/hongqw.jpg")" alt="" />
+                            </div>
+                            <p style="table-layout: auto; text-align: center; width: 150px">
+                                <a>洪秋伟</a><br />
+                               董事 兼 
+                                <br />
+                                规划委员会联席主
+                            </p>
+                        </div>
+                        <div>
+                            <p>
+                             洪秋伟先生於香港中文大学取得一等荣誉毕业，并从芝加哥大学Booth商学院获得MBA学位。他亦在斯坦福大学进修, 取得资讯及科技市场策略文凭。目前是香港通讯业联会虚拟移动罔络运营商总裁，亦是香港科技大学电子及计算机工程学系的专业顾问，担任香港润迅通信（China Motion Telecom）的首席运营官；洪先生曾在美国加州AT&T和朗讯科技 (Lucent Technologies)担任要职。
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="ponebox">
+                        <div style="float: left; margin-right: 30px;">
+                            <div style="margin-top: 10px; margin-left: 20px">
+                                <img src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/images/content/Huangcw.png")"  style="width:120px;height:150px" alt="" />
+                            </div>
+                            <p style="table-layout: auto; text-align: center;">
+                                <a>黃春威</a><br />
+                                董事 
+                                <br />
+                                 会员委员会联席主席 
+                                <br />
+                               发展委员会主席<br />
+                                投资委员会主席
+                            </p>
+                        </div>
+                        <div>
+                            <p>
+                               黄春威先生毕业于中国南开大学国际经济与贸易专业、中南财经政法大学管理学硕士。现为中展信国际投资管理有限公司董事总经理、深圳中展信投资管理有限公司董事总经理、深圳维信联投资产管理有限公司执行总裁、深圳市国际金融研究会副会长、北京市工商联金融商会（筹）副会长、北京大学特邀研究员；在企业管理、资本运作、企业上市咨询、财务和管理咨询方面、制度设计、商业计划及资本运营、项目融资等方面具有较丰富的经验。
+                            </p>
+                        </div>
+                    </div>
+
+
+                    <div class="ponebox">
+                        <div style="float: left; margin-right: 30px;">
+                            <div style="margin-top: 10px; margin-left: 20px">
+                                <img src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/images/content/tangls.jpg")" alt="" />
+                            </div>
+                            <p style="table-layout: auto; text-align: center;">
+                                <a>唐龙生</a><br />
+                                副会长 兼 <br />
+                                科学技术委员会主席
+                            </p>
+                        </div>
+                        <div>
+                            <p>
+                               唐龙生先生从麻省理工学院获得电机工程和计算机科学的学士学位、从加州大学柏克莱分校获得MBA学位。毕业后在美国硅谷从事电脑软件开发和管理工作。后回国发展，曾任大展信息科技公司执行副总裁及深圳研发中心总经理。目前是凌云信息科技公司的创办人和首席技术执行官。唐先生在IT行业有30年的开发和行政管理经验。
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="ponebox">
+                        <div style="float: left; margin-right: 30px;">
+                            <div style="margin-top: 10px; margin-left: 20px">
+                                <img src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/images/content/luez.jpg")" alt="" />
+                            </div>
+                            <p style="table-layout: auto; text-align: center;">
+                                <a>卢恩泽</a><br />
+                               董事<br />
+                                法律顾问
+                            </p>
+                        </div>
+                        <div>
+                            <p>
+                                卢恩泽先生从加州大学柏克莱分校先后获得社会学学士学位和MBA学位，从威斯康辛大学获得社会学硕士学位，从金州大学获得稅务学硕士学位。从1980年代开始在美国旧金山湾区从事法律，直到1994年移居香港加入了数家大型的国际和本地律师所。卢先生的主要专业领域包括公司合併、私人股本、中国大陆投资与收购、以及国际交易。他在知识產权稅务与企业财务、以及科技、地產、生物科学和可再生能源等方面也有丰富经验。他是香港经济日报出版社出版的《天使融资：投资者及创业者致胜之道》一书的作者之一。
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="ponebox">
+                        <div style="float: left; margin-right: 30px;">
+                            <div style="margin-top: 10px; margin-left: 20px">
+                                <img src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/images/content/yuyh.png")"  alt="" />
+                            </div>
+                            <p style="table-layout: auto; text-align: center;">
+                                <a>余以恒</a><br />
+                                董事<br />
+                                会员委员会联席主席 
+                                <Br />创业者委员会主席
+                            </p>
+                        </div>
+                        <div>
+                            <p>
+                                余以恒先生是香港创优中心的共同创始人与董事总经理，同时自2011年3月起出任美国邓白氏大中华区顾问。香港创优中心的专家顾问团队大部分都是跨国公司亚洲区的前任高管。余先生2011年前曾任中国摩托罗拉及美国天腾电脑（Tandem Computers）高级管理人员，包括领导摩托罗拉北京之合资企业与美国天腾电脑中国首席代表, 出任美国邓白氏大中华区总裁,并长期担任荷兰飞利浦及美国NCR亚洲区及加拿大营销及市场拓展部高级管理人员。
+                            </p>
+                            <p>
+                                余先生还是商业信息行业协会亚太及中东公司（BIIA）的董事，香港顺利天主教中学校董，及香港中文大学商学院Center BiG顾问委员会委员。他还负责组织香港地区大学与中学的奖学金辅导计划。
+ 余先生取得香港大学理学士（数学/统计）及香港中文大学工商管理硕士学位。
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="ponebox">
+                        <div style="float: left; margin-right: 30px;">
+                            <div style="margin-top: 10px; margin-left: 20px">
+                                <img src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/images/content/dengym.jpg")"   style="width:120px;height:150px" alt="" />
+                            </div>
+                            <p style="table-layout: auto; text-align: center;">
+                                <a>邓蕴美</a><br />
+                                董事
+                            </p>
+                        </div>
+                        <div>
+                            <p>
+                                邓蕴美女士有超过20年的资深管理经验，包括在策划、投资、贸易、财务、风险控制、营销、研发、产品设计等方面，以及信息、通讯、投资银行、销售、管理教育等领域。她曾担任位於香港的哈佛商学院亚太地区研究中心主任，也曾任瑞士银行亚太地区战略发展与通讯的执行总监。
+                            </p>
+                            <p>
+                                邓女士从斯坦福大学获得社会科学学士学位，并从哈佛商学院获得MBA学位。
+                            </p>
+                        </div>
+                    </div>
+                    <div class="ponebox">
+                        <div style="float: left; margin-right: 30px;">
+                            <div style="margin-top: 10px; margin-left: 20px">
+                                <img src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/images/content/hongjx.png")" alt="" />
+                            </div>
+                            <p style="table-layout: auto; text-align: center;">
+                                <a>洪嘉禧</a><br />
+                                董事<br />
+                                首席财务官
+                            </p>
+                        </div>
+                        <div>
+                            <p>
+                                洪嘉禧先生是德勤中国香港及华南区副主管合伙人, 负责香港特别行政区、澳门特别行政区、深圳及广州的业务。洪先生亦同时担任多个德勤中国领导职务--德勤中国香港及华南区审计部主管合伙人兼德勤中国理事会成员。洪先生拥有逾30年的会计从业经验，广泛熟悉香港及内地的上市、企业合并、策略性收购及企业融资等，为众多知名的香港及内地跨国企业、公众公司和企业提供服务。洪先生是香港联合交易所主板及创业板上市领域的专家。
+                            </p>
+                        </div>
+                    </div>
+                    <div class="ponebox">
+                        <div style="float: left; margin-right: 30px;">
+                            <div style="margin-top: 10px; margin-left: 20px">
+                                <img src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/images/content/xiangsh.png")" alt="" />
+                            </div>
+                            <p style="table-layout: auto; text-align: center;">
+                                <a>相韶华</a><br />
+                                董事<br />
+                            </p>
+                        </div>
+                        <div>
+                            <p>相韶华博士，1984年大学毕业。曾先后获得中国科技大学理学博士(1996)及香港中文大学哲学博士学位（1998）。Bloombase Inc. 创始人、总裁。相韶华博士创建并出任JNS总裁至2004年9月。曾担任Bayakala数字出版在线公司首席执行官。进入商业领域之前，相博士曾作为资深科学家，服务于多所著名研究机构，包括位于美国加州的贝克曼激光医学研究院(Beckman Laser Institute and Medical Clinic)，加州大学医学院（Irvine）及香港科技大学等，并在国际学术期刊上发表了几十篇研究论文。相博士感兴趣的研究领域包括：密码学与信息安全，光学相干断层扫描（OCT），生物医学激光成像等。相博士近期荣获中国广州科学城首批五名国际科技领军人才之一。 同时担任广州美国童子军委员会主席。
+                            </p>
+                        </div>
+                    </div>
+                    <br />
+                    <br />
+
+                </div> 
+                <div id="tab3" style="display: none">
+                    <h2><b>AAMA珠三角分会会员章程</b></h2>
+                    <p>
+                        <b>使命：  </b>
+                        
+                            &nbsp;&nbsp;&nbsp;&nbsp;在珠三角地区创建、聚合并支撑各种有价值的关系网络、论坛和准则，使成员实现在全世界范围内的科技、创新和价值链的播种与增长。
+        &nbsp;&nbsp;&nbsp;&nbsp;设立论坛，以利于珠三角地区与硅谷成员之间的双向联接、交流与资源分享。  <br />
+
+                        
+
+                        <b>普通会员</b><br />
+
+                        <b>会费：</b>
+                        <br />
+
+                        &nbsp;&nbsp;&nbsp;&nbsp;每年1,000港元（1月-12月)<br />
+
+                        <b>Benefits:</b><br />
+
+                       &nbsp;&nbsp;&nbsp;&nbsp;成员将有机会通过定期研讨会和聚会与商会成员建立关系网络及参加亚杰商会（AAMA）组织的特别相关会议。
+                        <b>资深会员</b><br />
+
+                        <b>使命：</b><br />
+
+                         &nbsp;&nbsp;&nbsp;&nbsp;本项目的主旨在于创立和培养一个独特的会员网络，由活跃于影响着硅谷和亚太经济圈的全球商业和科技高级领导者和经理人组成，同时为年青专业人士和企业家提供咨询顾问，致力于亚杰协会（AAMA）使命与组织的持续发展。
+        &nbsp;&nbsp;&nbsp;&nbsp;高级会员只有被邀请才能加入。未来会员必须符合入会资格。
+                            <br />
+
+                        <b>会费：</b><br />
+
+                        &nbsp;&nbsp;&nbsp;&nbsp;每年12,000港币<br />
+
+                        <b>权益与福利：</b><br />
+
+                        &nbsp;&nbsp;&nbsp;&nbsp;资深会员将获得以下机会：:<br />
+
+                       &nbsp;&nbsp;&nbsp;&nbsp;加入区域性和全球性管理层人际网络<br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;参加所有亚杰协会（AAMA）活动和私人性质的招待会<br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;伙伴合作与交流<br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;打开商业通道，以收获更多商业机会<br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;作为顾问团体的成员<br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;独享"资深会员"网页<br />
+                            <b>如果您希望更多了解我们的会员项目，请电邮peggy.chau@aamaprd.com</b><br />
+
+                    </p>
+                    <br />
+                    <br />
+
+                </div>
+                <div id="tab4" style="display: block">
+                <h2><b>入会须知</b></h2>
+                <p>
+                    <img src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/images/content/price.png")" alt="" />
+                    <br />
+                    1、以上会费和赞助费一般在香港交港币，在中国大陆交人民币；凡企业家足额交纳会员会费（每年交）和赞助费（三年）可获相应荣誉。
+                        <br />
+
+                    2、普通会员权益与福利
+                        <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;成员将有机会通过定期研讨会和聚会与商会成员建立关系网络及参加亚杰协会（AAMA）组织的特别相关会议。
+                    <br />
+                    3、资深会员权益与福利
+                        <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;资深会员将获得以下机会：
+         
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（1）加入区域性和全球性管理层人际网络； 
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（2）参加所有亚杰协会（AAMA）活动和私人性质的招待会； 
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（3）伙伴合作与交流 ；
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（4）打开商业通道，以收获更多商业机会 ；
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（5）作为顾问团体的成员 ；
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（6）独享"资深会员"网页 。
+                    <br />
+                </p>
+                <br />
+                <br />
+            </div>
+                <div id="tab5" style="display: block">
+                    <h2><b>入会申请表</b></h2>
+                    <div class="content_5">
+                        <form id="frmRuHui" action="RuHui">
+                            <div class="listform">
+                                <dl>
+                                    <dd>
+                                        <div class="reg_tit">
+                                            姓名： 
+                                        </div>
+                                        <div class="reg_con">
+                                            <input id="txtRHName" name="rhName" type="text" class="ipt_w" />
+                                            <div class="red_mark">*</div>
+                                        </div>
+                                    </dd>
+                                    <dd>
+                                        <div class="reg_tit">
+                                            性别： 
+                                        </div>
+
+                                        <div class="reg_con">
+                                            <input id="txtRHSex" name="rhSex" type="text" class="ipt_w" />                                           
+                                        </div>
+                                    </dd>
+                                    <dd>
+                                        <div class="reg_tit">
+                                            工作单位:
+                               
+                                        </div>
+                                        <div class="reg_con">
+                                            <input id="txtRHDW" name="rhDW" type="text" class="ipt_w" />
+                                        </div>
+                                    </dd>
+
+                                    <dd>
+                                        <div class="reg_tit">
+                                            职务： 
+                                        </div>
+
+                                        <div class="reg_con">
+                                            <input id="txtRHZW" name="rhZW" type="text" class="ipt_w" />
+                                        </div>
+                                    </dd>
+
+                                    <dd>
+                                        <div class="reg_tit">
+                                            通讯地址:                                
+                                        </div>
+                                        <div class="reg_con">
+                                            <input id="txtRHDZ" name="rhDZ" type="text" class="ipt_w" />
+                                        </div>
+                                    </dd>
+                                    <dd>
+                                        <div class="reg_tit">
+                                            办公电话:                                
+                                        </div>
+                                        <div class="reg_con">
+                                            <input id="txtRHTel" name="rhTel" type="text" class="ipt_w" />
+                                        </div>
+                                    </dd>
+                                    <dd>
+                                        <div class="reg_tit">
+                                            手机:                                
+                                        </div>
+                                        <div class="reg_con">
+                                            <input id="txtRHPhone" name="rhPhone" type="text" class="ipt_w" />
+                                        </div>
+                                    </dd>
+                                    <dd>
+                                        <div class="reg_tit">
+                                            邮箱:                                
+                                        </div>
+                                        <div class="reg_con">
+                                            <input id="txtRHEmail" name="rhEmail" type="text" class="ipt_w" />
+                                            <div class="red_mark">*</div>
+                                        </div>
+                                    </dd>
+                                    <dd>
+                                        <div class="reg_tit">
+                                             社会职务/荣誉称号:                              
+                                        </div>
+                                        <div class="reg_con">
+                                            <textarea id="txtRHSHZW" name="rhSHZW" rows="5" cols="35"> </textarea>
+                                        </div>
+                                    </dd>
+                                       <dd>
+                                        <div class="reg_tit">
+                                            备注:                              
+                                        </div>
+                                        <div class="reg_con">
+                                            <textarea id="txtRHComment" name="rhComment" rows="5" cols="35"> </textarea>
+                                        </div>
+                                    </dd>
+                                    <dd>
+
+                                        <div class="reg_tit">
+                                        </div>
+                                        <div class="reg_con">
+                                            <div style="width: 300px">
+                                                <div style="float: left; margin-top: 5px;">
+                                                    <input name="chkUseYHQ" type="checkbox" onclick="UseYHQ();" id="useYHQ" value="0" /></div>
+                                                <div style="float: left; padding-bottom: 15px; text-align: center; margin-right: 10px; margin-left: 10px">
+                                                    <h6>使用优惠券</h6>
+                                                </div>
+                                                <div style="float: left; display: none" id="divYHQ">
+                                                    <input id="txtYHQ" name="YHQ" type="text" style="width: 180px" /></div>
+                                            </div>
+                                        </div>
+                                    </dd>
+                                    <dd>
+                                        <div class="reg_tit"></div>
+                                        <div class="reg_con">
+                                            <div class="btn_t">
+                                                <a href="javascript:void(0);" onclick="RuHuiSubmit();" id="btnRHSubmit">提交</a>
+                                            </div>
+                                        </div>
+                                    </dd>
+                                </dl>
+                            </div>
+                        </form>
+                    </div>  
+                    <div class="clear"></div>
+                    <br />
+                    <br />
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- END of content -->
+        <div id="sidebar" class="right">
+            <div class="sidebar_box">
+                <h3><b>关于我们</b></h3>
+                <div class="about_box_content">
+                    <ul class="list_bullet">
+                        <li onclick="getTab(1)" id="liContent1"><a href="#"><b>关于AAMA</b></a> </li>
+                        <li onclick="getTab(2)" id="liContent2"><a href="#"><b>董事会</b> </a></li>
+                        <li onclick="getTab(3)" id="liContent3"><a href="#"><b>会员章程</b></a> </li>
+                        <li onclick="getTab(4)" id="liContent4"><a href="#"><b>入会须知</b> </a></li>
+                        <li onclick="getTab(5)" id="liContent5"><a href="#"><b>入会申请</b></a> </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+        <!-- END of sidebar -->
+        <div class="clear"></div>
+    </div>
+
+</div>
+
+ 
+<script type="text/javascript">
+if (GetQueryString("news_id") != "" && GetQueryString("news_id") != "undefined" && GetQueryString("news_id") != null) {
+    getTab(GetQueryString("news_id"));
+}
+else {
+    getTab(1);
+}
+</script>

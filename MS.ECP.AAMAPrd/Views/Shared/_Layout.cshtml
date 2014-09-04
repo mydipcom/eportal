@@ -1,0 +1,113 @@
+﻿@using System.Data;
+@using MS.ECP.AAMAPrd.Controllers
+@using MS.ECP.Utility;
+@{
+    var reHelper = new ResourcesHelper("Common");
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+       <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="shortcut icon" type="image/x-icon" href="@Url.Content("~/logo.ico")" />
+    <title>AAMA PRD Chapter</title>
+    <meta http-equiv="Content-Language" content="@ResourcesHelper.GetLang()" />
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta name="keywords" content="AAMA PRD Chapter" />
+    <meta name="description" content="AAMA PRD Chapter" />
+
+    <link href="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/css/style.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/css/tipsy.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/css/jCarousel.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/css/colors/blue.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/css_detail/detail_style.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Scripts/fancybox/jquery.fancybox-1.3.4.css")" rel="stylesheet" type="text/css" />
+
+    <link href="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/css/css.css")" rel="stylesheet" type="text/css" />
+
+
+    <script type="text/javascript" src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/js/jquery.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/js/ui.core.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/js/jquery.cycle.all.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/js/jquery.nivo.slider.pack.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/js/jquery.easing.1.3.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/js/jquery.prettyPhoto.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/js/jquery.jcarousel.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/js/jquery.tipsy.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/js/jquery.arrowFade.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/js/jquery.custom.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/js/jquery.tweetable.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/js/ui.tabs.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/js/cufon-yui.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/fancybox/jquery.fancybox-1.3.4.pack.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/my.ajax.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/my.login.js")"></script>
+
+    <script type="text/javascript" src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/js/jquery-1.7.1.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/js/jquery.roundabout.js")"></script>
+
+    <!-- 对应my.ajax.js和my.register.js -->
+    <script type="text/javascript">
+        var alertJson = eval([{ @Html.Raw(ViewBag.alertJson) }]);   
+    </script>
+
+
+
+</head>
+
+<body class="no_js">
+    <div id="top-space"></div>
+    <div id="header">
+        <div class="inner">
+
+            <!-- START LOGO -->
+            <div id="logo">
+                <a href="@Url.Action("index", "home")" title="AAMA - Pearl River Delta Chapter">AAMA Pearl River Delta Chapter</a>
+            </div>
+            <!-- END LOGO -->
+            @*<div class="language"> @Html.Partial("_LogOnPartial")</div>*@
+            <div class="language">
+                @{
+                    var lanage = new MS.ECP.BLL.SysLanguage();
+                    var langlist = lanage.GetList(String.Format(" LangCode!='{0}' {1} ", ResourcesHelper.GetLang(), " Order by LangOrder ASC "));
+                    foreach (var drOther in langlist)
+                    {
+                    @Html.ActionLink(drOther.LanguageText, "ChangeLanguage", "Lang", new { language = drOther.LanguageCode }, null)
+                    }
+                }
+            </div>
+
+
+            <div id="nav">
+                <ul class="level-1 black" >
+                    <li>
+                        @Html.ActionLink(reHelper.GetString("aama_menu_lbl_homepage"), "Index", "Home")
+                    </li>
+                    <li>
+                        @Html.ActionLink(reHelper.GetString("aama_menu_lbl_aboutus"), "About", "Home")
+                    </li>
+
+                    <li>
+                        @Html.ActionLink(reHelper.GetString("aama_menu_lbl_mutilnews"), "MultiNews", "Home") 
+                    </li>
+
+                    <li>
+                        @Html.ActionLink(reHelper.GetString("aama_menu_lbl_news"), "News", "Home")
+                    </li>
+                    <li>
+                        @Html.ActionLink(reHelper.GetString("aama_menu_lbl_events"), "Events", "Home")
+                    </li>
+                    
+                    <li>
+                        @Html.ActionLink(reHelper.GetString("aama_menu_lbl_contactus"), "Contact", "Home")
+                    </li>
+                </ul>
+            </div>
+            <!-- END NAV -->
+            <div class="clear"></div>
+        </div>
+    </div>
+    @RenderBody()
+    <p id="copyright">&copy; 2013  @reHelper.GetString("aama_foot_lab_remark")</p>
+</body>
+</html>

@@ -1,0 +1,39 @@
+ 
+
+.centcontent {
+    background-color: #fff; 
+    width: 100%;
+    
+ 
+}
+
+.wrapper { 
+	width: 960px;
+	padding: 0 10px;
+	margin: 0 auto
+}
+ 
+#detail_main {
+	padding: 40px 10px;
+	background: #fff
+}
+
+.sidebar_box_content
+li{
+    padding-top:5px;
+    padding-bottom:5px;
+    padding-left:15px;
+}
+
+ 
+#content_detail, .two-third { width: 510px }
+
+#content_about, .two-third { width:600px }
+ 
+#content_detail_event, .two-third { width: 570px }
+ 
+ 
+
+ 
+
+ 

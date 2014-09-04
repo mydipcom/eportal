@@ -1,0 +1,124 @@
+﻿@using MS.ECP.Utility;
+
+@{
+    ResourcesHelper reHelper = new ResourcesHelper("Common");
+}
+
+<script type="text/javascript">
+    $(function () {
+        $('#advertisement').roundabout({
+            btnPrev: $(".banner-prev"),
+            btnNext: $(".banner-next"),
+            autoplay: false,
+            autoplayDuration: 5000,
+            minOpacity: 1.0,
+            minScale: 0.08
+        });
+
+
+    });
+</script>
+<style type="text/css">
+    .banner-prev {
+        position: absolute;
+        left: 0;
+        top: 150px;
+        width: 23px;
+        height: 58px;
+        background: url(../images/pre_btn.png) no-repeat;
+        z-index: 999;
+    }
+
+    .banner-next {
+        position: absolute;
+        right: 10px;
+        top: 150px;
+        width: 23px;
+        height: 58px;
+        background: url(../images/next_btn.png) no-repeat;
+        z-index: 999;
+    }
+</style>
+<!-- START SLIDER -->
+
+<div id="slider">
+
+    <div class="inner">
+
+        <!-- START PANEL -->
+        <div class="container clearfix">
+            <div class="wrap">
+                <div class="banner">
+                    <ul id="advertisement">
+                        <li><span class="pic">
+                            <img src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/images/content/banner1.png")" /></span></li>
+                        <li><span class="pic">
+                            <img src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/images/content/banner2.png")" /></span></li>
+                        <li><span class="pic">
+                            <img src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/images/content/banner3.png")" /></span></li>
+                    </ul>
+                    <a href="#" class="banner-prev"></a>
+                    <a href="#" class="banner-next"></a>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+
+</div>
+
+<div id="nav-slider" style="display:none;">
+
+    <div class="inner">
+
+        <!-- START NAV SLIDER -->
+       
+            <ul>
+                <li><b>@reHelper.GetString("aama_index_lab_lb_busi_network_caption")</b></li>
+                <li><b>@reHelper.GetString("aama_index_lab_lb_entrepreneur_caption")</b></li>
+                <li><b>@reHelper.GetString("aama_index_lab_lb_professional_caption")</b></li>
+                <li><b>@reHelper.GetString("aama_index_lab_lb_investment_caption")</b></li>
+                <li><b>@reHelper.GetString("aama_index_lab_lb_community_caption")</b></li></ul> 
+          
+       
+        <!-- END NAV SLIDER -->
+    </div>
+
+    <div class="clear"></div>
+
+</div>
+
+ 
+
+<!-- END SLIDER -->
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+    <div class="inner">
+
+        <div style="display:none;"><iframe width="100%" height="400" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://ditu.google.cn/maps?f=q&amp;source=s_q&amp;hl=zh-CN&amp;geocode=&amp;q=%E9%A6%99%E6%B8%AF%E7%9A%87%E5%90%8E%E5%A4%A7%E9%81%93%E4%B8%AD99%E5%8F%B7%E4%B8%AD%E7%8E%AF%E4%B8%AD%E5%BF%8327%E6%A5%BC2703%E5%AE%A4&amp;aq=&amp;sll=35.86166,104.195397&amp;sspn=56.721492,135.263672&amp;brcurrent=3,0x31508e64e5c642c1:0x951daa7c349f366f,0%3B5,0,0&amp;ie=UTF8&amp;hq=&amp;hnear=%E9%A6%99%E6%B8%AF%E7%9A%87%E5%90%8E%E5%A4%A7%E9%81%93%E4%B8%AD99%E8%99%9F%E4%B8%AD%E7%92%B0%E4%B8%AD%E5%BF%83&amp;t=m&amp;z=14&amp;ll=22.284543,114.154804&amp;output=embed"></iframe>
+        </div>
+
+        <div>
+ 
+            <br />
+            <h5>香港皇后大道中99号中环中心27楼2703室  
+            </h5>
+            <h5>2703, 27/F, The Center, 99 Queen's Road Central, Hong Kong</h5>
+            <h5>Tel：+852 31501900                     Email：admin@aamaprd.com</h5>
+            <h5>深圳联络地址：广东省深圳市福田区福强路4001号深圳文化创意园创意中心A座505室
+            </h5>
+            <h5>A 505, Creative Center, Shenzhen Culture Creative Park, 
+No. 4001 Fuqiang Road, Futian District, Shenzhen
+</h5>
+            <h5>Tel：+86 755 25979879                  Email：admin@aamaprd.com </h5>
+        </div>
+
+ 
+    </div>
+
+</div>
+<!-- END CONTENT -->

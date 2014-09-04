@@ -1,0 +1,20 @@
+﻿@using MS.ECP.Web.WebHelp
+@model MS.ECP.Web.Models.MenuPartialViewModel
+<div class="menu">
+    @Html.ActionLink(LanageCommon.MenuLblHomepage, "Index", "Home", null, new { @class = Model.Title1Css })
+    @{
+        foreach (var caitem in Model.Categories)
+        {
+            if (LanageCommon.MenuLblTechnologies == caitem.CategoryName)
+            {
+                @Html.ActionLink(LanageCommon.MenuLblTechnologies, "Technologies", "Home", new { languid = caitem.Guid }, new { @class = Model.Title2Css })
+            }
+            else if (LanageCommon.MenuLblSolutions == caitem.CategoryName)
+            {
+                @Html.ActionLink(LanageCommon.MenuLblSolutions, "Solutions", "Home", new { languid = caitem.Guid }, new { @class = Model.Title3Css })
+            }
+        }
+    }
+    @Html.ActionLink(LanageCommon.MenuLblAboutus, "Aboutus", "Home", null, new { @class = Model.Title4Css })
+    @Html.ActionLink(LanageCommon.MenuLblWorkwithus, "Workwithus", "Home", null, new { @class = Model.Title5Css })
+</div>

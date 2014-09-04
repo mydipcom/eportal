@@ -1,0 +1,38 @@
+﻿@{
+    Layout = null;
+}
+
+
+        <div id="login">
+        	<h1 class="logo">
+            	<a href="javascript:void(0);">Mission Sky</a>
+            </h1>
+            <h2 class="loginheading">Login</h2>
+            <div class="icon_login ie6fix"></div>
+                
+        	<form id="login-form" action="index.html" method="post">
+            <p>
+            	<label for="name">Username</label>
+            	<input class="input-medium" type="text" value="" name="name" id="name"/>
+        	</p>
+        	<p>
+            	<label for="password">Password</label>
+            	<input class="input-medium" type="password" value="" name="password" id="password"/>
+        	</p>
+        
+        	<p class="remember">
+            	<label for="checkbox1" class="inline">Remember me?</label>
+            	<input type="checkbox" value="1" name="checkbox1" id="checkbox1" />
+                
+                
+        	</p>
+        	<div class="forgot_pw"><a href="index.html">Forgot password?</a></div>
+        	<p class="clearboth">
+            	<input class="button" name="submit" type="submit" value="Login"/>
+        	</p>
+            </form>
+        </div>
+        
+        <div class="login_message message error">
+          <p>Wrong Username or password.</p>
+        </div>

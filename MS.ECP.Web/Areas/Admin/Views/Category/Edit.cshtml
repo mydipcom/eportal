@@ -1,0 +1,75 @@
+﻿@using MS.ECP.Web.Areas.Admin.WebHelp
+@using MS.ECP.Web.WebHelp
+@model MS.ECP.Web.Areas.Admin.Models.CategorEditModel
+@{
+    ViewBag.NavTitle = "Category Manage";
+}
+
+@Html.GetValidationJavascriptInAdmin()
+
+<div class="content_title">Edit  SubCategory</div> 
+<div class="operate_action">
+      @Html.ActionLink("Category Manage","List","Category",null,new{ @class="operate_action_submit"})
+      @Html.ActionLink("Add SubCategory","Add","Category",new {lanid = ViewBag.Lanid },new{ @class="operate_action_submit"})
+</div>
+<div class="clear"></div>
+<div class="bline"></div>
+<div class="wline"></div>
+<div class="add_body">
+    @using (Html.BeginForm("Edit", "Category", FormMethod.Post))
+    {
+        <table cellpadding="1" cellspacing="1" class="add_table">
+            <tr>
+                <td class="add_title" width="22%">@Html.DisplayName(m => m.EnCategoryname)</td>
+                <td class="text_td" width="78%">
+                    @Html.TextBoxFor(m => m.EnCategoryname, new { @class = "table_input" })
+                    @Html.ValidationMessageFor(m => m.EnCategoryname)
+                </td>
+            </tr>
+            <tr>
+                <td class="add_title" width="22%">@Html.DisplayName(m => m.CnCategoryname)</td>
+                <td class="text_td" width="78%">
+                    @Html.TextBoxFor(m => m.CnCategoryname, new { @class = "table_input" })
+                    @Html.ValidationMessageFor(m => m.CnCategoryname)
+                </td>
+            </tr>
+            <tr>
+                <td class="add_title" width="22%">@Html.DisplayName(m => m.CategoryItems)</td>
+                <td class="text_td" width="78%">
+                    @for (int index = 0; index < Model.CategoryItems.Count; index++)
+                    {
+                        var en = Model.CategoryItems[index];
+                        var inputname = LanageConfig.EnLan + "_" + index + "_" + en.EnId;
+                        @Html.TextBox(inputname, en.EnText, new { @class = "sub_table_input" })
+                }
+                </td>
+            </tr>
+            <tr>
+                <td class="add_title" width="22%">Sub Category(CN)</td>
+                <td class="text_td" width="78%">
+                    @for (int index = 0; index < Model.CategoryItems.Count; index++)
+                    {
+                        var enitem = Model.CategoryItems[index];
+                        var inputname = LanageConfig.ZhLan + "_" + index + "_" + enitem.CnId;
+                        if (String.IsNullOrWhiteSpace(enitem.CnText))
+                        {
+                        <input type="text" class="sub_table_input" value=""  name="@inputname"/>
+                    }
+                    else
+                    {
+                        @Html.TextBox(inputname, enitem.CnText, new { @class = "sub_table_input" })
+                    }
+                }
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="text_td td_submit">
+                    @Html.HiddenFor(m => m.EnId)
+                    @Html.HiddenFor(m => m.CnId)
+                    @*   <a class="a_submit" onclick=" ValidationPost(this) ">Save</a>*@
+                          <input type="submit" value="Save" class="submit"/>
+                </td>
+            </tr>
+        </table>
+}
+</div>

@@ -1,0 +1,318 @@
+﻿@using MS.ECP.Utility;
+@model MS.ECP.Model.CMS.News
+@{
+    ResourcesHelper reHelper = new ResourcesHelper("Common");
+    ViewBag.alertJson = reHelper.GetAllPopupJson(); 
+}
+
+<script type="text/javascript" src="@Url.Content("~/Scripts/my.register.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery-1.7.min.js")"></script>
+
+
+<link type="text/css" href="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/css/newsdetail.css")" rel="stylesheet" />
+
+<link type="text/css" href="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/css/flexslider.css")" rel="stylesheet" />
+<script type="text/javascript" src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/js/jquery.flexslider.js")"></script>
+
+<script type="text/javascript">
+
+
+    //选项卡的个数
+    var num = 2;
+
+    function getTab(now) {
+        for (var i = 1; i <= num; i++) {
+            if (i == now) {
+                document.getElementById("tab" + i).style.display = "block";
+                document.getElementById("liContent" + i).style.display = "none";
+            } else {
+                document.getElementById("tab" + i).style.display = "none";
+                document.getElementById("liContent" + i).style.display = "block";
+                document.getElementById("liContent" + i).style.background = "#003746";
+            }
+        }
+    }
+
+    // Can also be used with $(document).ready()
+    $(window).load(function() {
+        $('.flexslider').flexslider({
+            animation: "slide"
+        });
+    });
+
+
+    function ValidateBaoMing() {
+
+        var fill = true, css = "border-color", redcolor = "red red red red";
+
+        function valitesingle(id) {
+            if ($.trim($("#" + id).val()) == "") {
+                $("#" + id).css(css, redcolor);
+                fill = false;
+            } else {
+                $("#" + id).css(css, "");
+            }
+        }
+
+
+        function valitesingleradio(id) {
+            var val = $('input:radio[name="' + id + '"]:checked').val();
+            if (val == null) {
+                $("#" + id).css(css, redcolor);
+                fill = false;
+            } else {
+                $("#" + id).css(css, "");
+            }
+        }
+
+
+        @foreach (var input in Model.Inputs)
+        {
+            if (!input.IsAllowNull)
+            {
+                string sb = "";
+                switch (input.InputType)
+                {
+                    case 3:
+                        sb = String.Format("valitesingleradio('{0}');", input.InputName);
+                        break;
+                    default:
+                        sb = String.Format("valitesingle('{0}');", input.InputName);
+                        break;
+                }
+                @Html.Raw(sb)
+            }
+        }
+
+
+        if (!fill) {
+            alert("请填写必填项");
+        }
+        return fill;
+    }
+
+
+    function BaoMingSubmit() {
+
+        if (document.getElementById('btnSubmit').innerHTML == "提交完成！") {
+            alert("请勿重复提交！");
+            return false;
+        }
+
+    
+        document.getElementById('btnSubmit').innerHTML = "提交中.......";
+        if (!ValidateBaoMing()) {
+            document.getElementById('btnSubmit').innerHTML = "提交";
+            return false;
+        }
+        
+
+        $.ajax({
+            type: "POST",
+            contentType: "application/x-www-form-urlencoded;charset=utf-8",
+            url: CreateAjaxUrl("home/BaoMing"),
+            data: $("#frmBaoMing").serialize(),
+            dataType: "json",
+            success: function (data) {
+                if (data.result == "1") {
+                    alert("报名完成，谢谢您的参与！");
+                    document.getElementById('btnSubmit').innerHTML = "提交完成！";
+                }
+                else {
+                    document.getElementById('btnSubmit').innerHTML = "提交";
+                    alert(data.errMsg);
+                }
+                return false;
+            }
+        });
+        return false;
+    }
+
+    function UseYHQ() {
+        if (document.getElementById("divYHQ").style.display == "block") {
+            document.getElementById("divYHQ").style.display = "none";
+        }
+        else {
+            document.getElementById("divYHQ").style.display = "block";
+        }
+    }
+
+
+
+</script>
+
+
+<div class="centcontent">
+    <div id="detail_main" class="wrapper">
+        <div style="text-align: center;">
+            <h1><b>@Model.Title</b></h1>
+            <div class="lineNewstitle"></div>
+        </div>
+        <div style="height: 30px;"></div>
+        <div id="content_about" class="left">
+             <div>
+                 <div id="tab1" style="display: none">  
+                     @Html.Raw(Model.Content)
+                 </div>
+                 
+                 <div id="tab2" style="display: none">
+                    <h2><b>报名表</b></h2>
+
+                    <div class="content_5">
+                        <form id="frmBaoMing">
+                            <input type="hidden" name="LangGuid" value="@Model.LangGuid"/>
+                            <div class="listform">
+                                <dl>
+                                    
+                                    @{
+                                        foreach (var input in Model.Inputs)
+                                        {
+                                            <dd>
+                                                <div class="reg_tit">
+                                                    @input.Inputtitle： 
+                                                </div>
+
+                                                <div class="reg_con">
+                                                    @if (input.InputType == 1)
+                                                    {
+                                                        <input id="@input.InputName" name="@input.InputName" type="text" class="ipt_w" />
+                                                    }
+                                                    else if (input.InputType == 2)
+                                                    {
+                                                        <textarea id="@input.InputName" name="@input.InputName" rows="5" cols="35"> </textarea>
+                                                    }
+                                                    else if (input.InputType == 3)
+                                                    {
+                                                        var values = input.InputValue.Split(',');
+                                                        foreach (var value in values)
+                                                        {
+                                                          <input type="radio" value="@value" name="@input.InputName"/>  @value
+                                                        }
+                                                    }
+                                                   
+
+                                                    @if (!input.IsAllowNull)
+                                                    {
+                                                        <span class="red_mark">*</span>
+                                                    }
+                                                </div>
+
+                                            </dd>
+                                        }
+                                    }
+
+                                    <dd>
+                                        <div class="reg_tit"></div>
+                                        <div class="reg_con">
+                                            <div class="btn_t">
+                                                <a href="javascript:void(0);" onclick="BaoMingSubmit();" id="btnSubmit">提交</a>
+                                            </div>
+                                            <div id="submintStatus"></div>
+                                        </div>
+                                    </dd>
+                                </dl>
+                            </div> 
+                        </form>
+
+
+
+                    </div>
+                    <p>@Html.Raw(Model.Specification)
+@*
+                        1、烦请填写出席活动的嘉宾信息，于2013年11月30日前提交
+                        <br />
+                        2、如有特殊要求，需要活动主办方提供协助的，请备注注明，我们会第一时间与您联系<br />
+                        3、如对会员入会或参加论坛有任何疑问，请致电：<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;李小姐（ 手机号码 +86- 13760196194 ）<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;韦小姐（ 手机号码 +86- 15019433700 ）<br />
+*@
+
+                    </p>
+                    <div class="clear"></div>
+
+                    <br />
+                    <br />
+                </div>
+             </div>
+        </div>
+
+        <!-- END of content -->
+        <div id="sidebar" class="right">
+            <div class="sidebar_box">
+
+                <div class="about_box_content">
+                    <ul class="list_bullet">
+                        <li onclick="getTab(1)" id="liContent1"><a href="#"><b style="color:#ffb901;font-size: 18px;">摘要</b> </a></li>
+                        <li onclick="getTab(2)" id="liContent2"><a href="#"><b style="color:#ffb901;font-size: 18px;"> 报名参加</b> </a></li>
+                    </ul>
+                </div>
+                <br />
+                <br />
+             
+                
+                <div>
+                    <div  style="width: 200px; height: 300px;">
+                    主办 :
+                    <a href="http://www.aamaprd.com/" target="_blank">
+                        <img src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/images/Logo_cn.png")" style="width: 200px;height: 100px;" title="亚杰协会" class="icon" />
+                    </a>
+                        <p style="display:none;">
+                            协办:
+                            <img src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/images/icons/enzj.jpg")" style="width: 200px;height: 100px;" title="儿女之家" class="icon" />
+                        </p>
+                    </div>
+                    </div>
+                
+                <br />   
+                <div style="display:none;"> 赞助机构:</div>
+                <br />
+                <div style="display:none;">
+
+                    <div class="flexslider" style="width: 200px; height: 100px;">
+                        <ul class="slides">
+                            <li>
+                                <a href="http://big.­baf.­cuhk.­edu.­hk/" target="_blank">
+                                    <img src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/images/icons/Center-Logo.png")" style="width: 200px;height: 100px;" title="CUHK Business School BIG Forum" class="icon" />
+                                </a>
+                            </li>
+                            <li>
+                                <a href="http://www.deloitte.com" target="_blank">
+                                    <img src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/images/icons/Deloittelogo.jpg")" style="width: 200px;height: 100px;" title="Deloitte" class="icon" />
+                                </a>
+                            </li>
+                            <li>
+                                <a href="http://www.united.com" target="_blank">
+                                    <img src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/images/icons/united_6p_4c.jpg")" style="width: 200px;height: 60px;" title=" United Airline" class="icon" />
+                                </a>
+                            </li>
+                            <li>
+                                <a href="http://www.­verisilicon.­com/" target="_blank">
+                                    <img src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/images/icons/verisilicon.jpg")" style="width: 200px;height: 100px;" title="Verisilicon" class="icon" style="width: 100px" />
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div style="display:none;">支持机构:</div>
+                <br />
+                <div style="display:none;">
+
+                    <a href="http://www.cancham.org/" target="_blank">
+                        <img src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/images/icons/CanCham Main Logo.jpg")" title="The Canadian Chamber of Commerce" class="icon" style="width: 200px; height: 100px" />
+                    </a>
+
+                </div>
+            </div>
+        </div>
+        <!-- END of sidebar -->
+        <div class="clear"></div>
+    </div>
+
+</div>
+
+
+<script type="text/javascript">
+
+    getTab(1);
+
+</script>

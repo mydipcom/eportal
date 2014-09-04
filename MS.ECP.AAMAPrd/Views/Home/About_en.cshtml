@@ -1,0 +1,443 @@
+﻿@using MS.ECP.Utility;
+
+@{
+    ResourcesHelper reHelper = new ResourcesHelper("Common");
+}
+<style type="text/css">
+    <!--
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    .ponebox {
+        border: 0px solid #999999;
+        width: 100%;
+        margin-bottom: 2px;
+        margin-top: 1px;
+        overflow: hidden;
+    }
+    -->
+</style>
+ 
+<script type="text/javascript">
+
+    var LocString = String(window.document.location.href);
+    function GetQueryString(str) {
+        var rs = new RegExp("(^|)" + str + "=([^\&]*)(\&|$)", "gi").exec(LocString), tmp;
+        if (tmp = rs) return tmp[2];
+    }
+
+    //选项卡的个数
+    var num = 3;
+    function getTab(now) {
+        for (var i = 1; i <= num; i++) {
+            if (i == now) {
+                document.getElementById("tab" + i).style.display = "block";
+                document.getElementById("liContent" + i).style.background = "#003746";
+
+
+            } else {
+                document.getElementById("tab" + i).style.display = "none";
+                document.getElementById("liContent" + i).style.background = "white";
+            }
+        }
+    }
+
+    function OpnenMore(moreID, CloseorOpen) {
+        if (document.getElementById(moreID).style.display == "block") {
+            document.getElementById(moreID).style.display = "none";
+            document.getElementById(CloseorOpen).innerText = "More 。。。";
+
+        }
+        else {
+            document.getElementById(moreID).style.display = "block";
+            document.getElementById(CloseorOpen).innerText = "Close";
+
+        }
+    }
+</script>
+
+
+<div class="centcontent">
+    <div id="detail_main" class="wrapper">
+        <div id="content_about" class="left">
+            <div>
+                <div id="tab1" style="display: block">
+                    <h2><b>About AAMA</b></h2>
+                    <p>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Founded in 1979, Asia America MultiTechnology Association (AAMA) is Silicon Valley's largest and most established non-profit organization dedicated to the Asia America high-tech community. Having deep roots and a wide reach in the local Silicon Valley community and across Pacific Rim countries, as well as a proven track record of success as a Silicon Valley-based organization, AAMA expanded into Asia by launching chapters in Beijing (2004), Shanghai (2007), Seoul (2010) and now in the Pearl River Delta (2012) to better serve as the bridge between Silicon Valley and Asia. Each chapter hosts events to localize the effort to promote business relationships and works closely with Silicon Valley headquarters to ensure members realize the maximum benefit of the organization.                           
+                            <br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AAMA is a nexus that provides leading executives and other stakeholders cross-fertilization of ideas and best-of-breed collaboration, resulting in successful business ventures throughout the Asia-Pacific region and global economy. With a network of 10,000+ members from over 2,000 companies and chapters in Beijing, Shanghai, Seoul and the Pearl River Delta, AAMA's membership roster represents a diverse and influential spectrum of technology industries, including the internet, wireless, telecommunications, multimedia, semiconductor, software, hardware, electronics and bio-tech industries, as well as financial and professional services industries that are integral to high-tech development. Through its diverse programs ranging from monthly Speakers Series to the annual Silicon Valley-Asia Technology Conference, AAMA provides a forum in which members can network, exchange ideas and share resources.
+                            <br />
+                        <br />
+
+                    </p>
+                    <br />
+                    <br />
+                </div>
+
+                <div id="tab2" style="display: none">
+                    <h2><b>Board of Directors</b></h2>
+
+                    <div class="ponebox">
+                        <div style="float: left; margin-right: 30px;">
+                            <div style="margin-top: 10px; margin-left: 20px">
+                                <img src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/images/content/robert_lee.jpg")" alt="" />
+                            </div>
+                            <p style="table-layout: auto; text-align: center;">
+                                Dr. Robert P. Lee<br />
+                                Chairman Board of 
+                                    <br />
+                                Directors 
+                            </p>
+                        </div>
+                        <div>
+                            <p>
+                                Achievo Corporation(Software Outsourcing & IT Services) - Executive Chairman and Co-founder
+Accela, Inc.(Government Software) - Board of Director
+Osel, Inc(Biopharmaceutical) - Board of Director
+The Chinese University of Hong Kong- Professor in Entrepreneurship Practice, CUHK Business School & Exec. Director, Center for Business Innovation & Globalization
+AAMA(Asia America MultiTechnology Association) - Chairman, Board of Trustees (Silicon Valley) & Chairman, Pearl River Delta Chapter
+HYSTA China Global Services Alliance(CGSA) - Vice Chairman
+                                    Dr. Lee is a 35-year pioneer of the high-tech industry, spending the first half of his career managing large organizations in Fortune 100 companies, and the second half as a serial entrepreneur. During this time, he conducted business globally, and in the last 10 years, he was heavily involved with business in China. 
+                            </p>
+                            <p id="moreRobert" style="display: none">
+                                He is Professor in Entrepreneurship Practice at The Chinese University of Hong Kong where he also serves as the Associate Director of the MBA Programme, the Executive Director of the Center for Business Innovation & Globalization (Shenzhen) and an Executive Committee member of the CUHK Center for Entrepreneurship. He is Executive Chairman and Co-founder of Achievo Corporation (one of the largest China IT services companies) since early 2002 and served as its Chairman & CEO until December 2008, when the company reached 2500 people in size, about 2000 of whom were in China. During that time, he was also CEO of Accela (now serving as a board member) and led that company to become the dominant government enterprise software firm in the US. Until November 2001, he was president & CEO of Inxight Software, a Xerox-PARC spinout that tripled in revenues and raised venture funding under his leadership (now part of SAP). Before Inxight, he was chairman, CEO and president of Insignia Solutions, a software company he took public on NASDAQ in 1995. Previously, he was executive vice president of Symantec (NASDAQ: SYMC - software), where among many achievements, he acquired and integrated 6 companies, including Norton Computing which became a legendary M&A success story in the Silicon Valley. Dr. Lee was senior vice president of Shared Medical Systems (since acquired by Siemens) and was at IBM (responsible for its office systems software, healthcare industry software, overall software engineering and various systems/communications software) and Computer Sciences Corporation for many years. Dr. Lee is currently on the board of Osel, Inc., a biopharmaceutical startup, and was previously on the boards of S3, Inc. (NASDAQ: SIII - semiconductor) and SONICblue (NASDAQ: SBLU - digital media devices). He also serves as advisor to various companies and investment funds.
+
+Dr. Lee participates in high-tech developments all over the world. During Mr. CH Tung's first visit to the Silicon Valley as Hong Kong Chief Executive in June 1999, Dr. Lee was the co-host and speaker at a luncheon in Mr. Tung's honor. At Insignia Solutions, Dr. Lee hosted a luncheon for HM Queen Elizabeth II who paid a visit to his company's offices in the UK after the company won multiple Queen's Awards. In 1996, Dr. Lee was invited to the Philippines meet President Ramos and to help formulate a high-tech initiative for that country. His business and professional activities in China have put him in frequent contact with senior government officials there. Dr. Lee has met with many heads-of-state and senior government officials during their visits to the Silicon Valley, particularly those from Asia/China.
+
+As a result of his active professional and community activities, including serving as the chairman of the Board of Trustee of the AAMA (Asia America MultiTechnology Association), Chairman of the AAMA Pearl River Delta Chapter and vice chairman of HYSTA's China Global Services Alliance, Dr. Lee is well known to the Silicon Valley and Asian media. He was featured in several books on Chinese-American successful entrepreneurs, and appeared frequently in print, web, radio and TV media. Dr. Lee is an accomplished public speaker.
+
+Dr. Lee grew up in Hong Kong. He holds Ph.D. and MS degrees from UCLA, and a BA from UC Berkeley, all in computer science. He resides in the Silicon Valley, Shanghai and Hong Kong. Dr. Lee is fluent in English and Chinese (Cantonese and Mandarin).
+                            </p>
+                            <a href="#" id="CloseorOpen" onclick="OpnenMore('moreRobert','CloseorOpen')">More。。。</a>
+                        </div>
+
+                    </div>
+
+                    <div class="ponebox">
+                        <div style="float: left; margin-right: 30px;">
+                            <div style="margin-top: 10px; margin-left: 20px">
+                                <img src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/images/content/philip_leung.jpg")" alt="" />
+                            </div>
+                            <p style="table-layout: auto; text-align: center; width: 150px">
+                                Philip Leung
+                                    <br />
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;President&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            </p>
+                        </div>
+                        <div>
+                            <p>
+                                Philip Leung is an executive with over 3 decades of hands-on experience in internet, computer software, hardware, storage and semiconductor.  He is currently Managing Partner in Commence Technology Partners, a service firm providing consulting, management and revenue generation for US technology companies entering the China market and vice versa.
+
+Philip previously served in executive positions in Compaq Computer, including Managing Director of East Asia, Deputy Managing Director of Greater China, and Board Member in subsidiaries in China, Hong Kong, Taiwan and Korea.  As the top operating executive in East Asia, he integrated the teams during Compaq's acquisitions of Digital Equipment and Tandem Computer.  His other work experience included: President of APAC in Rackable Systems (renamed SGI), CEO of Chinese Books Cyberstore, CEO in Vtech Computer, President of APAC in Quantum, and senior executive appointments in AMD in US and Asia.  As AMD's key Asia executive in the '90s, he spearheaded the company's entry and rapid expansion in China, Hong Kong, Taiwan, Singapore and Korea.
+
+                            </p>
+
+                            <p id="moreLHY" style="display: none">
+                                He is a member of AmCham's Board of Governors where he is founding Chair of China Affairs Group, and previous Chair of IT Committee, China Business Committee and Business Briefing Committee.  His current community leadership roles also include: Incorporated Manager in HKUGA College, Advisor in Institute of International Education, and others.  He was Advisor in the Office of the I.T. Legislator in HKSAR.  In addition, he has been an active member of HK General Chamber of Commerce, California Association of China and Hong Kong, etc.  He has led numerous delegations representing AmCham in Mainland China, Silicon Valley and Washington; he has also led delegations of InvestHK in the Pearl River Delta.
+
+ Philip is an Adjunct Professor in City University of HK, and teaches occasionally in other schools such as HKU and HK Polytechnic University.  He is Advisory Board Member and ex-President in the Harvard Business School Association of HK, as well as former Board Member of Penn Alumni Club of HK.  He holds an MBA from Harvard, and a BSEE from Hong Kong University.  Philip has lived in various cities in Asia and the US, including 12 years in Silicon Valley where he joined AAMA in the early '80s.
+
+                            </p>
+                            <a href="#" id="CloseorOpenLHY" onclick="OpnenMore('moreLHY','CloseorOpenLHY')">More。。。</a>
+                        </div>
+                    </div>
+
+                    <div class="ponebox">
+                        <div style="float: left; margin-right: 30px;">
+                            <div style="margin-top: 10px; margin-left: 20px">
+                                <img src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/images/content/charles_cheng.jpg")" alt="" />
+                            </div>
+                            <p style="table-layout: auto; text-align: center;">
+                                <a>Charles K. Cheng</a><br />
+                                Vice President
+                                <br />
+                                Program Planning<br />
+                                Committee Co-Chair
+                            </p>
+                        </div>
+                        <div>
+                            <p>
+                                Vice President & Program Planning Committee Co-Chair
+Mr. Charles Cheng has served as Managing Director of the Century Group since July 2011.   Prior to joining Century, Mr. Cheng served as Vice President of PEMCO Marketing at Arrow Asia Pac, Director of Marketing & Business Development at Agilent Technologies and Director of Marketing & Strategic Planning at Oak Technology.
+
+A founder, CEO and angel investor, Mr. Cheng has more than 20 years of experience in multinational companies in the areas of sales & marketing, merger and acquisition, as well as strategic planning.  He currently serves on the board of directors for Century Tecumseh Europe (Shanghai) Company and the Rotary Club of Hong Kong Island West (2012-13).
+
+Mr. Cheng holds a B.A. degree in Engineering Science from Oxford University and an M.B.A. from Stanford University.
+                            </p>
+                        </div>
+                    </div>
+
+
+                    <div class="ponebox">
+                        <div style="float: left; margin-right: 30px;">
+                            <div style="margin-top: 10px; margin-left: 20px">
+                                <img src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/images/content/raymond_tong_.jpg")" alt="" />
+                            </div>
+                            <p style="table-layout: auto; text-align: center; width: 150px">
+                                <a>Raymond Tong</a><br />
+                                Vice President
+                            </p>
+                        </div>
+                        <div>
+                            <p>
+                                Mr. Raymond Tong is Achievo Corporation's executive vice president and the general manager of the Shenzhen Development Center, the company's largest operations site in China. Achievo Shenzhen is focused in providing quality IT and software development services, serving clients from North America, Hong Kong, and Greater China. Achievo Shenzhen is located in the Hi-Tech & Industrial Estate of Shenzhen, and currently has more than 600 employees.
+
+Mr. Tong has 30 years of product development and executive management experience in the IT industry. He started his career as software engineer in ROLM/IBM in Silicon Valley, later joining Voysys Corporation as director of software engineering. Before joining Achievo, he co-founded UniCONN Technologies Limited in Hong Kong. The company developed the UNISON communication server, and in May 2000 launched "HelloVoice," the first unified messaging service in Hong Kong.
+
+Mr. Tong has a bachelor's degree in electrical engineering and computer science from MIT, and a master of business administration degree from the University of California in Berkeley.
+                            </p>
+                        </div>
+                    </div>
+
+
+                    <div class="ponebox">
+                        <div style="float: left; margin-right: 30px;">
+                            <div style="margin-top: 10px; margin-left: 20px">
+                                <img src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/images/content/john.jpg")" alt="" />
+                            </div>
+                            <p style="table-layout: auto; text-align: center; width: 150px">
+                                <a>John Y. Lo</a><br />
+                                Legal Counsel
+                            </p>
+                        </div>
+                        <div>
+                            <p>
+                                Mr. Lo began his legal career in private practice in the San Francisco Bay Area from early 1980s until 1994, when he relocated to Hong Kong.  Since 1994 and prior to joining this firm, he practiced in Hong Kong at several of the largest global and regional law firms headquartered in the US, Hong Kong and the People's Republic of China.  John Lo's primary areas of professional focus are emerging companies, private equity, China-bound direct investment and M&A, and international transactions in general.  He also has considerable experience in matters involving intellectual property, tax and corporate finance, and specific industry experience in the technology, real property, life sciences and renewable energies areas.  The majority of Mr. Lo's representation is for Hong Kong and Western companies doing business in Asia, but he was also one of the pioneers in representing PRC conglomerates in the US beginning in the late 1980s.
+
+Mr. Lo has been a frequent lecturer throughout Hong Kong, China and the US on professional education seminars and current legal and business topics with an emphasis on private equity, technology startups, and China investments.  He has also published numerous articles in those fields, in journals and books published by the Hong Kong Law Society, Asia Law & Practice, and Institute of Chartered Secretaries and Administrators.  Hs is a co-author of the book "Angel Financing - Principles and Practice for Investors and Entrepreneurs" (in Chinese) published by Hong Kong Economic Daily.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="ponebox">
+                        <div style="float: left; margin-right: 30px;">
+                            <div style="margin-top: 10px; margin-left: 20px">
+                                <img src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/images/content/img_3865_03.png")" style="width: 100px; height: 130px" alt="" />
+                            </div>
+                            <p style="table-layout: auto; text-align: center; width: 150px">
+                                <a>Jackwell Huang</a><br />
+                                Board Member
+                            </p>
+                        </div>
+                        <div>
+                            <p>
+                                Mr. Huang  graduated from Nankai University, China, major in International Economy and Trade and obtained his Master of Management from  Zhongnan University of Economics and Law (ZUEL). He is a Chinese Certified Public Valuer and accountant. He has served in government departments, Chinese listed companies (A and B shares), accounting firms, investment companies; and successfully assisted Chinese or Hong Kong companies by brining in strategic investors or going public. 
+
+He is now the Managing Director of ZZX International Investment Management Company Limited, Managing Director of ShenZhen ZZX Investment Management Company Limited, Vice-Chairman of ShenZhen International Finance Research Center, Guest Researcher in Peking University and is leading a devoted team in the company to develop in the China fast growing market. He is focused on providing strategic investment services for Chinese and foreign enterprises, as well as; asset management, management consultant, financial advisory, listing planning, asset restructuring, mergers and acquisitions, financing and corporate investment, equity investment and related services.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="ponebox">
+                        <div style="float: left; margin-right: 30px;">
+                            <div style="margin-top: 10px; margin-left: 20px">
+                                <img src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/images/content/peter_hung.jpg")" alt="" />
+                            </div>
+                            <p style="table-layout: auto; text-align: center; width: 150px">
+                                <a>Peter C. Hung</a><br />
+                                Board Member & Program Planning Committee
+                                <br />
+                                Co-Chair
+                            </p>
+                        </div>
+                        <div>
+                            <p>
+                                Mr. Peter C. Hung is currently the Chief Operating Officer for China Motion Telecom International, a publicly-listed company in Hong Kong that operates in both Hong Kong and China.  He also advises the board on the investment in the telecom and technology ventures. Mr. Hung has 20+ years of professional experience in the telecom, media and technology businesses in both the United States and Hong Kong.  Before recruited by New World Telecom to head up its marketing operation in Hong Kong, Mr. Hung was the division head with AT&T Local Service & Lucent Technologies Messaging Group in California and served as global marketing chief for Terayon Communications Systems, a cable broadband platform provider based out of Silicon Valley.  Mr. Hung started his career in the consumer marketing and advertising with companies including Johnson & Johnson, Leo Burnett and D'Arcy Masius Benton & Bowles in Hong Kong, Chicago and New York's Madison Avenue respectively. 
+
+Mr. Hung is the President of the Mobile Virtual Network Operator for the Communications Association of Hong Kong and serves as the Industry Advisory Board for the Department of Electronic & Computing Engineering of Hong Kong University of Science and Technology.
+
+Mr. Hung graduated with a first class honors degree from The Chinese University of Hong Kong and holds a Master of Business Administration from The University of Chicago Booth School of Business. Mr. Hung also received a Certificate in Marketing Strategy for Technology-Based Companies from the Stanford University.
+                            </p>
+                        </div>
+                    </div>
+
+
+                    <div class="ponebox">
+                        <div style="float: left; margin-right: 30px;">
+                            <div style="margin-top: 10px; margin-left: 20px">
+                                <img src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/images/content/ljx.png")" alt="" />
+                            </div>
+                            <p style="table-layout: auto; text-align: center; width: 150px">
+                                <a>Peter Lui</a><br />
+                                Board Member
+                            </p>
+                        </div>
+                        <div>
+                            <p>
+                                Peter Lui was born and raised in Hong Kong, then spent much of his high school years completing "O" and "A" Levels at Marlborough College in Wilshire, England. Peter then went to the US and received his Bachelor of Science degree in Electrical Engineering from the University of Pennsylvania & an MBA degree in Finance from the Wharton Business School.
+
+Peter then worked for Hewlett-Packard for a number of years in both HK covering Asia and in Silicon Valley , moving from sales and marketing to key management roles, including heading up the Peripherals  Marketing Center in Asia ( based from HK) for LaserJets, InkJets, plotters, and supplies . He also spent one year as a technology focused high level executive search consultant for Spencer Stuart , a leading worldwide firm.
+
+He later re-joined Hewlett Packard and emigrated with his family to Silicon Valley to develop Hewlett-Packard's fast growing worldwide supplies business from 1992 to 1994. In 1994, he left the corporate world to become a private technology investor in both public and private markets, and later a value added angel investor with an elite circle of Asia's leading technology business leaders and angel investors.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="ponebox">
+                        <div style="float: left; margin-right: 30px;">
+                            <div style="margin-top: 10px; margin-left: 20px">
+                                <img src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/images/content/c_tang_passport.jpg")" style="width: 110px; height: 130px;" alt="" />
+                            </div>
+                            <p style="table-layout: auto; text-align: center; width: 150px">
+                                <a>Camille Tang</a><br />
+                                Board Member
+                            </p>
+                        </div>
+                        <div>
+                            <p>
+                                Camille has over 20 years senior management experience in strategy, investments and trading, finance and operations risk control, marketing and sales, research and development, product design, MIS and communications in investment banking, retailing and management education industries. She served as Head, Harvard Business School Asia-Pacific Research Centre based in Hong Kong and was Executive Director, Strategic Development and Communications, Asia Pacific, Swiss Bank Corporation. She also worked for HSBC Investment Bank, Continental Grain and Macys California.
+
+Ms. Tang received a Bachelor Degree of Arts in Social Sciences, with Distinction, Stanford University, and a Master Degree in Business Administration, Harvard Business School, USA.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="ponebox">
+                        <div style="float: left; margin-right: 30px;">
+                            <div style="margin-top: 10px; margin-left: 20px">
+                                <img src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/images/content/clement-hung_01.png")" style="width: 110px; height: 130px;" alt="" />
+                            </div>
+                            <p style="table-layout: auto; text-align: center; width: 150px">
+                                <a>Clement Hung</a><br />
+                                CFO
+                            </p>
+                        </div>
+                        <div>
+                            <p>
+                                Mr. Clement Ka-Hai HUNG is the Southern China Deputy Managing Partner of Deloitte responsible for Guangzhou, Hong Kong SAR, Macau SAR and Shenzhen.  Mr. Hung also assumes various leadership roles within the firm's China practice, he is the Audit Leader of the southern China region and a member of the China Governing Board.
+
+Mr. Hung has over 30 year experience in the accounting profession with extensive experience in the areas of initial public offerings, mergers and strategic acquisitions and corporate finance, and advising multinational corporations, public companies and enterprises in Hong Kong and the People 's Republic of China and is an expert in listings in Main Board and GEM in the Hong Kong Stock Exchange. 
+
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="ponebox">
+                        <div style="float: left; margin-right: 30px;">
+                            <div style="margin-top: 10px; margin-left: 20px">
+                                <img src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/images/content/xsh.jpg")" alt="" style="width: 110px; height: 130px;" />
+                            </div>
+                            <p style="table-layout: auto; text-align: center; width: 150px">
+                                <a>Sean Xiang</a><br />
+                                Board Member
+                            </p>
+                        </div>
+                        <div>
+                            <p>
+                                Sean Xiang is a founder, president & CEO of Bloombase Technologies Inc.  Bloombase is one of the leading companies in data security. It protects core business information in real-time for world-wide customers, such as banks, financial institutions, oil energy, healthcare, pharmaceutical, chemical, transportation and government agencies, etc. 
+
+Sean Xiang was one of the founders of JNS Technologies. He was also the President and CEO of JNS before September 2004. JNS was a leading company in E-library system in China. Partners of JNS are including Aopen Inc. a subsidiary company of Acer Computers; Jian Nan Chun Group, one of the top national white wine manufactories in China, and Intel Solution Services.
+
+Sean Xiang founded Bayakala Digital Publishing Exchange Co. Ltd. He was also the CEO of the company. Bayakala was the first company achieved E-business countrywide license from China central government. Bayakala links publishers, bookstores and retailers through a single massive online system. Its retail network covers more than 80% market of 22,000 bookstores in great China.
+
+Prior to fund Bayakala, Sean Xiang was a visiting scientist in Beckman Laser Institute and Medical Clinic, University of California, Irvine; a research fellow of Hong Kong University of Science and Technology and an engineer in Hefei Institute of Meteorology (China). 
+
+Sean Xiang obtained a degree of D.Sc. (Doctor of Science) in Modern Physics from the University of Science and Technology of China, 1996. He also received a Ph.D in Electronic Engineering from the Chinese University of Hongkong, 1998.
+
+Dr. Xiang has published more than 30 papers in international journals of conferences. His area of research interest includes: Cryptography and Information security; Optical Coherence tomography (OCT) and Biomedical laser imaging.
+
+Dr. Xiang recently honored as one of top 5 international science and technology leaders at Guangzhou City, China. He serves as the Committee Chairman of Guangzhou American Boy Scout.
+
+Sean Xiang was also one of the earliest environmental activists in China profiling the unfavorable implications of the 3 Gorges Dam project.
+                            </p>
+
+                        </div>
+                    </div>
+
+                    <br />
+                    <br />
+
+                </div>
+
+                <div id="tab3" style="display: none">
+                    <h2><b>Pearl River Delta Chapter Member Program</b></h2>
+                    <p>
+
+
+
+                        <b>Mission:  </b>
+
+                        To create, congregate and sustain in the Pearl River Delta, the relationships, forums and principles valuable for the seeding and scaling of technology, innovation and their value chain, across technology and innovation centers worldwide.
+                            <br />
+
+                        To provide a forum in which members can network, exchange ideas and share resources from the Pearl River Delta to Silicon Valley and vice-versa.<br />
+
+                        <b>General Membership</b><br />
+
+                        <b>Dues:</b>
+                        <br />
+
+                        HK$1,000 per year (January - December)<br />
+
+                        <b>Benefits:</b><br />
+
+                        Members will have the opportunity to network with peer groups through our regular seminar and gatherings, AAMA US Connect conference and events organized by other chapters at special rate.<br />
+
+                        <b>Charter Member Program</b><br />
+
+                        <b>Mission:</b><br />
+
+                        To create and foster an exclusive membership network of global senior leaders and executives who are actively engaged in business and technology pursuits affecting the Silicon Valley and<br />
+
+                        Asia-Pacific economies.  Charter Members also help to mentor young professionals and entrepreneurs and contribute to the development of the AAMA mission and organization.<br />
+
+                        Charter Member is by invitation only and prospective members must meet eligibility requirements. 
+                            <br />
+
+                        <b>Dues:</b><br />
+
+                        HK$12,000 per year<br />
+
+                        <b>Benefits:</b><br />
+
+                        Charter Members will have the opportunity to:<br />
+
+                        Local & Global Executive Networking<br />
+                        Attending all AAMA Events and Private Receptions<br />
+                        Peer Interaction & Exchange<br />
+                        Enhanced Access to Deal flow and Opportunities<br />
+                        Serving as an Advisory Body<br />
+                        Exclusive "Charter Member" webpage<br />
+                        If you would like to know more about our Charter Program, please email peggy.chau@aamaprd.com
+
+                    </p>
+                    <br />
+                    <br />
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- END of content -->
+        <div id="sidebar" class="right">
+            <div class="sidebar_box">
+                <h3><b>About US</b></h3>
+                <div class="about_box_content">
+                    <ul class="list_bullet">
+                        <li onclick="getTab(1)" id="liContent1"><a href="#"><b>About AAMA</b></a> </li>
+                        <li onclick="getTab(2)" id="liContent2"><a href="#"><b>Board of Directors</b> </a></li>
+                        <li onclick="getTab(3)" id="liContent3"><a href="#"><b>Member Program</b></a> </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+        <!-- END of sidebar -->
+        <div class="clear"></div>
+    </div>
+
+</div>
+
+ 
+<script type="text/javascript">
+if (GetQueryString("news_id") != "" && GetQueryString("news_id") != "undefined" && GetQueryString("news_id") != null) {
+    getTab(GetQueryString("news_id"));
+}
+else {
+    getTab(1);
+}
+</script>

@@ -1,0 +1,244 @@
+﻿@model MS.ECP.Web.Areas.Admin.Models.JobViewModel
+@using MS.ECP.Web.Areas.Admin.WebHelp
+@using MS.ECP.Web.WebHelp
+@{
+    ViewBag.NavTitle = "Job Manage";
+}
+
+@Html.GetValidationJavascriptInAdmin()
+<script src="@Url.Content("~/Scripts/UEditor/editor_config.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/UEditor/_examples/editor_api.js")" type="text/javascript"></script>
+
+<script type="text/javascript">
+    var cneditor;
+    var eneditor;
+    $(function () {
+        cneditor = UE.getEditor('@Model.ZhContentDivId');
+        eneditor = UE.getEditor('@Model.EnContentDivId');
+    });
+
+
+    function formValidationSubmitted(el) {
+        $("#" + '@Model.EnContentDivId').val(eneditor.getContent());
+        $("#" + '@Model.ZhContentDivId').val(cneditor.getContent());
+        formSubmitted(el);
+    }
+
+    var i, j;
+    function ChangePanel(j) {
+        for (i = 1; i < 3; i++) {
+            document.getElementById("show_AddContent" + i).style.display = "none";
+            document.getElementById("language" + i).className = "change_panel";
+        }
+        document.getElementById("show_AddContent" + j).style.display = "block";
+        document.getElementById("language" + j).className = "change_panel_locked";
+    }
+</script>
+
+
+    <div class="content_title">@ViewBag.Operation Job</div>
+<div class="operate_action">
+
+    @Html.ActionLink("Job Manage", "List", "Job", new{ id=@ViewData["Currentpage"] } ,new { @class = "operate_action_submit" })&nbsp;&nbsp;
+
+    @if (ViewBag.Operation == "Edit")
+    {
+        @Html.ActionLink("Add Job", "AddorUpdate", "Job", new{ operation="Add" }, new { @class = "operate_action_submit" })
+    }
+
+</div>
+    <div class="clear"></div>
+    <div class="bline"></div>
+    <div class="wline"></div>
+
+
+
+@using (Html.BeginForm("AddorUpdate", "Job", FormMethod.Post))
+{
+    <!--  change pannel  -->
+    <div class="add_body">
+        <table cellpadding="1" cellspacing="1" class="add_table">
+            <tr>
+                <td width="11%" class="add_title">
+                    <div class="change_panel_locked" id="language1" onclick=" ChangePanel('1') ">English</div>
+                </td>
+                <td width="11%" class="add_title">
+                    <div class="change_panel" id="language2" onclick=" ChangePanel('2') ">中文</div>
+                </td>
+                <td width="78%" class="add_title">@ViewBag.Operation Job</td>
+            </tr>
+            <tr>
+                <td colspan="3" class="text_td td_submit"></td>
+            </tr>
+        </table>
+    </div>
+    <!--  end change pannel  -->
+
+
+
+    <!-- show add content(EN)  -->
+    <div class="add_body change_panel_content" id="show_AddContent1">
+
+        <table cellpadding="1" cellspacing="1" class="add_table">
+            <tr>
+                <td class="add_title" width="11%">@Html.DisplayName(m => m.EnJobTitle)</td>
+                <td class="text_td" width="78%" colspan="3">
+                    @Html.TextBoxFor(m => m.EnJobTitle, new {@class = "table_input"})
+                    @Html.ValidationMessageFor(m => m.EnJobTitle)
+                </td>
+            </tr>
+            <tr>
+                <td class="add_title" width="11%">@Html.DisplayName(m => m.EnNeedNum)</td>
+                <td class="text_td" width="39%">
+                    @Html.TextBoxFor(m => m.EnNeedNum, new {@class = "table_input"})
+                    @Html.ValidationMessageFor(m => m.EnNeedNum)
+                </td>
+                <td class="add_title" width="11%">@Html.DisplayName(m => m.EnWorkplace)</td>
+                <td class="text_td" width="39%">
+                    @Html.TextBoxFor(m => m.EnWorkplace, new {@class = "table_input"})
+                    @Html.ValidationMessageFor(m => m.EnWorkplace)
+                </td>
+            </tr>
+            <tr>
+                <td class="add_title" width="11%">@Html.DisplayName(m => m.EnSalary)</td>
+                <td class="text_td" width="38%">
+                    @Html.TextBoxFor(m => m.EnSalary, new {@class = "table_input"})
+                    @Html.ValidationMessageFor(m => m.EnSalary)
+                </td>
+                <td class="add_title" width="11%">@Html.DisplayName(m => m.EnLanguageRequired)</td>
+                <td class="text_td" width="38%">
+                    @Html.TextBoxFor(m => m.EnLanguageRequired, new {@class = "table_input"})
+                    @Html.ValidationMessageFor(m => m.EnLanguageRequired)
+                </td>
+            </tr>
+            <tr>
+                <td class="add_title" width="11%">@Html.DisplayName(m => m.EnJobBligation)</td>
+                <td class="text_td" width="78%" colspan="3">
+                      @Html.TextAreaFor(m => m.EnJobBligation, new {style="width:700px;height:180px;"})
+                      @Html.ValidationMessageFor(m => m.EnJobBligation)
+                </td>
+            </tr>
+            <tr>
+                <td class="add_title" width="11%">@Html.DisplayName(m => m.EnJobDesc)</td>
+                <td class="text_td" width="78%"  colspan="3">
+                    @Html.TextAreaFor(m => m.EnJobDesc, new {width = "700", height = "180", id = Model.EnContentDivId})
+                    @Html.ValidationMessageFor(m => m.EnJobDesc)
+                </td>
+            </tr>
+
+            <tr>
+                <td width="11%" class="add_title">@Html.DisplayName(m => m.EnTxtKeywords)</td>
+                <td  class="text_td" width="89%" colspan="3">
+                    @Html.TextBoxFor(m => m.EnTxtKeywords, new {@class = "table_input"})
+                </td>
+            </tr>
+            
+            <tr>
+                <td  class="add_title" width="11%">@Html.DisplayName(m => m.EnTxtHits) </td>
+                <td  class="text_td" width="89%" colspan="3">
+                    @Html.TextBoxFor(m => m.EnTxtHits, new {@class = "table_input"})
+                </td>
+            </tr>
+            <tr>
+                <td class="add_title" width="11%">@Html.DisplayName(m => m.EnTxtDesc)</td>
+                <td class="text_td" width="89%" colspan="3">
+                    @Html.TextBoxFor(m => m.EnTxtDesc, new {@class = "table_input"})
+                </td>
+            </tr>
+        </table>
+    </div>
+    <!-- end show add content(EN)  -->
+
+
+
+    <!-- show add content(CN)  -->
+    <div class="add_body change_panel_content" id="show_AddContent2" style="display: none;">
+        <table cellpadding="1" cellspacing="1" class="add_table">
+            <tr>
+                <td class="add_title" width="11%">@Html.DisplayName(m => m.ZhJobTitle)</td>
+                <td class="text_td" width="78%" colspan="3">
+                    @Html.TextBoxFor(m => m.ZhJobTitle, new {@class = "table_input"})
+                    @Html.ValidationMessageFor(m => m.ZhJobTitle)
+                </td>
+            </tr>
+            <tr>
+                <td class="add_title" width="11%">@Html.DisplayName(m => m.ZhNeedNum)</td>
+                <td class="text_td" width="39%">
+                    @Html.TextBoxFor(m => m.ZhNeedNum, new {@class = "table_input"})
+                    @Html.ValidationMessageFor(m => m.ZhNeedNum)
+                </td>
+                <td class="add_title" width="11%">@Html.DisplayName(m => m.ZhWorkplace)</td>
+                <td class="text_td" width="39%">
+                    @Html.TextBoxFor(m => m.ZhWorkplace, new {@class = "table_input"})
+                    @Html.ValidationMessageFor(m => m.ZhWorkplace)
+                </td>
+            </tr>
+            <tr>
+                <td class="add_title" width="11%">@Html.DisplayName(m => m.ZhSalary)</td>
+                <td class="text_td" width="38%">
+                    @Html.TextBoxFor(m => m.ZhSalary, new {@class = "table_input"})
+                    @Html.ValidationMessageFor(m => m.ZhSalary)
+                </td>
+                <td class="add_title" width="11%">@Html.DisplayName(m => m.ZhLanguageRequired)</td>
+                <td class="text_td" width="38%">
+                    @Html.TextBoxFor(m => m.ZhLanguageRequired, new {@class = "table_input"})
+                    @Html.ValidationMessageFor(m => m.ZhLanguageRequired)
+                </td>
+            </tr>
+            <tr>
+                <td class="add_title" width="11%">@Html.DisplayName(m => m.ZhJobBligation)</td>
+                <td class="text_td" width="78%" colspan="3">
+                    @Html.TextAreaFor(m => m.ZhJobBligation, new {style="width:700px;height:180px;"})
+                    @Html.ValidationMessageFor(m => m.ZhJobBligation)
+                </td>
+            </tr>
+            <tr>
+                <td class="add_title" width="11%">@Html.DisplayName(m => m.ZhJobDesc)</td>
+                <td class="text_td" width="78%"  colspan="3">
+                    @Html.TextAreaFor(m => m.ZhJobDesc, new {width = "700", height = "180", id = Model.ZhContentDivId})
+                    @Html.ValidationMessageFor(m => m.ZhJobDesc)
+                </td>
+            </tr>
+            <tr>
+                <td class="add_title" width="11%">@Html.DisplayName(m => m.TxtKeywords) </td>
+                <td class="text_td" width="89%" colspan="3">
+                    @Html.TextBoxFor(m => m.TxtKeywords, new {@class = "table_input"})
+                </td>
+            </tr>
+            <tr>
+                <td  class="add_title" width="11%">@Html.DisplayName(m => m.TxtHits) </td>
+                <td class="text_td" width="89%" colspan="3">
+                    @Html.TextBoxFor(m => m.TxtHits, new {@class = "table_input"})
+                </td>
+            </tr>
+            <tr>
+                <td  class="add_title" width="11%">@Html.DisplayName(m => m.TxtDesc)</td>
+                <td class="text_td" width="89%" colspan="3">
+                    @Html.TextBoxFor(m => m.TxtDesc, new {@class = "table_input"})
+                </td>
+            </tr>
+        </table>
+    </div>
+    <!-- end show add content(CN)  -->
+
+
+
+    <!--  submit  -->
+    <div class="add_body change_panel_save">
+        <table cellpadding="1" cellspacing="1" class="add_table">
+            <tr>
+                @Html.Hidden("currentpage", ViewData["Currentpage"])
+                @Html.HiddenFor(m => m.EnId)
+                @Html.HiddenFor(m => m.ZhId)
+                <td colspan="3" class="text_td td_submit">
+                    <input type="submit" value="Save" class="submit" />
+                </td>
+            </tr>
+        </table>
+    </div>
+    <!--  end submit  -->
+}
+
+<!--end content-->
+
+

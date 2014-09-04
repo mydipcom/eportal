@@ -1,0 +1,51 @@
+﻿@using MS.ECP.Web.WebHelp
+@model MS.ECP.Model.CMS.News
+@{
+    var currentitem = Model;
+    ViewBag.Keywords = String.IsNullOrEmpty(currentitem.Keywords) ? LanageCommon.NewsdetailSeoKeywords : currentitem.Keywords;
+    ViewBag.Description = String.IsNullOrEmpty(currentitem.Description) ? LanageCommon.NewsdetailSeoDescription : currentitem.Description;
+    ViewBag.Title = String.IsNullOrEmpty(currentitem.SeoTitle) ? LanageCommon.NewsdetailSeoTitle : currentitem.SeoTitle;
+}
+
+
+<!-- sub banner -->
+<div class="sub_banner"></div>
+<!-- end sub banner -->
+
+<!-- content White_background -->
+<div class="white_background"></div>
+<!-- end content White_background -->
+
+<!-- content container -->
+<div class="content_container">
+    <div class="title_container">
+        <div class="show_title">@LanageCommon.FootLblNewsCaption</div>
+        <!-- change panel -->
+        <div class="content_title_list">
+            @Html.ActionLink(@LanageCommon.NewsLblTabNews, "News", "Home",new{id= ViewBag.IndexId},null)
+        </div>
+        <!-- end change panel -->
+        <div class="clear"></div>
+    </div>
+    <!-- show content  -->
+
+    <!-- company info -->
+    <div class="show_content">
+        <span class="bigText">@Model.Title&nbsp;&nbsp;/&nbsp;&nbsp;</span>
+        <span class="news_update_time">@Model.CreateDate.ToString("yy/MM/dd")</span>
+        <br />
+        <br />
+      @Html.Raw(Model.Content)
+    </div>
+    <!-- end company info -->
+
+    <!-- end show content  -->
+</div>
+<!-- end content container -->
+
+
+
+
+
+
+

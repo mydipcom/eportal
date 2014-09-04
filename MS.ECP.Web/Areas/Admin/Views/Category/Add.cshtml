@@ -1,0 +1,50 @@
+﻿@using MS.ECP.Web.Areas.Admin.WebHelp
+@using MS.ECP.Web.WebHelp
+@model MS.ECP.Web.Areas.Admin.Models.CategoryaeModel
+@Html.GetValidationJavascriptInAdmin()
+@{
+    ViewBag.NavTitle = "Category Manage";
+}
+
+<div class="content_title">Add SubCategory</div>
+<div class="operate_action">
+    @Html.ActionLink("Category Manage", "List", "Category", null, new { @class = "operate_action_submit" })
+</div>
+<div class="clear"></div>
+<div class="bline"></div>
+<div class="wline"></div>
+<div class="add_body">
+    @using (Html.BeginForm("Add", "Category", FormMethod.Post))
+    {
+        <table cellpadding="1" cellspacing="1" class="add_table">
+            <tr>
+                <td class="add_title" width="22%">Category Name</td>
+                <td class="text_td" width="78%">
+                    @Html.LabelFor(m => m.CategoryLanGuid)
+                    @Html.DropDownListFor(m => m.CategoryLanGuid, Model.CategoryItems, "------")
+                    @Html.ValidationMessageFor(m => m.CategoryLanGuid)
+                </td>
+            </tr>
+            <tr>
+                <td class="add_title" width="22%">@Html.DisplayName(m => m.EnCategoryName)</td>
+                <td class="text_td" width="78%">
+                    @Html.TextBoxFor(m => m.EnCategoryName, new { @class = "table_input" })
+                    @Html.ValidationMessageFor(m => m.EnCategoryName)
+                </td>
+            </tr>
+            <tr>
+                <td class="add_title" width="22%">@Html.DisplayName(m => m.CnCategoryName)</td>
+                <td class="text_td" width="78%">
+                    @Html.TextBoxFor(m => m.CnCategoryName, new { @class = "table_input" })
+                    @Html.ValidationMessageFor(m => m.CnCategoryName)
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="text_td td_submit">
+                    @*   <a class="a_submit" onclick="formSubmitted(this)" >Save</a>  *@
+                    <input type="submit" value="Save" class="submit" />
+                </td>
+            </tr>
+        </table>
+    }
+</div>

@@ -1,0 +1,48 @@
+﻿@using System.Data;
+@using MS.ECP.Utility;
+@using MS.ECP.Web.WebHelp
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>@ViewBag.Title-@LanageCommon.CommanyName</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Language" content="@LanageCommon.CurrenLanage" />
+    <meta name="keywords" content="@ViewBag.Keywords" />
+    <meta name="description" content="@ViewBag.Description" />
+
+     
+    <link rel="shortcut icon" type="image/x-icon" href="@Url.Content("~/logo.ico")" />
+    @WebUiHelp.GetCssbyLanager(this.Html,"global")
+    <link rel="stylesheet" href="@Url.Content("~/Content/Css/style.css")" />
+    <!--[if IE 6]>
+    <script src="@Url.Content("~/Content/Scripts/DD_belatedPNG.js")" mce_src="@Url.Content("~/Content/Scripts/DD_belatedPNG.js")"></script>
+    <script type="text/javascript"> 
+        DD_belatedPNG.fix('.header');   /* png Transparent*/   
+    </script> 
+    <![endif]-->  
+    <script type="text/javascript" src="@Url.Content("~/Content/Scripts/jquery-1.7.2.min.js")"></script>
+    @RenderSection("scripts", required: false)
+
+</head>
+
+<body>
+    <!-- header -->
+    <div class="header">
+        <div class="top_container">
+            <div class="logo">
+                @Html.ActionLink(" ", "Index", "Home", null, new { @class = "logo_link" })
+                <span class="language_type">
+                @Html.ActionLink("中文", "ChangeLanguage", "Share", new { language = "zh-cn" }, new { title = "CN", @class = "lan_cn" })
+                   <span class="lan_line"> &nbsp;&nbsp;/&nbsp;&nbsp;</span> 
+                @Html.ActionLink("ENGLISH", "ChangeLanguage", "Share", new { language = "en-us" }, new { @class = "lan_en", title = "EN"})
+               </span>
+            </div>
+             @Html.Action("MenuPartial", "Share")
+             <div class="clear"></div>
+        </div>
+    </div>
+
+    @RenderBody()
+    @Html.Action("FooterPartial", "Share")
+</body>
+</html>

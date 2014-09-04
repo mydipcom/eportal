@@ -1,0 +1,57 @@
+﻿@using System.Globalization
+@using MS.ECP.AAMAPrd.WebPager
+@model MS.ECP.AAMAPrd.WebPager.PagedList<MS.ECP.Model.SysResource> 
+
+<table style="table-layout: fixed" cellspacing="0">
+         <tr>
+                            <th>Language Code
+                            </th>
+                            <th>Resource Page
+                            </th>
+                            <th>Resource Type 
+                            </th>
+                            <th>Resource Key
+                            </th>
+                            <th>Resource Value
+                            </th>
+                            <th>Operate
+                            </th>
+                        </tr>
+    @foreach (var item in Model)
+    {
+          <tr class="listtr">
+                                <th  class="spec">
+                                    @Html.Label(item.LanguageCode)
+                                </th>
+                                <td>
+                                    @Html.Label(item.ResourcePage)
+                                </td>
+                                <td>
+                                    @Html.Label(item.ResourceType)
+                                </td>
+                                <td>
+                                    @Html.Label(item.ResourceKey)
+                                </td>
+                                <td>
+                                    @Html.Label(item.ResourceValue)
+                                </td>
+              <td>
+                   @Html.ActionLink("Edit", "Edit", new { id=item.ID }) 
+              </td>
+                            </tr>                        
+    }
+</table>
+     
+<div class="page_box">
+    <div   style="float:left;width:50%">
+        共 @Model.TotalPageCount 页 @Model.TotalItemCount 条记录，当前为第 @Model.CurrentPageIndex 页
+    </div>
+    @Ajax.Pager(Model,new PagerOptions
+    {
+        PageIndexParameterName = "id",
+        ShowPageIndexBox = true,
+        PageIndexBoxType = PageIndexBoxType.DropDownList,
+        CurrentPagerItemWrapperFormatString = "<span class=\"current\">{0}</span>",
+        ShowGoButton = false 
+    },new MvcAjaxOptions{UpdateTargetId="resourcediv"},new{ id="badoopager",style="float:right"}) 
+</div>

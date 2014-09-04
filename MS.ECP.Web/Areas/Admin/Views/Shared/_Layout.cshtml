@@ -1,0 +1,37 @@
+﻿@using MS.ECP.Web.Areas.Admin.WebHelp
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>MissionskyAdmin</title>
+    <link rel="stylesheet" href="@Url.Content("~/Areas/Admin/Content/Css/global.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/Areas/Admin/Content/Css/login.css")" />
+    @Html.GetJqueryInAdmin()
+    <script type="text/javascript">
+
+        
+        function chagelan(el, lanhiddenid) {
+            $(el).text($(el).text() == "中文" ? "English" : "中文");
+            $(lanhiddenid).val($(el).text() != "中文" ? "zh-cn" : "en-us");
+            var form = $(lanhiddenid).parent();
+            form.find("input[type='submit']").trigger("click");
+        }
+        
+        
+        function deleteconfim(el) {
+            if (confirm("确定删除?")) {
+                window.location.href = el.href;
+            }
+        }
+
+    </script>
+    @RenderSection("scripts", required: false)
+</head>
+
+<body style="background-color: #ededed;">
+    <div class="nav_now">Home&nbsp;&nbsp;&nbsp;<b>></b>&nbsp;&nbsp;&nbsp;<b>@ViewBag.NavTitle</b></div>
+    <div class="content_body">
+        @RenderBody()
+    </div>
+</body>
+</html>

@@ -1,0 +1,46 @@
+﻿
+@using System.Data;
+@using MS.ECP.BLL;
+@using MS.ECP.Common;
+@using MS.ECP.Web.Areas.Admin.WebHelp
+@using MS.ECP.Web.WebHelp
+        
+@model MS.ECP.Web.WebPager.PagedList<MS.ECP.Model.SysResource> 
+@{
+    ViewBag.NavTitle = "Resource Manage";
+}
+
+
+@section scripts 
+{
+        @WebUiHelp.RegisterMvcPagerScriptResource(Html)
+    <script src="@Url.Content("~/Areas/Admin/Content/Scripts/jquery.unobtrusive-ajax.min.js")" type="text/javascript"></script>
+}
+
+    <div class="content_title">Resource Info</div>
+<div class="operate_action">
+     <span class="operate_action_submit"  onclick="chagelan(this,'#lanid')">@ViewBag.Lanage</span>
+</div>
+    <div class="clear"></div>
+    <div class="bline"></div>
+<div class="wline"></div>
+
+<div class="table_body" id="listload"> 
+    @Html.Partial("_ResourcePartialPage", Model)
+</div>
+
+
+<p>
+    @using (Ajax.BeginForm("List", new RouteValueDictionary {{"id", ""}}, new AjaxOptions {UpdateTargetId = "listload", InsertionMode = InsertionMode.Replace},
+        new RouteValueDictionary {{"id", "searchForm"}}))
+    {
+       <input type="hidden" value="en-us" id="lanid" name="lantype"/> 
+        <input type="text" class="table_input" name="keywords"  value="@AdminConfig.ResourceSearKeyWord"  onfocus=" if (value == '@AdminConfig.ResourceSearKeyWord') {value = '';} " onblur=" if (value == '') {value = '@AdminConfig.ResourceSearKeyWord';} "  />
+        <input type="text" class="table_input" name="resourcepage"  value="@AdminConfig.ResourcePage"  onfocus=" if (value == '@AdminConfig.ResourcePage') {value = '';} " onblur=" if (value == '') {value = '@AdminConfig.ResourcePage';} "  />
+        <input class="button" type="submit" value="Search" />
+    }
+</p>
+
+
+
+

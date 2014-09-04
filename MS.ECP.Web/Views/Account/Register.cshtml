@@ -1,0 +1,68 @@
+﻿@using MS.ECP.Utility;
+@using MS.ECP.Web.WebHelp
+@model MS.ECP.Web.Models.RegisterModel
+
+@{
+    ViewBag.Title = LanageRegister.SysTitle;
+    ViewBag.keyword = LanageRegister.SysKeywords;
+    ViewBag.description = LanageRegister.SysDescription;
+    ViewBag.footer = LanageRegister.SysFooter;
+}
+
+@section scripts
+{
+    @WebUiHelp.GetJavscriptbyLanager(Html, "jquery.validate.min.js")
+    @WebUiHelp.GetJavscriptbyLanager(Html, "jquery.validate.unobtrusive.min.js")
+
+    <script type="text/javascript">
+        //Custom jQuery validation unobtrusive script and adapters 
+        jQuery.validator.unobtrusive.adapters.add("requiredtrue", function(options) {
+            if (options.element.tagName.toUpperCase() == "INPUT" && options.element.type.toUpperCase() == "CHECKBOX") {
+                options.rules["required"] = true;
+                if (options.message) {
+                    options.messages["required"] = options.message;
+                }
+            }
+        });
+    </script>
+}
+
+
+
+
+@using (Html.BeginForm()) {
+    
+    @Html.ValidationSummary()
+
+    <div>
+        <fieldset>
+            <legend>Account Information</legend>
+
+            <div class="editor-label">
+                @Html.LabelFor(m => m.UserName)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(m => m.UserName)
+                @Html.ValidationMessageFor(m => m.UserName)
+            </div>
+
+            <div class="editor-label">
+                @Html.LabelFor(m => m.Password)
+            </div>
+            <div class="editor-field">
+                @Html.PasswordFor(m => m.Password)
+                @Html.ValidationMessageFor(m => m.Password)
+            </div>
+
+          <div class="editor-label">
+                @Html.CheckBoxFor(m => m.RememberMe)
+                @Html.LabelFor(m => m.RememberMe)
+                 @Html.ValidationMessageFor(m => m.RememberMe)
+            </div>
+
+            <p>
+                <input type="submit" value="register" />
+            </p>
+        </fieldset>
+    </div>
+}

@@ -1,0 +1,10 @@
+﻿@{
+    MS.ECP.Utility.ResourcesHelper resHelper = new MS.ECP.Utility.ResourcesHelper("Common");
+}
+@if(Request.IsAuthenticated) {
+    <text>@resHelper.GetString("aama_logon_lbl_welcome") <strong>@User.Identity.Name</strong>!   |   
+    @Html.ActionLink(resHelper.GetString("aama_logon_lbl_logout"), "LogOff", "Account") </text>
+}
+else {    
+    @: @Html.ActionLink(resHelper.GetString("aama_logon_lbl_login"), "LogOn", "Account")
+}

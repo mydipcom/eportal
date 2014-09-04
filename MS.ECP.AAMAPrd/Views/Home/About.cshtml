@@ -1,0 +1,109 @@
+﻿@using System.Text
+@using MS.ECP.Utility;
+@model IList<MS.ECP.Model.CMS.Aboutus>  
+@{
+    var reHelper = new ResourcesHelper("Common");
+}
+
+<style type="text/css">
+    <!--
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    .ponebox {
+        border: 0px solid #999999;
+        width: 100%;
+        margin-bottom: 2px;
+        margin-top: 1px;
+        overflow: hidden;
+    }
+-->
+</style>
+
+
+<script type="text/javascript">
+
+    //选项卡的个数
+    var num = @Model.Count;
+
+    var lasteltitle=null;
+    var lastelcontent=null;
+    function getTab(now) {
+        var content = $("#tab" + now);
+        var title = $("#liContent" + now);
+        if (null != lasteltitle&& null!=lastelcontent)
+            if (title.attr("id") == lasteltitle.attr("id")&&content.attr("id") == lastelcontent.attr("id")) return;
+
+         content.css("display","block");
+         title.css("background","#003746");
+        if (null != lasteltitle&& null!=lastelcontent) {
+            lastelcontent.css("display","none");
+            lasteltitle.css("background","white");
+        }
+        lasteltitle = title;
+        lastelcontent = content;
+    }
+
+    $(function() {
+        getTab(1);
+    });
+</script>
+
+
+<div class="centcontent">
+    <div id="detail_main" class="wrapper">
+        <div id="content_about" class="left"> 
+            <div>
+                @{
+                    var sb = new StringBuilder();
+                    const string limodel = @"<div id=""tab{0}"" style=""display: {1};font-size:0.8em"" >";
+                    for (var i = 0; i < Model.Count; i++)
+                    {
+                        sb.Append(String.Format(limodel, i + 1, "none"));
+                        sb.Append(Model[i].Content);
+                        sb.Append("</div>");
+                    }
+                    @Html.Raw(sb.ToString())
+                }
+                
+                 
+                <div id="tab999" style="display: none">
+                      <h2><b>入会申请表</b></h2>
+                    <div class="content_5">
+                        @{ Html.RenderAction("JoinPary"); }
+                    </div>
+                    <div class="clear"></div>
+                    <br />
+                    <br />
+                </div>
+              
+            </div>
+
+        </div>
+
+        <!-- END of content -->
+        <div id="sidebar" class="right">
+            <div class="sidebar_box">
+                <h3><b>@reHelper.GetString("aama_menu_lbl_aboutus")</b></h3>
+                <div class="about_box_content">
+                    <ul class="list_bullet">
+                           @for (int i = 0; i < Model.Count-1; i++)
+                           {
+                               @Html.Raw(String.Format(@"<li onclick=""getTab({0})"" id=""liContent{0}""><a href=""#""><b>{1}</b></a> </li>", i + 1, Model[i].LinkTitle));
+                           } 
+                        <li  id="liContent998"><a href="/membership"><b>Member Program</b></a> </li> 
+                        <li onclick="getTab(999)" id="liContent999"><a href="#"><b>Registration</b></a> </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+        <!-- END of sidebar -->
+        <div class="clear"></div>
+    </div>
+
+</div>
+
+

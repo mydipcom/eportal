@@ -1,0 +1,143 @@
+﻿@using MS.ECP.Utility;
+@{
+    ViewBag.Title = "DashBoard";
+    Layout = null;
+}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Content </title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+
+    <script type='text/javascript' src='@Url.Content("~/Content/Admin/js/jquery.js")'></script>
+    <script type='text/javascript' src='@Url.Content("~/Content/Admin/js/jquery-ui.js")'></script>
+    <script type='text/javascript' src='@Url.Content("~/Content/Admin/js/jquery.wysiwyg.js")'></script>
+    <script type='text/javascript' src='@Url.Content("~/Content/Admin/js/custom.js")'></script>
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/Content/Admin/css/Style_Content.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/Admin/css/jquery-ui.css")" type="text/css" media="screen" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/Admin/css/jquery.wysiwyg.css")" type="text/css" media="screen" />
+    <script type="text/javascript">
+        jQuery(function () {
+            kriesi_tab('#content', '.jquery_tab_title', '.jquery_tab'); /*remove this if you dont want to have jquery tabs*/
+            kriesi_closeable_divs(".closeable"); /*remove this if you dont want message box to be closeable*/
+            //jQuery("#dialog").dialog(); //pop up dialog window on pageopen.
+            jQuery('.richtext').wysiwyg(); //rich text editor for textareas
+
+        });
+
+        function ClearCache()
+        {
+            alert("清空缓存成功");
+        }
+ 
+    </script>
+
+</head>
+
+<body style="background-color: transparent;">
+
+    <div id="content">
+        <div class="jquery_tab">
+
+            <div class="content_block">
+                <h2 >Dashboard</h2>
+
+                @*<a class="dashboard_button button1" href="#">
+                    <span class="dashboard_button_heading">Dashboard</span>
+                    <span>Edit various basic settings and Options</span>
+                </a>*@
+                <!--end dashboard_button-->
+
+                <a class="dashboard_button button6" href="@Url.Action("ClearCache","Main")" onclick="ClearCache();" >
+                    <span class="dashboard_button_heading">Clear Cache</span>
+                    <span>Deleted items and Cache entries</span>
+                </a>
+
+                @*<a class="dashboard_button button2" href="#">
+                    <span class="dashboard_button_heading">Settings</span>
+                    <span>Edit various advanced settings and Options</span>
+                </a>
+                <!--end dashboard_button-->
+
+                <a class="dashboard_button button3" href="#">
+                    <span class="dashboard_button_heading">Applications</span>
+                    <span>Add and edit applications</span>
+                </a>
+                <!--end dashboard_button-->
+
+                <a class="dashboard_button button4" href="#">
+                    <span class="dashboard_button_heading">Script editor</span>
+                    <span>Enter your javascript and php scripts</span>
+                </a>
+                <!--end dashboard_button-->
+
+                <a class="dashboard_button button5" href="#">
+                    <span class="dashboard_button_heading">Search</span>
+                    <span>Basic and advanced search area</span>
+                </a>
+                <!--end dashboard_button-->
+
+                <a class="dashboard_button button6" href="#">
+                    <span class="dashboard_button_heading">Trash</span>
+                    <span>Deleted items and database entries</span>
+                </a>
+                <!--end dashboard_button-->
+
+                <a class="dashboard_button button7" href="#">
+                    <span class="dashboard_button_heading two_lines">Content Manager</span>
+                    <span>Add new static and dynamic content</span>
+                </a>
+                <!--end dashboard_button-->
+
+                <a class="dashboard_button button8" href="#">
+                    <span class="dashboard_button_heading">Files</span>
+                    <span>File and download manager</span>
+                </a>
+                <!--end dashboard_button-->
+
+                <a class="dashboard_button button9" href="#">
+                    <span class="dashboard_button_heading two_lines">Newsletter Manager</span>
+                    <span>Add and manage newsletter subscriptions</span>
+                </a>
+                <!--end dashboard_button-->
+
+                <a class="dashboard_button button10" href="#">
+                    <span class="dashboard_button_heading two_lines">User Manager</span>
+                    <span>Add and edit user settings</span>
+                </a>
+                <!--end dashboard_button-->
+
+                <a class="dashboard_button button11" href="#">
+                    <span class="dashboard_button_heading">Gallery</span>
+                    <span>Manage your image gallery</span>
+                </a>
+                <!--end dashboard_button-->
+
+                <a class="dashboard_button button12" href="#">
+                    <span class="dashboard_button_heading">Help</span>
+                    <span>Tutorial on how to use out scripts</span>
+                </a>
+                <!--end dashboard_button-->
+                <h2>Informations and Settings</h2>
+                <div class="content-box box-grey">
+                    <h4>Lorem ipsum</h4>
+                    <p>Dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                    <h4>Commodo consequat</h4>
+                    <p>Dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                </div>
+                <div class="content-box box2">
+                    <h4>Consectetur adipisicing</h4>
+                    <p>Elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                    <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                </div>*@
+            </div>
+            <!--end content_block-->
+
+        </div>
+        <!--end jquery tab-->
+        <div style="clear: both;"></div>
+    </div>
+    <!--end content-->
+</body>
+</html>

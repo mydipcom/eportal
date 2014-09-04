@@ -1,0 +1,68 @@
+﻿
+@model MS.ECP.AAMAPrd.Areas.Admin.Models.ResourceViewModel
+@{
+    ViewBag.Title = "WebSite Edit";
+}
+
+ @section csses
+{
+       <link rel="stylesheet" href="@Url.Content("~/Content/admin/css/jquery-ui.css")" type="text/css" media="screen" />
+}
+
+@section scripts
+{
+    <script src='@Url.Content("~/Content/Admin/js/jquery-ui.js")'  type='text/javascript' ></script>
+        <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+    <script type="text/javascript">
+
+        $(function () {
+            kriesi_tab('#jquerytabdiv', '.jquery_tab_title', '.jquery_tab'); /*remove this if you dont want to have jquery tabs*/
+            kriesi_closeable_divs(".closeable"); /*remove this if you dont want message box to be closeable*/
+        });
+    </script>
+}
+<div id="jquerytabdiv"  style="margin: 50px 0 0 0;">
+    
+        @using (Html.BeginForm("Edit", "Resource", FormMethod.Post))
+        {
+            <div class="jquery_tab">
+                <div class="content_block">
+                    <h2 class="jquery_tab_title">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WebSite Edit</h2>
+                    <p>
+                       @Html.LabelFor(m => m.LanguageCode)
+                       @Html.TextBoxFor(m => m.LanguageCode, new {@disabled = "disabled"})
+                       @Html.ValidationMessageFor(model => model.LanguageCode)
+                    </p>
+                    <p>
+   
+                        @Html.LabelFor(m => m.ResourceKey)
+                       @Html.TextBoxFor(m => m.ResourceKey, new {@disabled = "disabled"})
+                       @Html.ValidationMessageFor(model => model.ResourceKey)
+                    </p>
+                    <p>
+                       @Html.LabelFor(m => m.ResourceValue)
+                       @Html.TextAreaFor(m => m.ResourceValue ,new {@class = "input-medium"})
+                       @Html.ValidationMessageFor(model => model.ResourceValue)
+ 
+                    </p>
+                </div>
+                <!--end content_block-->
+            </div>
+            <!--end jquery tab-->
+             @Html.HiddenFor(d => d.TxtKeywords, new {@class = "input-big"})
+                 @Html.HiddenFor(d => d.TxtDesc, new {@class = "input-big"})
+                 @Html.HiddenFor(d => d.TxtHits, new {@class = "input-big"})
+
+                 @Html.HiddenFor(m=>m.Id)
+                 @Html.AntiForgeryToken()
+                 @Html.ValidationSummary()
+                    <p>
+                        <input name="submit" type="submit" value="Submit" id="Submit1" />
+                        <input name="back" type="button" value="Back" onclick=" location.href = '' " />
+                    </p>
+            <!--end resource-->
+        }
+       
+</div> 

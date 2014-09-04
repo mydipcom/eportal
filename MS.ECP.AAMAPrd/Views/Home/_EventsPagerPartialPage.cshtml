@@ -1,0 +1,53 @@
+﻿
+@using System.Text
+@using MS.ECP.AAMAPrd.WebPager
+@using MS.ECP.Utility
+
+@model MS.ECP.AAMAPrd.Models.EventViewModel
+
+
+<table width="800px;" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+        @foreach (var drc in Model.EventTitles)
+        {
+            <tr>
+                <td align="center" width="100%" valign="top">
+                    <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                        <tbody>
+                            <tr>
+                            <td align="center" width="100%" valign="top">
+                            <table width="100%">
+                                <tbody>
+                                    <tr align="left"> 
+                                        <td style="width:683px; ">
+                                            <a href="@Url.Action("EventDetail", new { langGuid = drc.LangGuid })" target="_self" >
+                                                <span name="mynet_list_span_d2-275494938-2a13" style="width: 13px; background-image: url(http://www.aamachina.com.cn/theme/Icon/4.gif); font-size: 12px; display: inline-block; height: 13px; top: 3px; position: relative; background-position: 0% 50%; background-repeat: no-repeat no-repeat;"></span>@drc.Title</a>
+                                        </td>
+                                        <td align="right">@drc.CreateDate.ToString("yyyy-MM-dd")</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 1px; padding: 1px; border-top: dotted 1px #cccccc;" colspan="2">
+                    <div style="height: 2px; overflow: hidden;"></div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+@Ajax.Pager(Model.EventTitles,new PagerOptions
+    {
+         PageIndexParameterName = "id",
+        ShowPageIndexBox = false,
+        ShowGoButton = true,
+        ShowFirstLast = true,
+        ShowNumericPagerItems = true,
+        HorizontalAlign = "center"
+    },new MvcAjaxOptions{UpdateTargetId="content_detail"})

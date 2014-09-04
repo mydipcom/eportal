@@ -1,0 +1,203 @@
+﻿
+ 
+@using MS.ECP.Utility
+@{
+    MS.ECP.Utility.ResourcesHelper reHelper = new MS.ECP.Utility.ResourcesHelper("Register");
+    MS.ECP.Utility.ResourcesHelper resHelper = new MS.ECP.Utility.ResourcesHelper("Common");
+    ViewBag.Title = reHelper.GetString("sys_title");
+    ViewBag.keyword = reHelper.GetString("sys_keywords");
+    ViewBag.description = reHelper.GetString("sys_description");
+    ViewBag.footer = reHelper.GetString("sys_footer");
+ /*   ViewBag.alertJson = reHelper.GetAllPopupJson();   */
+}
+<script type="text/javascript" src="@Url.Content("~/Scripts/my.register.js")"></script> 
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery-1.7.min.js")"></script>
+
+
+<style type="text/css">
+
+.content_5{width:984px; height:600px; background-color:#F7FBFB; float:left; margin-bottom:10px; padding-bottom:10px; }
+.listform dl{ width:920px; float:left; margin:0; padding:0; margin-left:30px; padding-bottom:30px;}
+.listform dl dd{ margin:0; padding:0; float:left;}
+.reg_tit{ width:230px; float:left; font-size:16px; margin: 20px 10px 0 0; font-family:Georgia, "Times New Roman", Times, serif;}
+.reg_con{ width:650px; float:left; margin: 20px 0 0 0;}
+.ipt_w{ border:0; width:280px; height:22px; float:left; border:solid 1px #E3E3E3; color:#8C9696; padding-left:5px; margin-right:10px; font-family:Tahoma, Geneva, sans-serif; line-height:22px;}
+.PrivacyPolicy a{ text-decoration:underline; color:#2CAD9E;}
+.PrivacyPolicy a:hover{ color:#249589;}
+.chenkbox{ vertical-align: middle;}
+.mandatory{font-size: 12px; margin-top: 50px;}
+.btn_t a{ height:34px; line-height:34px; background-image:url(../images/left_11.png); float:left; padding:0px 15px; font-size:14px; font-weight:500; color:#fff; text-decoration:none; margin-top:20px; margin-bottom:10px; font-family:Georgia, "Times New Roman", Times, serif; }
+.btn_t a:hover{ background-image:url(../images/left_12.png);color:#fff;text-decoration:none;}
+
+</style>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#txtUserName").val("请输入用户名");
+        $('#txtUserName').focus(function () {
+            if ($(this).val() == "请输入用户名") {
+                $(this).val("");
+            }
+        }).blur(function () {
+            if ($(this).val() == "") {
+                $(this).val("请输入用户名");
+            }
+        });
+
+        $("#txtEmail").val("请输入email地址");
+
+        $('#txtEmail').focus(function () {
+            if ($(this).val() == "请输入email地址") {
+                $(this).val("");
+            }
+        }).blur(function () {
+            if ($(this).val() == "") {
+                $(this).val("请输入email地址");
+            }
+        });
+    });
+
+</script>
+
+<script type="text/javascript">
+    function RegisterSubmit() {
+        debugger;
+        var fill = true, css = "border-color", redcolor = "red red red red";
+        var msg = "";
+        if ($.trim($("#txtUserName").val()) == "" || $("#txtUserName").val() == "请输入用户名") {
+            $("#txtUserName").css(css, redcolor);
+            fill = false;
+        }
+        else {
+            $("#txtUserName").css(css, "");
+        }
+        
+        if ($.trim($("#txtEmail").val()) == "" || $.trim($("#txtEmail").val()) == "请输入email地址") {
+            $("#txtEmail").css(css, redcolor);
+            fill = false;
+        }
+        else {
+            $("#txtEmail").css(css, "");
+        }
+      
+
+        if ($.trim($("#txtPassword").val()) == "") {
+            $("#txtPassword").css(css, redcolor);
+            fill = false;
+        }
+        else {
+            $("#txtPassword").css(css, "");
+        }
+        if ($.trim($("#txtRePassword").val()) == "") {
+            $("#txtRePassword").css(css, redcolor);
+            fill = false;
+        }
+        else {
+            $("#txtRePassword").css(css, "");
+        }
+
+        if (!$("#ckbPolicy").attr("checked")) {
+            $("#divPy").removeClass("request1").addClass("request2");
+            fill = false;
+        }
+        else {
+            $("#divPy").removeClass("request2").addClass("request1");
+        }
+
+        if (fill == false) {
+            msg = "请填写必填项";//alertJson[0].msg_mandatoryField;
+            alert(msg);
+        }
+        else {             
+        
+        }
+        return fill;
+    }
+   
+    function RegisterAdd() {
+        debugger;
+            AddRegister(""); 
+        return false;
+    }
+</script>
+
+
+<div class="centcontent">
+    <div id="detail_main" class="wrapper">
+        <div class="content_5">
+            <form id="frmRegister" action="Register">
+                <div class="listform">
+                    <dl>
+                        <dd>
+                            <div class="reg_tit">
+                                用户名：<label class="reg_small">
+                                    *</label>
+                            </div>
+
+                            <div class="reg_con">
+                                <input id="txtUserName" name="UserName" type="text" class="ipt_w" />                              
+                            </div>
+
+                        </dd>
+
+                        <dd>
+                            <div class="reg_tit">
+                                Email:
+                                <label class="reg_small">*</label>
+                            </div>
+                            <div class="reg_con">
+                                <input id="txtEmail" name="Email" type="text" value="@ViewBag.strEmail" class="ipt_w" />                              
+                            </div>
+                        </dd>
+                        <dd>
+                            <div class="reg_tit">
+                                密码：<label class="reg_small">*</label>
+                            </div>
+                            <div class="reg_con">
+                                <div class="loginFormIpt showPlaceholder">
+                                    <span class="loginFormIpt showPlaceholder">
+                                        <input id="txtPassword" type="password" name="Password" />
+                                        <label id="lblPass" class="placeholder1" for="txtPassword">
+                                            请输入8位密码
+                                        </label>
+                                    </span><span class="loginFormIpt showPlaceholder">
+                                        <input id="txtRePassword" type="password" name="RePassword" />
+                                        <label id="lblRePass" class="placeholder1" for="txtRePassword">
+                                            请再次输入8位密码
+                                        </label>
+                                    </span>
+                                </div>
+                                <p class="Password_note">
+                                    密码规则
+                                </p>
+                            </div>
+                        </dd>
+
+                        <dd>
+                            <div class="reg_tit">
+                                阅读协议<label class="reg_small">*</label>
+                            </div>
+                            <div class="reg_con">
+                                <div id="divPy" class="request1">
+                                    <input id="ckbPolicy" type="checkbox" value="on" class="chenkbox" />
+                                    同意协议<a href="#">协议内容</a>
+
+                                </div>
+                            </div>
+                        </dd>
+                        <dd>
+                            <div class="reg_con">
+                                <div>
+                                    <a href="javascript:void(0);" onclick="RegisterAdd();" id="btnSubmit">提交</a>
+                                </div>
+                            </div>
+                        </dd>
+                    </dl>
+                </div>
+            </form>
+        </div>  
+        <div class="clear"></div>      
+    </div>
+</div>
+

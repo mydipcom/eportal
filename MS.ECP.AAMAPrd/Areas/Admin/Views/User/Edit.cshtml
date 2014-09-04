@@ -1,0 +1,101 @@
+﻿@model MS.ECP.Model.UserInfo
+@using MS.ECP.Web.Areas.Admin.Controllers
+@{
+    ViewBag.Title = "User Edit";
+
+}
+ @section scripts
+ {
+
+     <script type="text/javascript">
+         jQuery(function() {
+             kriesi_tab('#content', '.jquery_tab_title', '.jquery_tab'); /*remove this if you dont want to have jquery tabs*/
+             kriesi_closeable_divs(".closeable"); /*remove this if you dont want message box to be closeable*/
+         });
+     </script>
+ }
+
+    @using (Html.BeginForm("Save", "User"))
+    {
+        <div id="content">
+            <div class="jquery_tab">
+                <div class="content_block">
+                    <h2 class="jquery_tab_title">User Edit</h2>
+                    <p>
+                        <label for="language">
+                            用户名 UserName</label>
+                        @Html.TextBoxFor(model => model.UserName, new {@class = "input-medium"}) 
+                    </p>
+                    <p>
+                        <label for="title">
+                            邮箱地址 Email</label>
+                        @Html.TextBoxFor(model => model.Email, new {@class = "input-medium"})
+                        @Html.ValidationMessageFor(model => model.Email)
+                    </p>
+                    <p>
+                        <label for="title">
+                            名字 First Name</label>
+                        @Html.TextBoxFor(model => model.FirstName, new {@class = "input-medium"})
+                        @Html.ValidationMessageFor(model => model.FirstName)
+                    </p>
+                    <p>
+                        <label for="title">
+                            姓氏 Last Name</label>
+                        @Html.TextBoxFor(model => model.LastName, new {@class = "input-medium"})
+                        @Html.ValidationMessageFor(model => model.LastName)
+                    </p>
+                    <p>
+                        <label for="title">
+                            联系电话 Phone Number</label>
+                        @Html.TextBoxFor(model => model.PhoneNumber, new {@class = "input-medium"})
+                        @Html.ValidationMessageFor(model => model.PhoneNumber)
+                    </p>
+                    <p>
+                        <label for="title">
+                            用户类型 User Type</label>
+                        @Html.DropDownListFor(model => model.UserType, (SelectList) ViewBag.AllType)
+                    </p>
+                    <p>
+                        <label for="title">
+                            用户状态 Status</label>
+                        @Html.DropDownListFor(model => model.Status, (SelectList) ViewBag.AllStatus)
+                    </p>
+                    <p>
+                        <input class="button" name="submit" type="submit" value="Submit" id="Submit1" /> 
+                        <input class="button" name="back" type="button" value="Back" onclick=" location.href = '' " />
+                    </p>
+                </div>
+                <!--end content_block-->
+            </div>
+            <!--end jquery tab-->
+            <div class="jquery_tab">
+                <div class="content_block">
+                    <h2 class="jquery_tab_title">Property</h2>
+                    <p>
+                        <label for="keywords">
+                            keywords</label>
+                        @Html.TextBox("txtKeywords", null, new {@class = "input-big"})
+                    </p>
+                    <p>
+                        <label for="description">
+                            description</label>
+                        @Html.TextBox("txtDesc", null, new {@class = "input-big"})
+                    </p>
+                    <p>
+                        <label for="click">
+                            hits</label>
+                        @Html.TextBox("txtHits", null, new {@class = "input-big"})
+                    </p>
+                    <p>
+                        <input class="button" name="submit" type="submit" value="Submit" id="btnSubmit2" />
+                    </p>
+                </div>
+            </div>
+        </div>
+        @Html.HiddenFor(model => model.ID)
+        @Html.HiddenFor(model => model.Guid)
+        @Html.HiddenFor(model => model.Password)
+        @Html.HiddenFor(model => model.CreateTime)
+        @Html.HiddenFor(model => model.UpdateTime)
+        <!--end content-->
+    }

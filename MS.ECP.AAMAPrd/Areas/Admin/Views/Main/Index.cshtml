@@ -1,0 +1,135 @@
+﻿@{
+    ViewBag.Title = "管理首页";
+    Layout = null;
+}
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+    <title>Content Managent System - AAMA</title>
+     <link rel="stylesheet" href="@Url.Content("~/Content/Admin/css/style_all.css")" type="text/css" media="screen" />
+     <link rel="stylesheet" href="@Url.Content("~/Content/Admin/css/style1.css")" type="text/css" media="screen" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/Admin/css/jquery-ui.css")" type="text/css" media="screen" />
+
+    <script type="text/javascript"  src="@Url.Content("~/Scripts/jquery-1.7.2.min.js")"></script> 
+    <script type='text/javascript' src="@Url.Content("~/Content/Admin/js/jquery-ui.js")"></script>
+    <script type='text/javascript' src="@Url.Content("~/Content/Admin/js/custom.js")"></script>
+    
+
+
+    <script type="text/javascript">
+        
+        function ChangeiHeight(iframe) {
+            var iframeHeight = Math.min(iframe.contentWindow.window.document.documentElement.scrollHeight, iframe.contentWindow.window.document.body.scrollHeight);
+          var iframeWidth = Math.min(iframe.contentWindow.window.document.documentElement.scrollWidth, iframe.contentWindow.window.document.body.scrollWidth);
+          $("#myframe,#main").height(iframeHeight);
+          $("#myframe,#main").width(iframeWidth);
+        }
+
+
+
+        function changeiContentifame(height) {
+            $("#myframe,#main").height(height);
+        }
+
+
+        function iLink(url, obj) {
+            $("#myframe").attr("src", url);
+        }
+
+
+        $(function() {
+            kriesi_navigation(".nav"); //remove this if you dont want a jquery sidebar menu#2#
+            jQuery(".flexy_datepicker, .flexy_datepicker_input").datepicker(); //datepicker input field and box
+            jQuery(".nav>li>ul>li").click(function() {
+                jQuery(".nav li").removeClass("current");
+                jQuery(this).addClass("current");
+            });
+
+
+            $("#sidebar").click(function() {
+                jQuery('body,html').animate({ scrollTop: 164 }, 300);
+            });
+
+        });
+
+    </script>
+
+    
+
+</head>
+
+<body>
+    <!-- this is the content for the dialog that pops up on window start -->
+    <div id="dialog" title="Welcome to flexy admin">
+        <p>Hello admin! welcome back.<br />
+            You got <strong>1 new Message</strong> in your inbox</p>
+        <p>This is a messagebox, you can fill it with content of your choice ;)</p>
+    </div>
+    <div id="top">
+        <div id="head">
+            <h1 class="logo">
+                <a href="/">Mission sky</a>
+            </h1>
+            <div class="head_memberinfo">
+                <div class="head_memberinfo_logo">
+                    <span></span>
+                    <img src="@Url.Content("~/Content/Admin/images/unreadmail.png")" alt=""/>
+                </div>
+
+                <span class='memberinfo_span'>Welcome <a href="javascript:void(0);">@User.Identity.Name</a>
+                </span>
+                <span class='memberinfo_span'>
+                    <a href="@Url.Action("Index","Main")">Dashboard</a>
+                </span>
+                <span>
+                    <a href="@Url.Action("LogOn","Main")">Sign out</a>
+                </span>
+            </div>
+            <!--end head_memberinfo-->
+        </div>
+        <!--end head-->
+        <div id="bg_wrapper">
+
+            <div id="main">
+                <div id="content"> 
+                    <iframe id="myframe" width="100%" name="myframe" height="100%" src="@Url.Action("DashBoard", "Main")" frameborder="0" scrolling="no" onload="ChangeiHeight(this);" frameborder="no" allowTransparency="true"></iframe>
+                </div>
+            </div>
+            <!--end main-->
+            <div id="sidebar">
+                <ul class="nav">
+                    <li><a class="headitem item3" href="#">Content Management</a>
+                        <ul class="opened">
+                            <li><a href="javascript:iLink('@Url.Action("List", "Event")')">Event Management</a></li>  
+                            <li><a href="javascript:iLink('@Url.Action("List", "News")')">UpComing Event Management</a></li>
+                            <li><a href="javascript:iLink('@Url.Action("List", "MultiNews")')">News Management</a></li>
+                             <li><a href="javascript:iLink('@Url.Action("List", "NewsCampaign")')">Join Part Management</a></li>
+                            <li><a href="javascript:iLink('@Url.Action("List", "AboutUs")')">About Us Management</a></li>
+                        </ul>
+                    </li>
+                    <li><a class="headitem item2" href="#">Settings</a>
+                        <ul >
+                            <li><a href="javascript:iLink('@Url.Action("List", "Resource")')">WebSite Settings</a></li>
+                         
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!--end sidebar-->
+        </div>
+        <!--end bg_wrapper-->
+        <div id="footer">
+
+        </div>
+       <!--end footer-->
+    </div>
+    <!-- end top -->
+</body>
+
+</html>
+

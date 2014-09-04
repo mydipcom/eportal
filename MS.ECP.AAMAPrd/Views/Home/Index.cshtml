@@ -1,0 +1,169 @@
+﻿@using MS.ECP.Utility;
+@using MS.ECP.BLL;
+@using MS.ECP.Model;
+@using System.Data;
+@model MS.ECP.AAMAPrd.Models.IndexViewModel
+
+@{
+    var reHelper = new ResourcesHelper("Common");
+}
+
+<script type="text/javascript">
+    $(function () {
+        $('#advertisement').roundabout({
+            btnPrev: $(".banner-prev"),
+            btnNext: $(".banner-next"),
+            autoplay: true,
+            autoplayDuration: 5000,
+            minOpacity: 1.0,
+            minScale: 0.08
+        });
+
+      
+    });
+</script>
+<style type="text/css">
+    .banner-prev {
+        position: absolute;
+        left: 0;
+        top: 150px;
+        width: 23px;
+        height: 58px;
+        background: url(../images/pre_btn.png) no-repeat;
+        z-index: 999;
+    }
+
+    .banner-next {
+        position: absolute;
+        right: 10px;
+        top: 150px;
+        width: 23px;
+        height: 58px;
+        background: url(../images/next_btn.png) no-repeat;
+        z-index: 999;
+    }
+</style>
+<!-- START SLIDER -->
+
+<div id="slider">
+
+    <div class="inner">
+
+        <!-- START PANEL -->
+        <div class="container clearfix">
+            <div class="wrap">
+                <div class="banner">
+                    <ul id="advertisement">
+                        <li><span class="pic">
+                            <img src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/images/content/banner1.png")" /></span></li>
+                        <li><span class="pic">
+                            <img src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/images/content/banner2.png")" /></span></li>
+                        <li><span class="pic">
+                            <img src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/images/content/banner3.png")" /></span></li>
+                    </ul>
+                    <a href="#" class="banner-prev"></a>
+                    <a href="#" class="banner-next"></a>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+
+</div>
+ <!--
+     <div id="nav-slider">
+
+    <div class="inner">
+
+        <!-- START NAV SLIDER -
+       
+            <ul>
+                <li><h6><b>@*reHelper.GetString("aama_index_lab_lb_busi_network_caption")</b></h6></li>
+                <li><h6><b>@reHelper.GetString("aama_index_lab_lb_entrepreneur_caption")</b></h6></li>
+                <li><h6><b>@reHelper.GetString("aama_index_lab_lb_professional_caption")</b></h6></li>
+                <li><h6><b>@reHelper.GetString("aama_index_lab_lb_investment_caption")</b></h6></li>
+                <li><h6><b>@reHelper.GetString("aama_index_lab_lb_community_caption")</b></h6></li></ul> *@
+          
+       
+        <!-- END NAV SLIDER 
+    </div>
+
+    <div class="clear"></div>
+
+</div>
+-->
+
+<!-- END SLIDER -->
+
+<!-- END SLIDER -->
+
+<!-- START CONTENT -->
+<div id="content">  
+    <div class="inner">
+        
+        
+        <!-- BOX SECTION -->
+        <div class="box-sections">
+            <img src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/images/icons/icon2.gif")" alt="" class="icon" />
+            <h2><a href="@Url.Action("events", "home")">@reHelper.GetString("aama_menu_lbl_mutilnews")</a></h2>
+            <h3><p style="margin-left: 80px; font-size: 0.6em;">
+
+                    @foreach (var eventitem in Model.MultiNews)
+                    {
+                        <a href="@Url.Action("MultiNewsDetail", "Home", new { langGuid =eventitem.LangGuid})">@eventitem.Title</a> <br />   
+                    } 
+                </p>
+            </h3>
+        </div>
+        <!-- END BOX SECTION -->
+        
+        
+
+        <!-- BOX SECTION -->
+        <div class="box-sections">
+            <img src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/images/icons/icon1.gif")" alt="" class="icon" />
+
+            <h2>
+                <a href="@Url.Action("News", "home", new { langGuid =Model.News.Count==0?"":Model.News.FirstOrDefault().LangGuid})">@reHelper.GetString("aama_menu_lbl_news")</a>
+            </h2>
+            
+
+            <h3>
+                <p style="margin-left: 80px; font-size: 0.6em;">
+                    @foreach (var newtitle in Model.News)
+                    {
+                        <a href="@Url.Action("News", "home", new {langGuid = newtitle.LangGuid})">@newtitle.Title</a> <br />
+                    }
+                </p>
+            </h3>
+        </div>
+        <!-- END BOX SECTION -->
+
+
+        <!-- BOX SECTION -->
+        <div class="box-sections last">
+            <a><img src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/images/icons/icon4.gif")" alt="" class="icon" /></a>
+            <h4>@reHelper.GetString("aama_index_lab_lb_sponsors")</h4>
+            <p style="margin-left: 80px">
+                <a href="http://big.­baf.­cuhk.­edu.­hk/" target="_blank">
+                    <img style="height:50px;width:150px;" src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/images/icons/Center-Logo.png")" alt="" class="icon" /></a>
+                <br />
+                <a href="http://www.deloitte.com/" target="_blank">
+                    <img style="height:50px;width:150px;" src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/images/icons/Deloittelogo.jpg")" alt="" class="icon" /></a>
+                <br />
+                <a href="http://www.united.com/" target="_blank">
+                    <img style="height:auto;width:150px;" src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/images/icons/united_6p_4c.jpg")" alt="" class="icon" /></a>
+                <br />
+                <a href="http://www.­verisilicon.­com/" target="_blank">
+                    <img style="height:50px;width:150px;" src="@Url.Content("~/Content/" + ResourcesHelper.GetLang() + "/images/icons/verisilicon.jpg")" alt="" class="icon" /></a>
+            </p>
+        </div>
+
+        <div class="clear"></div>
+    </div>
+
+</div>
+<p id="otherAAMA">
+    <a href="http://www.aamasv.com/" target="_blank">@reHelper.GetString("aama_outside_lab_usa")</a> | <a href="http://www.aamachina.com.cn/" target="_blank">@reHelper.GetString("aama_outside_lab_beijing")</a> | <a href="http://www.aamash.com/en/" target="_blank">@reHelper.GetString("aama_outside_lab_shanghai") </a>| <a href="http://www.aamataipei.com.tw/" target="_blank">@reHelper.GetString("aama_outside_lab_taibei")</a>
+</p>

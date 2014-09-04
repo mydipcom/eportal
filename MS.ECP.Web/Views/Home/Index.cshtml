@@ -1,0 +1,123 @@
+﻿@using MS.ECP.Utility;
+@using MS.ECP.Web.WebHelp
+@model MS.ECP.Web.Models.IndexViewModel
+@{
+    if (!String.IsNullOrEmpty(LanageCommon.HomeSeoTitle))
+    {
+        ViewBag.Title = LanageCommon.HomeSeoTitle;
+    }
+
+    if (!String.IsNullOrEmpty(LanageCommon.HomeSeoKeywords))
+    {
+        ViewBag.Keywords = LanageCommon.HomeSeoKeywords;
+    }
+
+
+    if (!String.IsNullOrEmpty(LanageCommon.HomeSeoDescription))
+    {
+        ViewBag.Description = LanageCommon.HomeSeoDescription;
+    }
+
+} 
+
+@section scripts{
+    <script type="text/javascript" src="@Url.Content("~/Content/Scripts/showsBanner.js")"></script> 
+}
+
+
+<!-- banner -->
+<div class="banner" id="pcList">
+    <div id="slide-index">          
+        <div class="slides">
+            <div class="slide autoMaxWidth" links=[{left:'30px',top:'81px'},{left:'30px',top:'244px'},{direction:'tb'}]>
+                <!-- banner text -->
+                <div class="banner_text_position">
+                    <div class="banner_cloud_container">
+                        <div class="banner_text_title">@LanageCommon.IndexLabLbCloudCaption</div>
+                        <div class="banner_text_info">
+                       @LanageCommon.IndexLabLbCloud
+                        </div>
+                        <div class="banner_text_more"><a href="@LanageCommon.LinkmoreLblCloud">@LanageCommon.SysLabReadmore >></a></div>
+                    </div>
+                </div>	
+                <!-- end banner text -->  		 
+                <div class="image" id='bi_0'><img src="/Content/Image/banner/banner01.jpg" alt="@LanageCommon.IndexLabLbCloud" /></div>			
+                <div class="text" id='bt_0'></div> 
+                <div class="button" id='bb_0'></div>
+            </div>
+            <div class="slide autoMaxWidth" links=[{left:'30px',top:'81px'},{left:'30px',top:'244px'},{direction:'tb'}]>
+                <!-- banner text -->
+                <div class="banner_text_position">
+                    <div class="banner_business_container">
+                        <div class="banner_text_title">@LanageCommon.IndexLabLbEcommerceCaption</div>
+                        <div class="banner_text_info">
+                              @LanageCommon.IndexLabLbEcommerce
+                        </div>
+                        <div class="banner_text_more"><a href="@LanageCommon.LinkmoreLblEcommerce">@LanageCommon.SysLabReadmore >></a></div>
+                    </div>
+                </div>	
+                <!-- end banner text -->  			  		
+                <div class="image" id='bi_1'><img src="/Content/Image/banner/banner02.jpg" alt="@LanageCommon.IndexLabLbEcommerce" /></div>			
+                <div class="text" id='bt_1'></div>
+                <div class="button" id='bb_1'></div>
+            </div>
+            <div class="slide autoMaxWidth" links=[{left:'30px',top:'81px'},{left:'30px',top:'244px'},{direction:'tb'}]>	
+                <!-- banner text -->
+                <div class="banner_text_position">
+                    <div class="banner_data_container">
+                        <div class="banner_text_title">@LanageCommon.IndexLabLbBigdataCaption</div>
+                        <div class="banner_text_info">
+                           @LanageCommon.IndexLabLbBigdata
+                        </div>
+                        <div class="banner_text_more"><a href="@LanageCommon.LinkmoreLblBigdata">@LanageCommon.SysLabReadmore >></a></div>
+                    </div>
+                </div>	
+                <!-- end banner text -->  		  		
+                <div class="image" id='bi_2'><img src="/Content/Image/banner/banner03.jpg" alt="@LanageCommon.IndexLabLbBigdataCaption" /></div>			
+                <div class="text" id='bt_2'></div>
+                <div class="button" id='bb_2'></div>
+            </div>
+        </div>
+        <div class="control">   
+            <a href=""></a><a href=""></a><a href=""></a>
+        </div>
+    </div>			
+</div>
+<!-- end banner -->
+
+
+
+
+
+
+<!-- business -->
+<div class="business">
+    <div class="business_container">
+        <div class="business_type">
+            <div class="business_title">@LanageCommon.IndexLabTechnolgy1Caption</div>
+            <div class="business_pic"><img src="@Url.Content("~/Content/Image/business01.jpg")" alt="@LanageCommon.IndexLabTechnolgy1Caption" width="306" height="230" /></div>
+            <div class="business_info">
+                @LanageCommon.IndexLabTechnolgy1
+            </div>
+            <div class="more_text"><a class="more" href="@LanageCommon.LinkmoreLblSamrtcity">@LanageCommon.SysLabReadmore >></a></div> 
+        </div>
+        <div class="business_type">
+            <div class="business_title">@LanageCommon.IndexLabTechnolgy2Caption</div>
+            <div class="business_pic"><img src="@Url.Content("~/Content/Image/business02.jpg")" alt="@LanageCommon.IndexLabTechnolgy1Caption" width="306" height="230" /></div>
+            <div class="business_info">
+               @LanageCommon.IndexLabTechnolgy2 
+            </div>
+            <div class="more_text"><a class="more" href="@LanageCommon.LinkmoreLblEcommerce2">@LanageCommon.SysLabReadmore >></a></div>
+        </div> 
+        <div class="business_type">
+            <div class="business_title">@LanageCommon.IndexLabTechnolgy3Caption</div>
+            <div class="business_pic"><img src="@Url.Content("~/Content/Image/business03.jpg")" alt="@LanageCommon.IndexLabTechnolgy1Caption" width="306" height="230" /></div>
+            <div class="business_info">
+              @LanageCommon.IndexLabTechnolgy3
+            </div>
+            <div class="more_text"><a class="more" href="@LanageCommon.LinkmoreLblMobileapp">@LanageCommon.SysLabReadmore >></a></div>
+        </div>
+        <div class="clear"></div> 
+    </div>
+    </div>
+<!-- end business -->
