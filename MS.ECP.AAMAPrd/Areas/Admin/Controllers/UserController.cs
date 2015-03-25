@@ -1,138 +1,175 @@
-﻿using System.Web.Mvc;
-
-namespace MS.ECP.AAMAPrd.Areas.Admin.Controllers
+﻿namespace MS.ECP.AAMAPrd.Areas.Admin.Controllers
 {
+    using MS.ECP.BLL;
+    using MS.ECP.Model;
+    using System;
+    using System.Runtime.CompilerServices;
+    using System.Runtime.InteropServices;
+    using System.Web.Mvc;
+
     public class UserController : BaseController
     {
-
-        private BLL.UserInfo userBLL = new BLL.UserInfo();
-
-        // GET: /Admin/User/
-
-        public ActionResult List()
-        {
-            return View();
-        }
+        private MS.ECP.BLL.UserInfo userBLL = new MS.ECP.BLL.UserInfo();
 
         public ActionResult Add()
         {
-            var statuslist = new[]{
-                new Status{Name = "无效的",Value=0},
-                new Status{Name = "有效的",Value=1}
+            Status[] statusArray2 = new Status[2];
+            Status status = new Status
+            {
+                Name = "无效的",
+                Value = 0
             };
-            ViewBag.AllStatus = new SelectList(statuslist, "Value", "Name");
-
-            var typelist = new[]{
-                new Type{Name = "管理员",Value=0},
-                new Type{Name = "普通用户",Value=1},
-                new Type{Name = "开发者",Value=2},
-                new Type{Name = "合作伙伴",Value=3},
-                new Type{Name = "服务客户",Value=4}
+            statusArray2[0] = status;
+            Status status2 = new Status
+            {
+                Name = "有效的",
+                Value = 1
             };
-            ViewBag.AllType = new SelectList(typelist, "Value", "Name");
+            statusArray2[1] = status2;
+            Status[] items = statusArray2;
+            ((dynamic)base.ViewBag).AllStatus = new SelectList(items, "Value", "Name");
+            Type[] typeArray2 = new Type[5];
+            Type type = new Type
+            {
+                Name = "管理员",
+                Value = 0
+            };
+            typeArray2[0] = type;
+            Type type2 = new Type
+            {
+                Name = "普通用户",
+                Value = 1
+            };
+            typeArray2[1] = type2;
+            Type type3 = new Type
+            {
+                Name = "开发者",
+                Value = 2
+            };
+            typeArray2[2] = type3;
+            Type type4 = new Type
+            {
+                Name = "合作伙伴",
+                Value = 3
+            };
+            typeArray2[3] = type4;
+            Type type5 = new Type
+            {
+                Name = "服务客户",
+                Value = 4
+            };
+            typeArray2[4] = type5;
+            Type[] typeArray = typeArray2;
+            ((dynamic)base.ViewBag).AllType = new SelectList(typeArray, "Value", "Name");
+            return base.View();
+        }
 
-            return View();
+        public ActionResult Del(int id = 0)
+        {
+            if (((id != 0) && (id >= 0)) && this.userBLL.Exists(id))
+            {
+                this.userBLL.Delete(id);
+            }
+            return base.RedirectToAction("List");
         }
 
         public ActionResult Edit(int id = 0)
         {
-            var statuslist = new[]{
-                new Status{Name = "无效的",Value=0},
-                new Status{Name = "有效的",Value=1}
+            Status[] statusArray2 = new Status[2];
+            Status status = new Status
+            {
+                Name = "无效的",
+                Value = 0
             };
-            ViewBag.AllStatus = new SelectList(statuslist, "Value", "Name");
-
-            var typelist = new[]{
-                new Type{Name = "管理员",Value=0},
-                new Type{Name = "普通用户",Value=1},
-                new Type{Name = "开发者",Value=2},
-                new Type{Name = "合作伙伴",Value=3},
-                new Type{Name = "服务客户",Value=4}
+            statusArray2[0] = status;
+            Status status2 = new Status
+            {
+                Name = "有效的",
+                Value = 1
             };
-            ViewBag.AllType = new SelectList(typelist, "Value", "Name");
-
-            Model.UserInfo model = null;
+            statusArray2[1] = status2;
+            Status[] items = statusArray2;
+            ((dynamic)base.ViewBag).AllStatus = new SelectList(items, "Value", "Name");
+            Type[] typeArray2 = new Type[5];
+            Type type = new Type
+            {
+                Name = "管理员",
+                Value = 0
+            };
+            typeArray2[0] = type;
+            Type type2 = new Type
+            {
+                Name = "普通用户",
+                Value = 1
+            };
+            typeArray2[1] = type2;
+            Type type3 = new Type
+            {
+                Name = "开发者",
+                Value = 2
+            };
+            typeArray2[2] = type3;
+            Type type4 = new Type
+            {
+                Name = "合作伙伴",
+                Value = 3
+            };
+            typeArray2[3] = type4;
+            Type type5 = new Type
+            {
+                Name = "服务客户",
+                Value = 4
+            };
+            typeArray2[4] = type5;
+            Type[] typeArray = typeArray2;
+            ((dynamic)base.ViewBag).AllType = new SelectList(typeArray, "Value", "Name");
+            MS.ECP.Model.UserInfo model = null;
             if (id > 0)
             {
-                model = userBLL.GetModel(id);
+                model = this.userBLL.GetModel(id);
             }
-
-            return View(model);
+            return base.View(model);
         }
 
-
-        #region Action
-        /// <summary>
-        /// Add/Edit User
-        /// </summary>
-        /// <param name="bews"></param>
-        /// <param name="formCollection"></param>
-        /// <returns></returns>
-        [HttpPost]
-        [ValidateInput(false)]
-        public ActionResult Save(Model.UserInfo user, FormCollection formCollection)
+        public ActionResult List()
         {
-            bool result;
+            return base.View();
+        }
 
-            if ((string.IsNullOrEmpty(user.UserName)) || (string.IsNullOrEmpty(user.Email)))
+        [ValidateInput(false), HttpPost]
+        public ActionResult Save(MS.ECP.Model.UserInfo user, FormCollection formCollection)
+        {
+            bool flag;
+            if (string.IsNullOrEmpty(user.UserName) || string.IsNullOrEmpty(user.Email))
             {
-                return RedirectToAction("Add");
+                return base.RedirectToAction("Add");
             }
-
             if (user.ID > 0)
             {
-                result = userBLL.Update(user);
+                flag = this.userBLL.Update(user);
             }
             else
             {
-                result = userBLL.Add(user);
+                flag = this.userBLL.Add(user);
             }
-
-            if (result)
+            if (flag)
             {
-                return RedirectToAction("List");
+                return base.RedirectToAction("List");
             }
-            else
-            {
-
-            }
-            return RedirectToAction("List");
+            return base.RedirectToAction("List");
         }
 
-        /// <summary>
-        /// Delete
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public ActionResult Del(int id = 0)
+        public class Status
         {
-            if (id == 0 || id < 0)
-            {
-                return RedirectToAction("List");
-            }
+            public string Name { get; set; }
 
-            if (!userBLL.Exists(id))
-            {
-                return RedirectToAction("List");
-            }
-
-            userBLL.Delete(id);
-
-            return RedirectToAction("List");
-
+            public int Value { get; set; }
         }
-
-        #endregion
-
 
         public class Type
         {
             public string Name { get; set; }
-            public int Value { get; set; }
-        }
-        public class Status
-        {
-            public string Name { get; set; }
+
             public int Value { get; set; }
         }
     }

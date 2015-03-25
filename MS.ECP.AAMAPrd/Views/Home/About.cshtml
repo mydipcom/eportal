@@ -93,8 +93,8 @@
                            {
                                @Html.Raw(String.Format(@"<li onclick=""getTab({0})"" id=""liContent{0}""><a href=""#""><b>{1}</b></a> </li>", i + 1, Model[i].LinkTitle));
                            } 
-                        <li  id="liContent998"><a href="/membership"><b>Member Program</b></a> </li> 
-                        <li onclick="getTab(999)" id="liContent999"><a href="#"><b>Registration</b></a> </li>
+                        <li  id="liContent998"><a href="@Url.Action("MemberProgram")"><b>会员章程</b></a> </li> 
+                        <li onclick="getTab(999)" id="liContent999"><a href="#"><b>入会申请</b></a> </li>
                     </ul>
                 </div>
             </div>

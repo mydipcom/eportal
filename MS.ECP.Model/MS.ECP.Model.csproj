@@ -42,7 +42,7 @@
   <ItemGroup>
     <Compile Include="AccountInfo.cs" />
     <Compile Include="CMS\Category.cs" />
-    <Compile Include="CMS\Event.cs" />
+    <Compile Include="CMS\CmsEvent.cs" />
     <Compile Include="CMS\Job.cs" />
     <Compile Include="CMS\News.cs" />
     <Compile Include="CMS\PageContent.cs" />

@@ -1,200 +1,129 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using MS.ECP.DALFactory;
-using MS.ECP.IDAL.CMS;
+﻿using MS.ECP.DALFactory;
 
-namespace MS.ECP.BLL.CMS  
+namespace MS.ECP.BLL.CMS
 {
-    public partial class Job
+    using MS.ECP.IDAL.CMS;
+    using MS.ECP.Model.CMS;
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+
+    public class Job
     {
         private readonly IJob dal = DataAccess.CreateJob();
 
-        public Job()
-        { }
-
-        #region  Method
-
-        /// <summary>
-        /// 得到最大ID
-        /// </summary>
-        public int GetMaxId()
+        public bool Add(MS.ECP.Model.CMS.Job model)
         {
-            return dal.GetMaxId();
+            return this.dal.Add(model);
         }
 
-        /// <summary>
-        /// 是否存在该记录
-        /// </summary>
-        public bool Exists(int ID)
+        public bool AddOrUpdate(MS.ECP.Model.CMS.Job model)
         {
-            return dal.Exists(ID);
-        }
-
-        /// <summary>
-        /// 增加一条数据
-        /// </summary>
-        public bool Add(Model.CMS.Job model)
-        {
-            return dal.Add(model);
-        }
-
-        /// <summary>
-        /// 更新一条数据
-        /// </summary>
-        public bool Update(Model.CMS.Job model)
-        {
-            return dal.Update(model);
-        }
-
-        /// <summary>
-        /// 更新一条数据
-        /// </summary>
-        public bool UpdateSeo(Model.CMS.Job model)
-        {
-            return dal.UpdateSeo(model);
-        }
-
-        /// <summary>
-        /// 添加或更新一条数据
-        /// </summary>
-        public bool AddOrUpdate(Model.CMS.Job model)
-        {
-            bool result;
             if (model.ID == 0)
             {
-                result = dal.Add(model);
-
+                return this.dal.Add(model);
             }
-            else
-            {
-                result = dal.Update(model);
-            }
-            return result;
+            return this.dal.Update(model);
         }
 
-        /// <summary>
-        /// 删除一条数据
-        /// </summary>
         public bool Delete(int ID)
         {
-            return dal.Delete(ID);
+            return this.dal.Delete(ID);
         }
 
-        /// <summary>
-        /// 根据LangGuid删除数据
-        /// </summary>
         public bool DeleteByLangGuid(string langGuid)
         {
-            return dal.DeleteByLangGuid(langGuid);
+            return this.dal.DeleteByLangGuid(langGuid);
         }
 
-        /// <summary>
-        /// 批量删除数据
-        /// </summary>
         public bool DeleteList(string IDlist)
         {
-            return dal.DeleteList(IDlist);
+            return this.dal.DeleteList(IDlist);
         }
 
-        /// <summary>
-        /// 根据ID得到一个对象实体
-        /// </summary>
-        public Model.CMS.Job GetModelByID(int ID)
+        public bool Exists(int ID)
         {
-
-            return dal.GetModel(ID);
+            return this.dal.Exists(ID);
         }
 
-        /// <summary>
-        /// 根据LangGuid得到一个对象实体
-        /// </summary>
-        public Model.CMS.Job GetModelByLangGuidAndLangCode(string langGuid, string languageCode)
+        public IList<MS.ECP.Model.CMS.Job> GetAllList()
         {
-            return dal.GetModelByGuid(langGuid, languageCode);
-        }
-         
-        /// <summary>
-        /// 根据Language得到一个对象实体
-        /// </summary>
-        public Model.CMS.Job GetModelByLangCode(string LanguageCode)
-        {
-            return dal.GetDefaultModelByLang(LanguageCode);
+            return this.GetList("");
         }
 
-        /// <summary>
-        /// 得到一个对象实体，从缓存中
-        /// </summary>
-        public Model.CMS.Job GetModelByCache(int ID)
-        {
-            return dal.GetModelByCache(ID);
-        }
-
-        /// <summary>
-        /// 获得数据列表
-        /// </summary>
-        public IList<Model.CMS.Job> GetList(string strWhere)
-        {
-            return dal.GetList(strWhere);
-        }
-
-        /// <summary>
-        /// 获取总记录数
-        /// </summary>
-        public int GetRecordCount(string strWhere)
-        {
-            return dal.GetRecordCount(strWhere);
-        }
-
-        /// <summary>
-        /// 获得分页数据列表
-        /// </summary>
-        public IList<Model.CMS.Job> GetListByPage(string strWhere, int startIndex, int endIndex)
-        {
-            return dal.GetListByPage(strWhere, startIndex, endIndex);
-        }
-
-        //// <summary>
-        /// 获得数据列表
-        /// </summary>
-        public IList<Model.CMS.Job> GetAllList()
-        {
-            return GetList("");
-        }
-
-        /// <summary>
-        /// 根据Language获得分页数据列表
-        /// </summary>
-        public IList<Model.CMS.Job> GetPagingByLangCode(int startIndex, int endIndex, string orderby, string LangCode)
-        {
-            return dal.GetPagingByLangCode(startIndex, endIndex, orderby, LangCode);
-        }
-        /// <summary>
-        /// 根据Language获得前几行数据
-        /// </summary>
-        public IList<Model.CMS.Job> GetPagingByLangCode(int Top, string orderby, string LangCode)
-        {
-            return dal.GetPagingByLangCode(Top, orderby, LangCode);
-        }
-
-
-        /// /////////////////////////////////////
         public DataSet GetALLList()
         {
-            return dal.GetDataSet("");
+            return this.dal.GetDataSet("");
         }
+
+        public IList<MS.ECP.Model.CMS.Job> GetList(string strWhere)
+        {
+            return this.dal.GetList(strWhere);
+        }
+
+        public IList<MS.ECP.Model.CMS.Job> GetListByPage(string strWhere, int startIndex, int endIndex)
+        {
+            return this.dal.GetListByPage(strWhere, startIndex, endIndex);
+        }
+
         public DataSet GetListDataSet(string strWhere)
         {
-            return dal.GetDataSet(strWhere);
+            return this.dal.GetDataSet(strWhere);
         }
+
         public DataSet GetListPaging(string strWhere, int startIndex, int endIndex)
         {
-            return dal.GetListDataSetByPage(strWhere, startIndex, endIndex);
+            return this.dal.GetListDataSetByPage(strWhere, startIndex, endIndex);
         }
 
+        public int GetMaxId()
+        {
+            return this.dal.GetMaxId();
+        }
 
-        #endregion
+        public MS.ECP.Model.CMS.Job GetModelByCache(int ID)
+        {
+            return this.dal.GetModelByCache(ID);
+        }
+
+        public MS.ECP.Model.CMS.Job GetModelByID(int ID)
+        {
+            return this.dal.GetModel(ID);
+        }
+
+        public MS.ECP.Model.CMS.Job GetModelByLangCode(string LanguageCode)
+        {
+            return this.dal.GetDefaultModelByLang(LanguageCode);
+        }
+
+        public MS.ECP.Model.CMS.Job GetModelByLangGuidAndLangCode(string langGuid, string languageCode)
+        {
+            return this.dal.GetModelByGuid(langGuid, languageCode);
+        }
+
+        public IList<MS.ECP.Model.CMS.Job> GetPagingByLangCode(int Top, string orderby, string LangCode)
+        {
+            return this.dal.GetPagingByLangCode(Top, orderby, LangCode);
+        }
+
+        public IList<MS.ECP.Model.CMS.Job> GetPagingByLangCode(int startIndex, int endIndex, string orderby, string LangCode)
+        {
+            return this.dal.GetPagingByLangCode(startIndex, endIndex, orderby, LangCode);
+        }
+
+        public int GetRecordCount(string strWhere)
+        {
+            return this.dal.GetRecordCount(strWhere);
+        }
+
+        public bool Update(MS.ECP.Model.CMS.Job model)
+        {
+            return this.dal.Update(model);
+        }
+
+        public bool UpdateSeo(MS.ECP.Model.CMS.Job model)
+        {
+            return this.dal.UpdateSeo(model);
+        }
     }
 }

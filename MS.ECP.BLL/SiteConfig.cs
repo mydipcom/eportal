@@ -1,32 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.IO;
-using System.Web;
-using MS.ECP.Common;
-using MS.ECP.Model;
-using MS.ECP.IDAL;
-using MS.ECP.DALFactory;
+﻿using MS.ECP.DALFactory;
 
 namespace MS.ECP.BLL
 {
+    using MS.ECP.Common;
+    using MS.ECP.IDAL;
+    using MS.ECP.Model;
+    using System;
+
     public class SiteConfig
     {
         private readonly ISiteConfig dal = DataAccess.CreateSiteConfig();
 
-        /// <summary>
-        ///  读取配置文件
-        /// </summary>
-        public Model.SiteConfig loadConfig(string configFilePath)
+        public MS.ECP.Model.SiteConfig loadConfig(string configFilePath)
         {
-            Model.SiteConfig model = Common.DataCache.Get<Model.SiteConfig>("ms_cache_site_config");
-            if (model == null)
+            MS.ECP.Model.SiteConfig config = DataCache.Get<MS.ECP.Model.SiteConfig>("ms_cache_site_config");
+            if (config == null)
             {
-                Common.DataCache.SetCache("ms_cache_site_config", dal.loadConfig(configFilePath), configFilePath);
-                model = Common.DataCache.Get<Model.SiteConfig>("ms_cache_site_config");
+                DataCache.SetCache("ms_cache_site_config", this.dal.loadConfig(configFilePath), configFilePath);
+                config = DataCache.Get<MS.ECP.Model.SiteConfig>("ms_cache_site_config");
             }
-            return model;
+            return config;
         }
-
     }
 }

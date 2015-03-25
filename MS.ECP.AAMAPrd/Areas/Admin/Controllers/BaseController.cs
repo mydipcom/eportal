@@ -1,44 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Web.Mvc;
-
-namespace MS.ECP.AAMAPrd.Areas.Admin.Controllers
+﻿namespace MS.ECP.AAMAPrd.Areas.Admin.Controllers
 {
+    using MS.ECP.Bll.EntityContext;
+    using System;
+    using System.Web.Mvc;
+
     public class BaseController : Controller
     {
-        public string AreaName
+        protected readonly AAMAPrdContext Contentx = new AAMAPrdContext();
+        protected const int LanguageSelect = 2;
+        protected const int Pagesize = 10;
+
+        protected DateTime DateTimeFormat(string dateTime)
         {
-            get
-            {
-                return "Admin";
-            }
+            DateTime time;
+            DateTime.TryParse(dateTime, out time);
+            return time;
         }
 
-        public string ControllerName
+        protected string DateToString(DateTime dateTime)
         {
-            get
-            {
-                return Request.RequestContext.RouteData.Values["Controller"].ToString();
-            }
+            return dateTime.ToString("yyyy-MM-dd HH:mm:ss");
         }
 
-        public string ActionName
+        protected void SaveChange()
         {
-            get
-            {
-                return Request.RequestContext.RouteData.Values["Action"].ToString();
-            }
+            this.Contentx.SaveChanges();
         }
-
-        public int cid
-        {
-            get
-            {
-                return Convert.ToInt32(Request.RequestContext.RouteData.Values["cid"].ToString());
-            }
-        }
-
-
     }
 }

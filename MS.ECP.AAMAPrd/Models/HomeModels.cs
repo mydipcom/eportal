@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using MS.ECP.AAMAPrd.WebPager;
@@ -8,16 +9,18 @@ using MS.ECP.Model.CMS;
 
 namespace MS.ECP.AAMAPrd.Models
 {
+
     public class IndexViewModel
     {
         public IndexViewModel()
         {
-            MultiNews = new List<MultiNews>();
-            News = new List<News>();
+            this.MultiNews = new List<MS.ECP.Model.MultiNews>();
+            this.News = new List<MS.ECP.Model.CMS.News>();
         }
 
-        public IList<MultiNews> MultiNews { get; set; }
-        public IList<News> News { get; set; }
+        public IList<MS.ECP.Model.MultiNews> MultiNews { get; set; }
+
+        public IList<MS.ECP.Model.CMS.News> News { get; set; }
     }
 
 
@@ -25,24 +28,26 @@ namespace MS.ECP.AAMAPrd.Models
     {
         public EventViewModel()
         {
-            CurrentEvent = new Event();
-            EventTitles = new PagedList<Event>(new Event[0], 0, 0);
+            this.CurrentEvent = new CmsEvent();
+            this.EventTitles = new PagedList<CmsEvent>(new CmsEvent[0], 0, 0);
         }
 
-        public Event CurrentEvent { get; set; }
-        public PagedList<Event> EventTitles { get; set; }
+        public CmsEvent CurrentEvent { get; set; }
+
+        public PagedList<CmsEvent> EventTitles { get; set; }
     }
 
 
-    public class NewsViewModel 
+    public class NewsViewModel
     {
-        public NewsViewModel()  
+        public NewsViewModel()
         {
-            CurrentNews = new News();
-            NewsTitles = new PagedList<News>(new News[0], 0, 0);
+            this.CurrentNews = new News();
+            this.NewsTitles = new PagedList<News>(new News[0], 0, 0);
         }
 
         public News CurrentNews { get; set; }
+
         public PagedList<News> NewsTitles { get; set; }
     }
 
@@ -51,12 +56,16 @@ namespace MS.ECP.AAMAPrd.Models
     public class MultiNewsViewModel
     {
         public MultiNewsViewModel()
-        { 
-            CurrentNews = new MultiNews();
-            NewsTitles = new PagedList<MultiNews>(new MultiNews[0], 0, 0);
+        {
+            this.CurrentNews = new MultiNews();
+            this.NewsTitles = new PagedList<MultiNews>(new MultiNews[0], 0, 0);
         }
 
         public MultiNews CurrentNews { get; set; }
+
         public PagedList<MultiNews> NewsTitles { get; set; }
-    } 
+    }
+
+
+ 
 }

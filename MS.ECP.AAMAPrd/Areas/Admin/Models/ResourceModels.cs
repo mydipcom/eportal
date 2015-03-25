@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
-
-namespace MS.ECP.AAMAPrd.Areas.Admin.Models
+﻿namespace MS.ECP.AAMAPrd.Areas.Admin.Models
 {
+    using System;
+    using System.ComponentModel.DataAnnotations;
+    using System.Runtime.CompilerServices;
+
     public class ResourceViewModel
     {
         [Required]
@@ -17,23 +15,16 @@ namespace MS.ECP.AAMAPrd.Areas.Admin.Models
         [Display(Name = "Resource Key")]
         public string ResourceKey { get; set; }
 
-
-        [Display(Name = "Resource Value")]
-        [Required]
+        [Display(Name = "Resource Value"), Required]
         public string ResourceValue { get; set; }
-
-
-        [Display(Name = "keywords")]
-        [Required]
-        public string TxtKeywords { get; set; }
 
         [Display(Name = "description")]
         public string TxtDesc { get; set; }
 
         [Display(Name = "click")]
         public string TxtHits { get; set; }
+
+        [Required, Display(Name = "keywords")]
+        public string TxtKeywords { get; set; }
     }
-
-
-
 }

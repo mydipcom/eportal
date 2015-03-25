@@ -1,85 +1,61 @@
-﻿using System.Web.Mvc;
-using System.Web.Security;
-using MS.ECP.Utility;
-
-namespace MS.ECP.AAMAPrd.Areas.Admin.Controllers
+﻿namespace MS.ECP.AAMAPrd.Areas.Admin.Controllers
 {
+    using MS.ECP.BLL;
+    using MS.ECP.Model;
+    using MS.ECP.Utility;
+    using System;
+    using System.Web.Mvc;
+    using System.Web.Security;
+
     public class MainController : BaseController
     {
-
-        private BLL.UserInfo accountBLL = new BLL.UserInfo();
-        //
-        // GET: /Admin/Main/
-
-        public ActionResult LogOn()
-        {
-            return View();
-        }
-
-        //
-        // POST: /Admin/LogOn
-
-        [HttpPost]
-        public ActionResult LogOn(Model.AccountInfo model, string returnUrl)
-        {
-            if (ModelState.IsValid)
-            {
-                if (accountBLL.ValidateUserName(model.UserName, model.Password) && accountBLL.ValidatePassword(model.UserName, model.Password))
-                {
-
-                    FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
-                    if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
-                        && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
-                    {
-                        return Redirect(returnUrl);
-                    }
-                    else
-                    {
-                        return RedirectToAction("Index", "Main");
-                    }
-                }
-                else
-                {
-                    ModelState.AddModelError("", "提供的用户名或密码不正确。");
-                }
-            }
-
-            // 如果我们进行到这一步时某个地方出错，则重新显示表单
-            return View(model);
-        }
-
-        //
-        // GET: /Admin/LogOff
-
-        public ActionResult LogOff()
-        {
-            FormsAuthentication.SignOut();
-
-            return RedirectToAction("LogOn", "Main");
-        }
-
-
-
-        public ActionResult Index()
-        {
-            if (Session["UserName"] == null)
-            {
-                //return RedirectToAction("Login","User");
-            }
-            return View();
-        }
-
-        public ActionResult DashBoard()
-        {
-            return View();
-        }
+        private MS.ECP.BLL.UserInfo accountBLL = new MS.ECP.BLL.UserInfo();
 
         public ActionResult ClearCache()
         {
             ResourcesHelper.ClearCache("SysResource");
-
-            return RedirectToAction("Dashboard");
+            return base.RedirectToAction("Dashboard");
         }
 
+        public ActionResult DashBoard()
+        {
+            return base.View();
+        }
+
+        public ActionResult Index()
+        {
+            object obj1 = base.Session["UserName"];
+            return base.View();
+        }
+
+        public ActionResult LogOff()
+        {
+            FormsAuthentication.SignOut();
+            return base.RedirectToAction("LogOn", "Main");
+        }
+
+        public ActionResult LogOn()
+        {
+            return base.View();
+        }
+
+        [HttpPost]
+        public ActionResult LogOn(AccountInfo model, string returnUrl)
+        {
+            if (base.ModelState.IsValid)
+            {
+                if (this.accountBLL.ValidateUserName(model.UserName, model.Password) && this.accountBLL.ValidatePassword(model.UserName, model.Password))
+                {
+                    FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
+                    if (((base.Url.IsLocalUrl(returnUrl) && (returnUrl.Length > 1)) && (returnUrl.StartsWith("/") && !returnUrl.StartsWith("//"))) && !returnUrl.StartsWith(@"/\"))
+                    {
+                        return this.Redirect(returnUrl);
+                    }
+                    return base.RedirectToAction("Index", "Main");
+                }
+                base.ModelState.AddModelError("", "提供的用户名或密码不正确。");
+            }
+            return base.View(model);
+        }
     }
 }

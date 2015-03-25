@@ -44,6 +44,13 @@
                              @Html.ValidationMessageFor(model => model.EnTitle)
                          </p>
                     
+                         
+                         <p>
+                             @Html.LabelFor(m => m.EnCreateTime)
+                             @Html.TextBoxFor(m => m.EnCreateTime)
+                             @Html.ValidationMessageFor(model => model.EnCreateTime)
+                         </p>
+
                          <p>
                              @Html.LabelFor(m => m.EnContent) 
                          <div class="content paddingbottom22" >
@@ -74,6 +81,15 @@
                              @Html.TextBoxFor(m => m.ZhTitle)
                              @Html.ValidationMessageFor(model => model.ZhTitle)
                          </p>
+                         
+                         <p>
+                             @Html.LabelFor(m => m.ZhCreateTime)
+                             @Html.TextBoxFor(m => m.ZhCreateTime)
+                             @Html.ValidationMessageFor(model => model.ZhCreateTime)
+                         </p>
+
+                         
+
                          <p>
                              @Html.LabelFor(m => m.ZhContent)
                              <div class="content paddingbottom22" >

@@ -1,140 +1,165 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace MS.ECP.Model
+﻿namespace MS.ECP.Model
 {
-    /// <summary>
-    /// UserInfo:实体类(属性说明自动提取数据库字段的描述信息)
-    /// </summary>
-    [Serializable]
-    public partial class UserInfo
-    {
-        public UserInfo()
-        { }
+    using System;
 
-        #region Model
-        private int _id;
-        private string _guid;
-        private string _userName;
+    [Serializable]
+    public class UserInfo
+    {
+        private DateTime? _createtime = new DateTime?(DateTime.Now);
         private string _email;
         private string _firstname;
+        private string _guid;
+        private int _id;
         private string _lastname;
         private string _phonenumber;
-        private int _userType;
-        private int _status;
         private string _psd;
-        private DateTime? _createtime = DateTime.Now;
-        private DateTime? _updatetime = DateTime.Now;
+        private int _status;
+        private DateTime? _updatetime = new DateTime?(DateTime.Now);
+        private string _userName;
+        private int _userType;
 
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public int ID
-        {
-            set { _id = value; }
-            get { return _id; }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public string Guid
-        {
-            set { _guid = value; }
-            get { return _guid; }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public string UserName
-        {
-            set { _userName = value; }
-            get { return _userName; }
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string FirstName
-        {
-            set { _firstname = value; }
-            get { return _firstname; }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public string LastName
-        {
-            set { _lastname = value; }
-            get { return _lastname; }
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string PhoneNumber
-        {
-            set { _phonenumber = value; }
-            get { return _phonenumber; }
-        }
-        /// <summary>
-        /// 
-        /// </summary>
         public DateTime? CreateTime
         {
-            set { _createtime = value; }
-            get { return _createtime; }
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        public DateTime? UpdateTime
-        {
-            set { _updatetime = value; }
-            get { return _updatetime; }
+            get
+            {
+                return this._createtime;
+            }
+            set
+            {
+                this._createtime = value;
+            }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         public string Email
         {
-            set { _email = value; }
-            get { return _email; }
+            get
+            {
+                return this._email;
+            }
+            set
+            {
+                this._email = value;
+            }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
+        public string FirstName
+        {
+            get
+            {
+                return this._firstname;
+            }
+            set
+            {
+                this._firstname = value;
+            }
+        }
+
+        public string Guid
+        {
+            get
+            {
+                return this._guid;
+            }
+            set
+            {
+                this._guid = value;
+            }
+        }
+
+        public int ID
+        {
+            get
+            {
+                return this._id;
+            }
+            set
+            {
+                this._id = value;
+            }
+        }
+
+        public string LastName
+        {
+            get
+            {
+                return this._lastname;
+            }
+            set
+            {
+                this._lastname = value;
+            }
+        }
+
         public string Password
         {
-            set { _psd = value; }
-            get { return _psd; }
+            get
+            {
+                return this._psd;
+            }
+            set
+            {
+                this._psd = value;
+            }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public int UserType
+        public string PhoneNumber
         {
-            set { _userType = value; }
-            get { return _userType; }
+            get
+            {
+                return this._phonenumber;
+            }
+            set
+            {
+                this._phonenumber = value;
+            }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         public int Status
         {
-            set { _status = value; }
-            get { return _status; }
+            get
+            {
+                return this._status;
+            }
+            set
+            {
+                this._status = value;
+            }
         }
 
-        #endregion Model
+        public DateTime? UpdateTime
+        {
+            get
+            {
+                return this._updatetime;
+            }
+            set
+            {
+                this._updatetime = value;
+            }
+        }
 
+        public string UserName
+        {
+            get
+            {
+                return this._userName;
+            }
+            set
+            {
+                this._userName = value;
+            }
+        }
+
+        public int UserType
+        {
+            get
+            {
+                return this._userType;
+            }
+            set
+            {
+                this._userType = value;
+            }
+        }
     }
 }
-

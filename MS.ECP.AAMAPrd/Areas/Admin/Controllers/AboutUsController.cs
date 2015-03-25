@@ -1,186 +1,148 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Mvc;
-using MS.ECP.AAMAPrd.Areas.Admin.Models;
-using MS.ECP.AAMAPrd.Areas.Admin.WebHelp;
-using MS.ECP.AAMAPrd.WebPager;
-using MS.ECP.BLL.CMS;
-using MS.ECP.Model.CMS;
-
-namespace MS.ECP.AAMAPrd.Areas.Admin.Controllers
+﻿namespace MS.ECP.AAMAPrd.Areas.Admin.Controllers
 {
+    using MS.ECP.AAMAPrd.Areas.Admin.Models;
+    using MS.ECP.AAMAPrd.Areas.Admin.WebHelp;
+    using MS.ECP.BLL.CMS;
+    using MS.ECP.Model.CMS;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Runtime.InteropServices;
+    using System.Web.Mvc;
 
     public class AboutUsController : BaseController
     {
-        private readonly BLL.CMS.AboutusBll _aboutusBllBLL = new BLL.CMS.AboutusBll();
-        private const int Pagesize = 10;
+        private readonly AboutusBll _aboutusBllBLL = new AboutusBll();
         private const int LanguageSelect = 2;
+        private const int Pagesize = 10;
 
-        public ActionResult List()
+        private Tuple<Aboutus, Aboutus> AboutUsModelToAboutus(AboutUsModel model, Tuple<Aboutus, Aboutus> tuple)
         {
-            return View(_aboutusBllBLL.GetAllList() ?? new List<Aboutus>());
+            Aboutus aboutus = tuple.Item1 ?? new Aboutus();
+            aboutus.LinkTitle = model.EnTitle;
+            aboutus.Content = model.EnContent;
+            aboutus.SortOrder = new int?(model.EnSortOrder);
+            aboutus.LanguageCode = LanageConfig.EnLan;
+            Aboutus aboutus2 = tuple.Item2 ?? new Aboutus();
+            aboutus2.LinkTitle = model.ZhTitle ?? model.EnTitle;
+            aboutus2.Content = model.ZhContent ?? model.EnContent;
+            aboutus2.LanguageCode = LanageConfig.ZhLan;
+            aboutus2.SortOrder = new int?(model.ZhSortOrder);
+            return new Tuple<Aboutus, Aboutus>(aboutus, aboutus2);
         }
-
 
         public ActionResult Add()
         {
-            return View();
+            return base.View();
         }
 
-
-        [HttpPost]
-        [ValidateInput(false)]
+        [ValidateInput(false), HttpPost]
         public ActionResult Add(AboutUsModel model)
         {
-            if (!ModelState.IsValid) return View(model);
-
-            var datetimenow = DateTime.Now;
-            var languguid = Guid.NewGuid().ToString();
-
-            var enlishnews = new MS.ECP.Model.CMS.Aboutus()
+            if (!base.ModelState.IsValid)
             {
-                LangGuid = languguid,
+                return base.View(model);
+            }
+            DateTime now = DateTime.Now;
+            string str = Guid.NewGuid().ToString();
+            Aboutus aboutus = new Aboutus
+            {
+                LangGuid = str,
                 Guid = Guid.NewGuid().ToString(),
                 LinkTitle = model.EnTitle,
                 Content = model.EnContent,
                 LanguageCode = LanageConfig.EnLan,
                 Status = 0,
-                SortOrder = model.EnSortOrder
+                SortOrder = new int?(model.EnSortOrder)
             };
-
-            var zhnews = new Aboutus
+            Aboutus aboutus2 = new Aboutus
             {
-                LangGuid = languguid,
+                LangGuid = str,
                 Guid = Guid.NewGuid().ToString(),
                 LinkTitle = model.ZhTitle ?? model.EnTitle,
                 Content = model.ZhContent ?? model.EnContent,
                 LanguageCode = LanageConfig.ZhLan,
                 Status = 0,
-                SortOrder = model.ZhSortOrder
+                SortOrder = new int?(model.ZhSortOrder)
             };
-
-            _aboutusBllBLL.Add(enlishnews);
-            _aboutusBllBLL.Add(zhnews);
-
-            return RedirectToAction("List");
+            this._aboutusBllBLL.Add(aboutus);
+            this._aboutusBllBLL.Add(aboutus2);
+            return base.RedirectToAction("List");
         }
 
+        public ActionResult Del(int id = 0)
+        {
+            if (((id != 0) && (id >= 0)) && this._aboutusBllBLL.Exists(id))
+            {
+                this._aboutusBllBLL.Delete(id);
+            }
+            return base.RedirectToAction("List");
+        }
 
+        [HttpPost, ValidateInput(false)]
+        public ActionResult Edit(AboutUsModel model)
+        {
+            if (!base.ModelState.IsValid)
+            {
+                return base.View(model);
+            }
+            Tuple<Aboutus, Aboutus> tuple = this.AboutUsModelToAboutus(model, new Tuple<Aboutus, Aboutus>(this._aboutusBllBLL.GetModelByID(model.EnId), this._aboutusBllBLL.GetModelByID(model.ZhId)));
+            Aboutus aboutus = tuple.Item1;
+            Aboutus aboutus2 = tuple.Item2;
+            if ((aboutus.LangGuid == null) && (aboutus.ID == 0))
+            {
+                aboutus.Status = 0;
+                aboutus.Guid = Guid.NewGuid().ToString();
+                aboutus.LangGuid = Guid.NewGuid().ToString();
+                this._aboutusBllBLL.Add(aboutus);
+            }
+            if ((aboutus.LangGuid != null) && (aboutus.ID != 0))
+            {
+                this._aboutusBllBLL.Update(aboutus);
+            }
+            if (((aboutus2.LangGuid == null) && (aboutus2.ID == 0)) && (aboutus2.Content != aboutus.Content))
+            {
+                aboutus2.Status = 0;
+                aboutus2.Guid = Guid.NewGuid().ToString();
+                aboutus2.LangGuid = aboutus.LangGuid;
+                this._aboutusBllBLL.Add(aboutus2);
+            }
+            else if ((aboutus2.LangGuid != null) && (aboutus2.ID != 0))
+            {
+                aboutus2.LangGuid = aboutus.LangGuid;
+                this._aboutusBllBLL.Update(aboutus2);
+            }
+            return base.RedirectToAction("List");
+        }
 
         public ActionResult Edit(string languid)
         {
-            var lanlist = _aboutusBllBLL.GetTop(LanguageSelect, String.Format(" LangGuid='{0}' ", languid));
-            var newsViewModel = new AboutUsModel();
-            var elmodel = lanlist.FirstOrDefault(d => d.LanguageCode == LanageConfig.EnLan);
-            var zhmodel = lanlist.FirstOrDefault(d => d.LanguageCode == LanageConfig.ZhLan);
-            if (null != elmodel)
+            IList<Aboutus> top = this._aboutusBllBLL.GetTop(2, string.Format(" LangGuid='{0}' ", languid));
+            AboutUsModel model = new AboutUsModel();
+            Aboutus aboutus = top.FirstOrDefault<Aboutus>(d => d.LanguageCode == LanageConfig.EnLan);
+            Aboutus aboutus2 = top.FirstOrDefault<Aboutus>(d => d.LanguageCode == LanageConfig.ZhLan);
+            if (aboutus != null)
             {
-                newsViewModel.EnTitle = elmodel.LinkTitle;
-                newsViewModel.EnContent = elmodel.Content;
-                newsViewModel.EnId = elmodel.ID;
-                newsViewModel.EnSortOrder = elmodel.SortOrder??0;
+                model.EnTitle = aboutus.LinkTitle;
+                model.EnContent = aboutus.Content;
+                model.EnId = aboutus.ID;
+                int? sortOrder = aboutus.SortOrder;
+                model.EnSortOrder = sortOrder.HasValue ? sortOrder.GetValueOrDefault() : 0;
             }
-
-            if (null != zhmodel)
+            if (aboutus2 != null)
             {
-                newsViewModel.ZhTitle = zhmodel.LinkTitle;
-                newsViewModel.ZhContent = zhmodel.Content;
-                newsViewModel.ZhId = zhmodel.ID;
-                newsViewModel.ZhSortOrder = zhmodel.SortOrder ?? 0;
+                model.ZhTitle = aboutus2.LinkTitle;
+                model.ZhContent = aboutus2.Content;
+                model.ZhId = aboutus2.ID;
+                int? nullable2 = aboutus2.SortOrder;
+                model.ZhSortOrder = nullable2.HasValue ? nullable2.GetValueOrDefault() : 0;
             }
-            return View(newsViewModel);
+            return base.View(model);
         }
 
-
-        [HttpPost]
-        [ValidateInput(false)]
-        public ActionResult Edit(AboutUsModel model)
+        public ActionResult List()
         {
-            if (!ModelState.IsValid) return View(model);
-
-            var tuple = AboutUsModelToAboutus(model,
-                new Tuple<Aboutus, Aboutus>(_aboutusBllBLL.GetModelByID(model.EnId),
-                    _aboutusBllBLL.GetModelByID(model.ZhId)));
-            var elmodel = tuple.Item1;
-            var zhmodel = tuple.Item2;
-
-            if (elmodel.LangGuid == null && elmodel.ID == 0)
-            {
-                elmodel.Status = 0;
-                elmodel.Guid = Guid.NewGuid().ToString();
-                elmodel.LangGuid = Guid.NewGuid().ToString();
-                _aboutusBllBLL.Add(elmodel);
-            }
-            if (elmodel.LangGuid != null && elmodel.ID != 0)
-            {
-                _aboutusBllBLL.Update(elmodel);
-            }
-
-
-            if (zhmodel.LangGuid == null && zhmodel.ID == 0 && zhmodel.Content != elmodel.Content)
-            {
-                zhmodel.Status = 0;
-                zhmodel.Guid = Guid.NewGuid().ToString();
-                zhmodel.LangGuid = elmodel.LangGuid;
-                _aboutusBllBLL.Add(zhmodel);
-            }
-            else if (zhmodel.LangGuid != null && zhmodel.ID != 0)
-            {
-                zhmodel.LangGuid = elmodel.LangGuid;
-                _aboutusBllBLL.Update(zhmodel);
-            }
-
-            return RedirectToAction("List");
+            return base.View(this._aboutusBllBLL.GetAllList() ?? new List<Aboutus>());
         }
-
-
-
-
-        /// <summary>
-        /// Delete
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public ActionResult Del(int id = 0)
-        {
-            if (id == 0 || id < 0)
-            {
-                return RedirectToAction("List");
-            }
-
-            if (!_aboutusBllBLL.Exists(id))
-            {
-                return RedirectToAction("List");
-            }
-
-            _aboutusBllBLL.Delete(id);
-            return RedirectToAction("List");
-
-        }
-
-
-
-        #region private method
-
-        private Tuple<Aboutus, Aboutus> AboutUsModelToAboutus(AboutUsModel model,
-            Tuple<Aboutus, Aboutus> tuple)
-        {
-            var elmodel = tuple.Item1 ?? new Aboutus();
-            elmodel.LinkTitle = model.EnTitle;
-            elmodel.Content = model.EnContent;
-            elmodel.SortOrder = model.EnSortOrder;
-            elmodel.LanguageCode = LanageConfig.EnLan;
-
-            var zhmodel = tuple.Item2 ?? new Aboutus();
-            zhmodel.LinkTitle = model.ZhTitle ?? model.EnTitle;
-            zhmodel.Content = model.ZhContent ?? model.EnContent;
-            zhmodel.LanguageCode = LanageConfig.ZhLan;
-            zhmodel.SortOrder = model.ZhSortOrder;
-            return new Tuple<Aboutus, Aboutus>(elmodel, zhmodel);
-        }
-        #endregion
-
     }
-
 }

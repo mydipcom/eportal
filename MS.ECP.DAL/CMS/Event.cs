@@ -1,917 +1,702 @@
-﻿using MS.ECP.IDAL.CMS;
-using MS.ECP.Utility;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-
-namespace MS.ECP.DAL.CMS
+﻿namespace MS.ECP.DAL.CMS
 {
-     /// <summary>
-    /// 数据访问类:Event
-    /// </summary>
-    public partial class Event : IEvent
+    using MS.ECP.Common;
+    using MS.ECP.IDAL.CMS;
+    using MS.ECP.Model.CMS;
+    using MS.ECP.Utility;
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Data.SqlClient;
+    using System.Text;
+
+    public class Event : IEvent
     {
+        public bool Add(CmsEvent model)
+        {
+            StringBuilder builder = new StringBuilder();
+            builder.Append("insert into CmsEvent(");
+            builder.Append("Guid,LangGuid,LanguageCode,Title,Content,CreateDate,ModifyDate,Status,IssueDate,Level)");
+            builder.Append(" values (");
+            builder.Append("@Guid,@LangGuid,@LanguageCode,@Title,@Content,@CreateDate,@ModifyDate,@Status,@IssueDate,@Level)");
+            SqlParameter[] cmdParms = new SqlParameter[] { new SqlParameter("@Guid", SqlDbType.NVarChar, 0x3e8), new SqlParameter("@LangGuid", SqlDbType.NVarChar, 0x3e8), new SqlParameter("@LanguageCode", SqlDbType.NVarChar, 50), new SqlParameter("@Title", SqlDbType.NVarChar, 0x3e8), new SqlParameter("@Content", SqlDbType.NText), new SqlParameter("@CreateDate", SqlDbType.DateTime), new SqlParameter("@ModifyDate", SqlDbType.DateTime), new SqlParameter("@Status", SqlDbType.Int, 4), new SqlParameter("@IssueDate", SqlDbType.DateTime), new SqlParameter("@Level", SqlDbType.Int, 4) };
+            cmdParms[0].Value = Guid.NewGuid().ToString();
+            if ((model.LangGuid == null) || (model.LangGuid == ""))
+            {
+                cmdParms[1].Value = Guid.NewGuid().ToString();
+            }
+            else
+            {
+                cmdParms[1].Value = model.LangGuid;
+            }
+            cmdParms[2].Value = model.LanguageCode;
+            cmdParms[3].Value = model.Title;
+            cmdParms[4].Value = model.Content;
+            cmdParms[5].Value = DateTime.Now;
+            cmdParms[6].Value = DateTime.Now;
+            cmdParms[7].Value = 1;
+            cmdParms[8].Value = DateTime.Now;
+            cmdParms[9].Value = 0;
+            return (DbHelperSQL.ExecuteSql(builder.ToString(), cmdParms) > 0);
+        }
 
-        public Event()
-        { }
-        #region  Method
+        public bool Delete(int ID)
+        {
+            StringBuilder builder = new StringBuilder();
+            builder.Append("delete from CmsEvent ");
+            builder.Append(" where ID=@ID");
+            SqlParameter[] cmdParms = new SqlParameter[] { new SqlParameter("@ID", SqlDbType.Int, 4) };
+            cmdParms[0].Value = ID;
+            return (DbHelperSQL.ExecuteSql(builder.ToString(), cmdParms) > 0);
+        }
 
-        /// <summary>
-        /// 得到最大ID
-        /// </summary>
+        public bool DeleteByLangGuid(string langGuid)
+        {
+            StringBuilder builder = new StringBuilder();
+            builder.Append("delete from CmsEvent ");
+            builder.Append(" where LangGuid=@LangGuid ");
+            SqlParameter[] cmdParms = new SqlParameter[] { new SqlParameter("@LangGuid", SqlDbType.NVarChar, 0x3e8) };
+            cmdParms[0].Value = langGuid;
+            return (DbHelperSQL.ExecuteSql(builder.ToString(), cmdParms) > 0);
+        }
+
+        public bool DeleteList(string IDlist)
+        {
+            StringBuilder builder = new StringBuilder();
+            builder.Append("delete from CmsEvent ");
+            builder.Append(" where ID in (" + IDlist + ")  ");
+            return (DbHelperSQL.ExecuteSql(builder.ToString()) > 0);
+        }
+
+        public bool Exists(int ID)
+        {
+            StringBuilder builder = new StringBuilder();
+            builder.Append("select count(1) from CmsEvent");
+            builder.Append(" where ID=@ID");
+            SqlParameter[] cmdParms = new SqlParameter[] { new SqlParameter("@ID", SqlDbType.Int, 4) };
+            cmdParms[0].Value = ID;
+            return DbHelperSQL.Exists(builder.ToString(), cmdParms);
+        }
+
+        public DataSet GetDataSet(string strWhere)
+        {
+            StringBuilder builder = new StringBuilder();
+            builder.Append("select * ");
+            builder.Append(" FROM CmsEvent ");
+            if (strWhere.Trim() != "")
+            {
+                builder.Append(" where " + strWhere);
+            }
+            builder.Append(" order by CreateDate desc ");
+            return DbHelperSQL.Query(builder.ToString());
+        }
+
+        public DataSet GetDataSetByLangCode(int Top, string orderby, string LangCode)
+        {
+            StringBuilder builder = new StringBuilder();
+            builder.Append("select ");
+            if (Top > 0)
+            {
+                builder.Append(" top " + Top.ToString());
+            }
+            builder.Append(" * ");
+            builder.Append(" FROM CmsEvent ");
+            if (LangCode.Trim() != "")
+            {
+                builder.Append(" WHERE LanguageCode=@LanguageCode ");
+                SqlParameter[] parameterArray = new SqlParameter[] { new SqlParameter("@LanguageCode", SqlDbType.NVarChar, 50) };
+                parameterArray[0].Value = LangCode;
+            }
+            if (!string.IsNullOrEmpty(orderby.Trim()))
+            {
+                builder.Append("order by " + orderby + " desc ");
+            }
+            else
+            {
+                builder.Append("order by ID desc");
+            }
+            return DbHelperSQL.Query(builder.ToString());
+        }
+
+        public DataSet GetDataSetByLangCode(int startIndex, int endIndex, string orderby, string LangCode)
+        {
+            StringBuilder builder = new StringBuilder();
+            builder.Append("SELECT * FROM ( ");
+            builder.Append(" SELECT ROW_NUMBER() OVER (");
+            if (!string.IsNullOrEmpty(orderby.Trim()))
+            {
+                builder.Append("order by T." + orderby + " desc ");
+            }
+            else
+            {
+                builder.Append("order by T.ID desc");
+            }
+            builder.Append(")AS Row, T.*  from CmsEvent T ");
+            if (!string.IsNullOrEmpty(LangCode.Trim()))
+            {
+                builder.Append(" WHERE T.LanguageCode=@LanguageCode ");
+                SqlParameter[] parameterArray = new SqlParameter[] { new SqlParameter("@LanguageCode", SqlDbType.NVarChar, 50) };
+                parameterArray[0].Value = LangCode;
+            }
+            builder.Append(" ) TT");
+            builder.AppendFormat(" WHERE TT.Row between {0} and {1}", startIndex, endIndex);
+            return DbHelperSQL.Query(builder.ToString());
+        }
+
+        public CmsEvent GetDefaultModelByLang(string LanguageCode)
+        {
+            StringBuilder builder = new StringBuilder();
+            builder.Append("select *  ");
+            builder.Append("  from CmsEvent ");
+            builder.Append(" where LanguageCode=@LanguageCode ");
+            SqlParameter[] cmdParms = new SqlParameter[] { new SqlParameter("@LanguageCode", SqlDbType.NVarChar, 50) };
+            cmdParms[0].Value = LanguageCode;
+            CmsEvent event2 = new CmsEvent();
+            DataSet set = DbHelperSQL.Query(builder.ToString(), cmdParms);
+            if (set.Tables[0].Rows.Count <= 0)
+            {
+                return null;
+            }
+            if ((set.Tables[0].Rows[0]["ID"] != null) && (set.Tables[0].Rows[0]["ID"].ToString() != ""))
+            {
+                event2.ID = int.Parse(set.Tables[0].Rows[0]["ID"].ToString());
+            }
+            if ((set.Tables[0].Rows[0]["Guid"] != null) && (set.Tables[0].Rows[0]["Guid"].ToString() != ""))
+            {
+                event2.Guid = set.Tables[0].Rows[0]["Guid"].ToString();
+            }
+            if ((set.Tables[0].Rows[0]["LangGuid"] != null) && (set.Tables[0].Rows[0]["LangGuid"].ToString() != ""))
+            {
+                event2.LangGuid = set.Tables[0].Rows[0]["LangGuid"].ToString();
+            }
+            if ((set.Tables[0].Rows[0]["LanguageCode"] != null) && (set.Tables[0].Rows[0]["LanguageCode"].ToString() != ""))
+            {
+                event2.LanguageCode = set.Tables[0].Rows[0]["LanguageCode"].ToString();
+            }
+            if ((set.Tables[0].Rows[0]["Title"] != null) && (set.Tables[0].Rows[0]["Title"].ToString() != ""))
+            {
+                event2.Title = set.Tables[0].Rows[0]["Title"].ToString();
+            }
+            if ((set.Tables[0].Rows[0]["Content"] != null) && (set.Tables[0].Rows[0]["Content"].ToString() != ""))
+            {
+                event2.Content = set.Tables[0].Rows[0]["Content"].ToString();
+            }
+            event2.CreateDate = DateTime.Parse(set.Tables[0].Rows[0]["CreateDate"].ToString());
+            event2.ModifyDate = DateTime.Parse(set.Tables[0].Rows[0]["ModifyDate"].ToString());
+            if (set.Tables[0].Rows[0]["Status"].ToString() != "")
+            {
+                event2.Status = int.Parse(set.Tables[0].Rows[0]["Status"].ToString());
+            }
+            if (set.Tables[0].Rows[0]["IssueDate"] == null)
+            {
+                event2.IssueDate = DateTime.Parse(set.Tables[0].Rows[0]["IssueDate"].ToString());
+            }
+            if (set.Tables[0].Rows[0]["Level"].ToString() != "")
+            {
+                event2.Level = int.Parse(set.Tables[0].Rows[0]["Level"].ToString());
+            }
+            return event2;
+        }
+
+        public IList<CmsEvent> GetList(string strWhere)
+        {
+            DataTable table = this.GetDataSet(strWhere).Tables[0];
+            IList<CmsEvent> list = new List<CmsEvent>();
+            int count = table.Rows.Count;
+            if (count > 0)
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    CmsEvent item = new CmsEvent();
+                    if ((table.Rows[i]["ID"] != null) && (table.Rows[i]["ID"].ToString() != ""))
+                    {
+                        item.ID = int.Parse(table.Rows[i]["ID"].ToString());
+                    }
+                    if ((table.Rows[i]["Guid"] != null) && (table.Rows[i]["Guid"].ToString() != ""))
+                    {
+                        item.Guid = table.Rows[i]["Guid"].ToString();
+                    }
+                    if ((table.Rows[i]["LangGuid"] != null) && (table.Rows[i]["LangGuid"].ToString() != ""))
+                    {
+                        item.LangGuid = table.Rows[i]["LangGuid"].ToString();
+                    }
+                    if ((table.Rows[i]["LanguageCode"] != null) && (table.Rows[i]["LanguageCode"].ToString() != ""))
+                    {
+                        item.LanguageCode = table.Rows[i]["LanguageCode"].ToString();
+                    }
+                    if ((table.Rows[i]["Title"] != null) && (table.Rows[i]["Title"].ToString() != ""))
+                    {
+                        item.Title = table.Rows[i]["Title"].ToString();
+                    }
+                    if ((table.Rows[i]["Content"] != null) && (table.Rows[i]["Content"].ToString() != ""))
+                    {
+                        item.Content = table.Rows[i]["Content"].ToString();
+                    }
+                    item.CreateDate = DateTime.Parse(table.Rows[i]["CreateDate"].ToString());
+                    item.ModifyDate = DateTime.Parse(table.Rows[i]["ModifyDate"].ToString());
+                    if ((table.Rows[i]["Status"] != null) && (table.Rows[i]["Status"].ToString() != ""))
+                    {
+                        item.Status = int.Parse(table.Rows[i]["Status"].ToString());
+                    }
+                    if ((table.Rows[i]["IssueDate"] == null) && (table.Rows[i]["Content"].ToString() != ""))
+                    {
+                        item.IssueDate = DateTime.Parse(table.Rows[i]["IssueDate"].ToString());
+                    }
+                    if ((table.Rows[i]["Level"] != null) && (table.Rows[i]["Level"].ToString() != ""))
+                    {
+                        item.Level = int.Parse(table.Rows[i]["Level"].ToString());
+                    }
+                    list.Add(item);
+                }
+            }
+            return list;
+        }
+
+        public IList<CmsEvent> GetList(int Top, string strWhere)
+        {
+            DataTable table = this.GetListDataSet(Top, strWhere).Tables[0];
+            IList<CmsEvent> list = new List<CmsEvent>();
+            int count = table.Rows.Count;
+            if (count > 0)
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    CmsEvent item = new CmsEvent();
+                    if ((table.Rows[i]["ID"] != null) && (table.Rows[i]["ID"].ToString() != ""))
+                    {
+                        item.ID = int.Parse(table.Rows[i]["ID"].ToString());
+                    }
+                    if ((table.Rows[i]["Guid"] != null) && (table.Rows[i]["Guid"].ToString() != ""))
+                    {
+                        item.Guid = table.Rows[i]["Guid"].ToString();
+                    }
+                    if ((table.Rows[i]["LangGuid"] != null) && (table.Rows[i]["LangGuid"].ToString() != ""))
+                    {
+                        item.LangGuid = table.Rows[i]["LangGuid"].ToString();
+                    }
+                    if ((table.Rows[i]["LanguageCode"] != null) && (table.Rows[i]["LanguageCode"].ToString() != ""))
+                    {
+                        item.LanguageCode = table.Rows[i]["LanguageCode"].ToString();
+                    }
+                    if ((table.Rows[i]["Title"] != null) && (table.Rows[i]["Title"].ToString() != ""))
+                    {
+                        item.Title = table.Rows[i]["Title"].ToString();
+                    }
+                    if ((table.Rows[i]["Content"] != null) && (table.Rows[i]["Content"].ToString() != ""))
+                    {
+                        item.Content = table.Rows[i]["Content"].ToString();
+                    }
+                    item.CreateDate = DateTime.Parse(table.Rows[i]["CreateDate"].ToString());
+                    item.ModifyDate = DateTime.Parse(table.Rows[i]["ModifyDate"].ToString());
+                    if ((table.Rows[i]["Status"] != null) && (table.Rows[i]["Status"].ToString() != ""))
+                    {
+                        item.Status = int.Parse(table.Rows[i]["Status"].ToString());
+                    }
+                    if ((table.Rows[i]["IssueDate"] == null) && (table.Rows[i]["Content"].ToString() != ""))
+                    {
+                        item.IssueDate = DateTime.Parse(table.Rows[i]["IssueDate"].ToString());
+                    }
+                    if ((table.Rows[i]["Level"] != null) && (table.Rows[i]["Level"].ToString() != ""))
+                    {
+                        item.Level = int.Parse(table.Rows[i]["Level"].ToString());
+                    }
+                    list.Add(item);
+                }
+            }
+            return list;
+        }
+
+        public IList<CmsEvent> GetListByPage(string strWhere, int startIndex, int endIndex)
+        {
+            DataTable table = this.GetListDataSetByPage(strWhere, startIndex, endIndex).Tables[0];
+            IList<CmsEvent> list = new List<CmsEvent>();
+            int count = table.Rows.Count;
+            if (count > 0)
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    CmsEvent item = new CmsEvent();
+                    if ((table.Rows[i]["ID"] != null) && (table.Rows[i]["ID"].ToString() != ""))
+                    {
+                        item.ID = int.Parse(table.Rows[i]["ID"].ToString());
+                    }
+                    if ((table.Rows[i]["Guid"] != null) && (table.Rows[i]["Guid"].ToString() != ""))
+                    {
+                        item.Guid = table.Rows[i]["Guid"].ToString();
+                    }
+                    if ((table.Rows[i]["LangGuid"] != null) && (table.Rows[i]["LangGuid"].ToString() != ""))
+                    {
+                        item.LangGuid = table.Rows[i]["LangGuid"].ToString();
+                    }
+                    if ((table.Rows[i]["LanguageCode"] != null) && (table.Rows[i]["LanguageCode"].ToString() != ""))
+                    {
+                        item.LanguageCode = table.Rows[i]["LanguageCode"].ToString();
+                    }
+                    if ((table.Rows[i]["Title"] != null) && (table.Rows[i]["Title"].ToString() != ""))
+                    {
+                        item.Title = table.Rows[i]["Title"].ToString();
+                    }
+                    if ((table.Rows[i]["Content"] != null) && (table.Rows[i]["Content"].ToString() != ""))
+                    {
+                        item.Content = table.Rows[i]["Content"].ToString();
+                    }
+                    item.CreateDate = DateTime.Parse(table.Rows[i]["CreateDate"].ToString());
+                    item.ModifyDate = DateTime.Parse(table.Rows[i]["ModifyDate"].ToString());
+                    if ((table.Rows[i]["Status"] != null) && (table.Rows[i]["Status"].ToString() != ""))
+                    {
+                        item.Status = int.Parse(table.Rows[i]["Status"].ToString());
+                    }
+                    if ((table.Rows[i]["IssueDate"] == null) && (table.Rows[i]["Content"].ToString() != ""))
+                    {
+                        item.IssueDate = DateTime.Parse(table.Rows[i]["IssueDate"].ToString());
+                    }
+                    if ((table.Rows[i]["Level"] != null) && (table.Rows[i]["Level"].ToString() != ""))
+                    {
+                        item.Level = int.Parse(table.Rows[i]["Level"].ToString());
+                    }
+                    list.Add(item);
+                }
+            }
+            return list;
+        }
+
+        public DataSet GetListDataSet(int Top, string strWhere)
+        {
+            StringBuilder builder = new StringBuilder();
+            builder.Append("select ");
+            if (Top > 0)
+            {
+                builder.Append(" top " + Top.ToString());
+            }
+            builder.Append(" * ");
+            builder.Append(" FROM CmsEvent ");
+            if (strWhere.Trim() != "")
+            {
+                builder.Append(" where " + strWhere);
+            }
+            builder.Append(" order by CreateDate desc");
+            return DbHelperSQL.Query(builder.ToString());
+        }
+
+        public DataSet GetListDataSetByPage(string strWhere, int startIndex, int endIndex)
+        {
+            StringBuilder builder = new StringBuilder();
+            builder.Append("SELECT  *  FROM ( ");
+            builder.Append(" SELECT ROW_NUMBER() OVER (");
+            builder.Append("order by T.CreateDate desc");
+            builder.Append(")AS Row, T.*  from CmsEvent T ");
+            if (!string.IsNullOrEmpty(strWhere.Trim()))
+            {
+                builder.Append(" WHERE " + strWhere);
+            }
+            builder.Append(" ) TT");
+            builder.AppendFormat(" WHERE TT.Row between {0} and {1}", startIndex, endIndex);
+            return DbHelperSQL.Query(builder.ToString());
+        }
+
         public int GetMaxId()
         {
             return DbHelperSQL.GetMaxID("ID", "CmsEvent");
         }
 
-        /// <summary>
-        /// 是否存在该记录
-        /// </summary>
-        public bool Exists(int ID)
+        public CmsEvent GetModel(int ID)
         {
-            StringBuilder strSql = new StringBuilder();
-            strSql.Append("select count(1) from CmsEvent");
-            strSql.Append(" where ID=@ID");
-            SqlParameter[] parameters = {
-					new SqlParameter("@ID", SqlDbType.Int,4)
-			};
-            parameters[0].Value = ID;
-
-            return DbHelperSQL.Exists(strSql.ToString(), parameters);
-        }
-
-
-        /// <summary>
-        /// 增加一条数据
-        /// </summary>
-        public bool Add(Model.CMS.Event model)
-        {
-            StringBuilder strSql = new StringBuilder();
-            strSql.Append("insert into CmsEvent(");
-            strSql.Append("Guid,LangGuid,LanguageCode,Title,Content,CreateDate,ModifyDate,Status,IssueDate,Level)");
-            strSql.Append(" values (");
-            strSql.Append("@Guid,@LangGuid,@LanguageCode,@Title,@Content,@CreateDate,@ModifyDate,@Status,@IssueDate,@Level)");
-            SqlParameter[] parameters = {
-                    new SqlParameter("@Guid",SqlDbType.NVarChar,1000),  
-                    new SqlParameter("@LangGuid",SqlDbType.NVarChar,1000),          
-                    new SqlParameter("@LanguageCode", SqlDbType.NVarChar,50),
-                    new SqlParameter("@Title", SqlDbType.NVarChar,1000),
-                    new SqlParameter("@Content", SqlDbType.NText),
-                    new SqlParameter("@CreateDate", SqlDbType.DateTime),
-                    new SqlParameter("@ModifyDate", SqlDbType.DateTime),
-                    new SqlParameter("@Status", SqlDbType.Int,4),
-                    new SqlParameter("@IssueDate", SqlDbType.DateTime),
-                    new SqlParameter("@Level", SqlDbType.Int,4)
-            };
-
-            parameters[0].Value = Guid.NewGuid().ToString();
-            if (model.LangGuid == null || model.LangGuid == "")
-            {
-                parameters[1].Value = Guid.NewGuid().ToString();
-            }
-            else
-            {
-                parameters[1].Value = model.LangGuid;
-            }
-
-            parameters[2].Value = model.LanguageCode;
-            parameters[3].Value = model.Title;
-            parameters[4].Value = model.Content;
-            parameters[5].Value = DateTime.Now;
-            parameters[6].Value = DateTime.Now;
-            parameters[7].Value = 1;
-            parameters[8].Value = DateTime.Now;
-            parameters[9].Value = 0;
-
-            int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
-            if (rows > 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// 更新一条数据
-        /// </summary>
-        public bool Update(Model.CMS.Event model)
-        {
-            StringBuilder strSql = new StringBuilder();
-            strSql.Append("update CmsEvent set ");
-            strSql.Append(" Guid = @Guid , ");
-            strSql.Append(" LangGuid = @LangGuid , ");
-            strSql.Append(" LanguageCode = @LanguageCode , ");
-            strSql.Append(" Title = @Title , ");
-            strSql.Append(" Content = @Content , ");
-            strSql.Append(" ModifyDate = @ModifyDate , ");
-            strSql.Append(" Status = @Status , ");
-            strSql.Append(" IssueDate = @IssueDate , ");
-            strSql.Append(" Level = @Level ");
-            strSql.Append(" where ID=@ID ");
-            SqlParameter[] parameters = {
-                    new SqlParameter("@ID", SqlDbType.Int,4) ,
-                    new SqlParameter("@Guid",SqlDbType.NVarChar,1000),  
-                    new SqlParameter("@LangGuid",SqlDbType.NVarChar,1000),    
-                    new SqlParameter("@LanguageCode", SqlDbType.VarChar,50),
-                    new SqlParameter("@Title", SqlDbType.NVarChar,1000), 
-                    new SqlParameter("@Content", SqlDbType.NText),
-                    new SqlParameter("@ModifyDate", SqlDbType.DateTime),
-                    new SqlParameter("@Status", SqlDbType.Int,4),
-                    new SqlParameter("@IssueDate", SqlDbType.DateTime),
-                    new SqlParameter("@Level", SqlDbType.Int,4)
-            };
-            parameters[0].Value = model.ID;
-            parameters[1].Value = model.Guid;
-            parameters[2].Value = model.LangGuid;
-            parameters[3].Value = model.LanguageCode;
-            parameters[4].Value = model.Title;
-            parameters[5].Value = model.Content;
-            parameters[6].Value = DateTime.Now;
-            parameters[7].Value = 1;
-            parameters[8].Value = DateTime.Now;
-            parameters[9].Value = 0;
-
-            int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
-            if (rows > 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// 更新一条数据 SEO
-        /// </summary>
-        public bool UpdateSeo(Model.CMS.Event model)
-        {
-            StringBuilder strSql = new StringBuilder();
-            strSql.Append("update CmsEvent set ");
-            strSql.Append(" Keywords = @Keywords , ");
-            strSql.Append(" Description = @Description , ");
-            strSql.Append(" SeoTitle = @SeoTitle ,  ");
-            strSql.Append(" Url = @Url  ");
-            strSql.Append(" where ID=@ID  ");
-
-            SqlParameter[] parameters = {
-                        new SqlParameter("@ID", SqlDbType.Int,4) ,            
-                        new SqlParameter("@Keywords", SqlDbType.NVarChar,50) ,            
-                        new SqlParameter("@Description", SqlDbType.NText) ,            
-                        new SqlParameter("@SeoTitle", SqlDbType.NVarChar,1000) ,            
-                        new SqlParameter("@Url", SqlDbType.NVarChar,225)               
-            };
-
-            parameters[0].Value = model.ID;
-            parameters[1].Value = model.Keywords;
-            parameters[2].Value = model.Description;
-            parameters[3].Value = model.SeoTitle;
-            parameters[4].Value = model.Url;
-
-            int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
-            if (rows > 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        /// 删除一条数据
-        /// </summary>
-        public bool Delete(int ID)
-        {
-            StringBuilder strSql = new StringBuilder();
-            strSql.Append("delete from CmsEvent ");
-            strSql.Append(" where ID=@ID");
-            SqlParameter[] parameters = {
-                    new SqlParameter("@ID", SqlDbType.Int,4)
-            };
-            parameters[0].Value = ID;
-
-            int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
-            if (rows > 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// 根据LangGuid删除数据
-        /// </summary>
-        public bool DeleteByLangGuid(string langGuid)
-        {
-            StringBuilder strSql = new StringBuilder();
-            strSql.Append("delete from CmsEvent ");
-            strSql.Append(" where LangGuid=@LangGuid ");
-            SqlParameter[] parameters = {
-					new SqlParameter("@LangGuid", SqlDbType.NVarChar,1000)		};
-            parameters[0].Value = langGuid;
-
-            int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
-            if (rows > 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// 批量删除数据
-        /// </summary>
-        public bool DeleteList(string IDlist)
-        {
-            StringBuilder strSql = new StringBuilder();
-            strSql.Append("delete from CmsEvent ");
-            strSql.Append(" where ID in (" + IDlist + ")  ");
-            int rows = DbHelperSQL.ExecuteSql(strSql.ToString());
-            if (rows > 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// 得到一个对象实体
-        /// </summary>
-        public Model.CMS.Event GetModel(int ID)
-        {
-
-            StringBuilder strSql = new StringBuilder();
-            strSql.Append("select *  ");
-            strSql.Append("  from CmsEvent ");
-            strSql.Append(" where ID=@ID ");
-            SqlParameter[] parameters = {
-                    new SqlParameter("@ID", SqlDbType.Int,4) ,
-            };
-            parameters[0].Value = ID;
-
-            Model.CMS.Event model = new Model.CMS.Event();
-            DataSet ds = DbHelperSQL.Query(strSql.ToString(), parameters);
-
-            if (ds.Tables[0].Rows.Count > 0)
-            {
-                if (ds.Tables[0].Rows[0]["ID"] != null && ds.Tables[0].Rows[0]["ID"].ToString() != "")
-                {
-                    model.ID = int.Parse(ds.Tables[0].Rows[0]["ID"].ToString());
-                }
-                if (ds.Tables[0].Rows[0]["Guid"] != null && ds.Tables[0].Rows[0]["Guid"].ToString() != "")
-                {
-                    model.Guid = ds.Tables[0].Rows[0]["Guid"].ToString();
-                }
-                if (ds.Tables[0].Rows[0]["LangGuid"] != null && ds.Tables[0].Rows[0]["LangGuid"].ToString() != "")
-                {
-                    model.LangGuid = ds.Tables[0].Rows[0]["LangGuid"].ToString();
-                }
-                if (ds.Tables[0].Rows[0]["LanguageCode"] != null && ds.Tables[0].Rows[0]["LanguageCode"].ToString() != "")
-                {
-                    model.LanguageCode = ds.Tables[0].Rows[0]["LanguageCode"].ToString();
-                }
-                if (ds.Tables[0].Rows[0]["Title"] != null && ds.Tables[0].Rows[0]["Title"].ToString() != "")
-                {
-                    model.Title = ds.Tables[0].Rows[0]["Title"].ToString();
-                }
-                if (ds.Tables[0].Rows[0]["Content"] != null && ds.Tables[0].Rows[0]["Content"].ToString() != "")
-                {
-                    model.Content = ds.Tables[0].Rows[0]["Content"].ToString();
-                }
-                model.CreateDate = DateTime.Parse(ds.Tables[0].Rows[0]["CreateDate"].ToString());
-                model.ModifyDate = DateTime.Parse(ds.Tables[0].Rows[0]["ModifyDate"].ToString());
-                if (ds.Tables[0].Rows[0]["Status"].ToString() != "")
-                {
-                    model.Status = int.Parse(ds.Tables[0].Rows[0]["Status"].ToString());
-                }
-                if (ds.Tables[0].Rows[0]["IssueDate"] == null)
-                {
-                    model.IssueDate = DateTime.Parse(ds.Tables[0].Rows[0]["IssueDate"].ToString());
-                }
-                if (ds.Tables[0].Rows[0]["Level"].ToString() != "")
-                {
-                    model.Level = int.Parse(ds.Tables[0].Rows[0]["Level"].ToString());
-                }
-
-                return model;
-            }
-            else
+            StringBuilder builder = new StringBuilder();
+            builder.Append("select *  ");
+            builder.Append("  from CmsEvent ");
+            builder.Append(" where ID=@ID ");
+            SqlParameter[] cmdParms = new SqlParameter[] { new SqlParameter("@ID", SqlDbType.Int, 4) };
+            cmdParms[0].Value = ID;
+            CmsEvent event2 = new CmsEvent();
+            DataSet set = DbHelperSQL.Query(builder.ToString(), cmdParms);
+            if (set.Tables[0].Rows.Count <= 0)
             {
                 return null;
             }
-        }
-        /// <summary>
-        /// 根据LangGuid得到一个对象实体
-        /// </summary>
-        public Model.CMS.Event GetModelByGuid(string langGuid, string languageId)
-        {
-
-            StringBuilder strSql = new StringBuilder();
-            strSql.Append("select *  ");
-            strSql.Append("  from CmsEvent ");
-            strSql.Append(" where LangGuid=@LangGuid ");
-            strSql.Append(" and LanguageCode=@LanguageCode ");
-            SqlParameter[] parameters = {
-                    new SqlParameter("@LangGuid", SqlDbType.NVarChar,1000) ,
-                    new SqlParameter("@LanguageCode", SqlDbType.NVarChar,50) ,
-            };
-            parameters[0].Value = langGuid;
-            parameters[1].Value = languageId;
-
-            Model.CMS.Event model = new Model.CMS.Event();
-            DataSet ds = DbHelperSQL.Query(strSql.ToString(), parameters);
-
-            if (ds.Tables[0].Rows.Count > 0)
+            if ((set.Tables[0].Rows[0]["ID"] != null) && (set.Tables[0].Rows[0]["ID"].ToString() != ""))
             {
-                if (ds.Tables[0].Rows[0]["ID"] != null && ds.Tables[0].Rows[0]["ID"].ToString() != "")
-                {
-                    model.ID = int.Parse(ds.Tables[0].Rows[0]["ID"].ToString());
-                }
-                if (ds.Tables[0].Rows[0]["Guid"] != null && ds.Tables[0].Rows[0]["Guid"].ToString() != "")
-                {
-                    model.Guid = ds.Tables[0].Rows[0]["Guid"].ToString();
-                }
-                if (ds.Tables[0].Rows[0]["LangGuid"] != null && ds.Tables[0].Rows[0]["LangGuid"].ToString() != "")
-                {
-                    model.LangGuid = ds.Tables[0].Rows[0]["LangGuid"].ToString();
-                }
-                if (ds.Tables[0].Rows[0]["LanguageCode"] != null && ds.Tables[0].Rows[0]["LanguageCode"].ToString() != "")
-                {
-                    model.LanguageCode = ds.Tables[0].Rows[0]["LanguageCode"].ToString();
-                }
-                if (ds.Tables[0].Rows[0]["Title"] != null && ds.Tables[0].Rows[0]["Title"].ToString() != "")
-                {
-                    model.Title = ds.Tables[0].Rows[0]["Title"].ToString();
-                }
-                if (ds.Tables[0].Rows[0]["Content"] != null && ds.Tables[0].Rows[0]["Content"].ToString() != "")
-                {
-                    model.Content = ds.Tables[0].Rows[0]["Content"].ToString();
-                }
-                model.CreateDate = DateTime.Parse(ds.Tables[0].Rows[0]["CreateDate"].ToString());
-                model.ModifyDate = DateTime.Parse(ds.Tables[0].Rows[0]["ModifyDate"].ToString());
-                if (ds.Tables[0].Rows[0]["Status"].ToString() != "")
-                {
-                    model.Status = int.Parse(ds.Tables[0].Rows[0]["Status"].ToString());
-                }
-                if (ds.Tables[0].Rows[0]["IssueDate"] == null)
-                {
-                    model.IssueDate = DateTime.Parse(ds.Tables[0].Rows[0]["IssueDate"].ToString());
-                }
-                if (ds.Tables[0].Rows[0]["Level"].ToString() != "")
-                {
-                    model.Level = int.Parse(ds.Tables[0].Rows[0]["Level"].ToString());
-                }
-
-                return model;
+                event2.ID = int.Parse(set.Tables[0].Rows[0]["ID"].ToString());
             }
-            else
+            if ((set.Tables[0].Rows[0]["Guid"] != null) && (set.Tables[0].Rows[0]["Guid"].ToString() != ""))
             {
-                return null;
+                event2.Guid = set.Tables[0].Rows[0]["Guid"].ToString();
             }
+            if ((set.Tables[0].Rows[0]["LangGuid"] != null) && (set.Tables[0].Rows[0]["LangGuid"].ToString() != ""))
+            {
+                event2.LangGuid = set.Tables[0].Rows[0]["LangGuid"].ToString();
+            }
+            if ((set.Tables[0].Rows[0]["LanguageCode"] != null) && (set.Tables[0].Rows[0]["LanguageCode"].ToString() != ""))
+            {
+                event2.LanguageCode = set.Tables[0].Rows[0]["LanguageCode"].ToString();
+            }
+            if ((set.Tables[0].Rows[0]["Title"] != null) && (set.Tables[0].Rows[0]["Title"].ToString() != ""))
+            {
+                event2.Title = set.Tables[0].Rows[0]["Title"].ToString();
+            }
+            if ((set.Tables[0].Rows[0]["Content"] != null) && (set.Tables[0].Rows[0]["Content"].ToString() != ""))
+            {
+                event2.Content = set.Tables[0].Rows[0]["Content"].ToString();
+            }
+            event2.CreateDate = DateTime.Parse(set.Tables[0].Rows[0]["CreateDate"].ToString());
+            event2.ModifyDate = DateTime.Parse(set.Tables[0].Rows[0]["ModifyDate"].ToString());
+            if (set.Tables[0].Rows[0]["Status"].ToString() != "")
+            {
+                event2.Status = int.Parse(set.Tables[0].Rows[0]["Status"].ToString());
+            }
+            if (set.Tables[0].Rows[0]["IssueDate"] == null)
+            {
+                event2.IssueDate = DateTime.Parse(set.Tables[0].Rows[0]["IssueDate"].ToString());
+            }
+            if (set.Tables[0].Rows[0]["Level"].ToString() != "")
+            {
+                event2.Level = int.Parse(set.Tables[0].Rows[0]["Level"].ToString());
+            }
+            return event2;
         }
 
-
-        /// <summary>
-        /// 根据语言得到一个对象实体
-        /// </summary>
-        public Model.CMS.Event GetDefaultModelByLang(string LanguageCode)
+        public CmsEvent GetModelByCache(int ID)
         {
-
-            StringBuilder strSql = new StringBuilder();
-            strSql.Append("select *  ");
-            strSql.Append("  from CmsEvent ");
-            strSql.Append(" where LanguageCode=@LanguageCode ");
-            SqlParameter[] parameters = {
-                    new SqlParameter("@LanguageCode", SqlDbType.NVarChar,50) 
-            };
-            parameters[0].Value = LanguageCode;
-
-            Model.CMS.Event model = new Model.CMS.Event();
-            DataSet ds = DbHelperSQL.Query(strSql.ToString(), parameters);
-
-            if (ds.Tables[0].Rows.Count > 0)
-            {
-                if (ds.Tables[0].Rows[0]["ID"] != null && ds.Tables[0].Rows[0]["ID"].ToString() != "")
-                {
-                    model.ID = int.Parse(ds.Tables[0].Rows[0]["ID"].ToString());
-                }
-                if (ds.Tables[0].Rows[0]["Guid"] != null && ds.Tables[0].Rows[0]["Guid"].ToString() != "")
-                {
-                    model.Guid = ds.Tables[0].Rows[0]["Guid"].ToString();
-                }
-                if (ds.Tables[0].Rows[0]["LangGuid"] != null && ds.Tables[0].Rows[0]["LangGuid"].ToString() != "")
-                {
-                    model.LangGuid = ds.Tables[0].Rows[0]["LangGuid"].ToString();
-                }
-                if (ds.Tables[0].Rows[0]["LanguageCode"] != null && ds.Tables[0].Rows[0]["LanguageCode"].ToString() != "")
-                {
-                    model.LanguageCode = ds.Tables[0].Rows[0]["LanguageCode"].ToString();
-                }
-                if (ds.Tables[0].Rows[0]["Title"] != null && ds.Tables[0].Rows[0]["Title"].ToString() != "")
-                {
-                    model.Title = ds.Tables[0].Rows[0]["Title"].ToString();
-                }
-                if (ds.Tables[0].Rows[0]["Content"] != null && ds.Tables[0].Rows[0]["Content"].ToString() != "")
-                {
-                    model.Content = ds.Tables[0].Rows[0]["Content"].ToString();
-                }
-                model.CreateDate = DateTime.Parse(ds.Tables[0].Rows[0]["CreateDate"].ToString());
-                model.ModifyDate = DateTime.Parse(ds.Tables[0].Rows[0]["ModifyDate"].ToString());
-                if (ds.Tables[0].Rows[0]["Status"].ToString() != "")
-                {
-                    model.Status = int.Parse(ds.Tables[0].Rows[0]["Status"].ToString());
-                }
-                if (ds.Tables[0].Rows[0]["IssueDate"] == null)
-                {
-                    model.IssueDate = DateTime.Parse(ds.Tables[0].Rows[0]["IssueDate"].ToString());
-                }
-                if (ds.Tables[0].Rows[0]["Level"].ToString() != "")
-                {
-                    model.Level = int.Parse(ds.Tables[0].Rows[0]["Level"].ToString());
-                }
-
-                return model;
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// 从缓存中得到一个对象实体
-        /// </summary>
-        public Model.CMS.Event GetModelByCache(int ID)
-        {
-            string CacheKey = "EventModel-" + ID;
-            object objModel = Common.DataCache.GetCache(CacheKey);
-            if (objModel == null)
+            string cacheKey = "EventModel-" + ID;
+            object cache = DataCache.GetCache(cacheKey);
+            if (cache == null)
             {
                 try
                 {
-                    objModel = GetModel(ID);
-                    if (objModel != null)
+                    cache = this.GetModel(ID);
+                    if (cache != null)
                     {
-                        int ModelCache = ECP.Common.ConfigHelper.GetConfigInt("ModelCache");
-                        ECP.Common.DataCache.SetCache(CacheKey, objModel, DateTime.Now.AddMinutes(ModelCache), TimeSpan.Zero);
+                        int configInt = ConfigHelper.GetConfigInt("ModelCache");
+                        DataCache.SetCache(cacheKey, cache, DateTime.Now.AddMinutes((double)configInt), TimeSpan.Zero);
                     }
                 }
-                catch { }
-            }
-            return (Model.CMS.Event)objModel;
-        }
-
-        //// <summary>
-        /// 获得数据列表
-        /// </summary>
-        public IList<Model.CMS.Event> GetList(string strWhere)
-        {
-            DataSet ds = GetDataSet(strWhere);
-            DataTable dt = ds.Tables[0];
-
-            IList<Model.CMS.Event> modelList = new List<Model.CMS.Event>();
-            int rowsCount = dt.Rows.Count;
-            if (rowsCount > 0)
-            {
-                Model.CMS.Event model;
-                for (int n = 0; n < rowsCount; n++)
+                catch
                 {
-                    model = new Model.CMS.Event();
-
-                    if (dt.Rows[n]["ID"] != null && dt.Rows[n]["ID"].ToString() != "")
-                    {
-                        model.ID = int.Parse(dt.Rows[n]["ID"].ToString());
-                    }
-                    if (dt.Rows[n]["Guid"] != null && dt.Rows[n]["Guid"].ToString() != "")
-                    {
-                        model.Guid = dt.Rows[n]["Guid"].ToString();
-                    }
-                    if (dt.Rows[n]["LangGuid"] != null && dt.Rows[n]["LangGuid"].ToString() != "")
-                    {
-                        model.LangGuid = dt.Rows[n]["LangGuid"].ToString();
-                    }
-                    if (dt.Rows[n]["LanguageCode"] != null && dt.Rows[n]["LanguageCode"].ToString() != "")
-                    {
-                        model.LanguageCode = dt.Rows[n]["LanguageCode"].ToString();
-                    }
-                    if (dt.Rows[n]["Title"] != null && dt.Rows[n]["Title"].ToString() != "")
-                    {
-                        model.Title = dt.Rows[n]["Title"].ToString();
-                    }
-                    if (dt.Rows[n]["Content"] != null && dt.Rows[n]["Content"].ToString() != "")
-                    {
-                        model.Content = dt.Rows[n]["Content"].ToString();
-                    }
-                    model.CreateDate = DateTime.Parse(dt.Rows[n]["CreateDate"].ToString());
-                    model.ModifyDate = DateTime.Parse(dt.Rows[n]["ModifyDate"].ToString());
-                    if (dt.Rows[n]["Status"] != null && dt.Rows[n]["Status"].ToString() != "")
-                    {
-                        model.Status = int.Parse(dt.Rows[n]["Status"].ToString());
-                    }
-                    if (dt.Rows[n]["IssueDate"] == null && dt.Rows[n]["Content"].ToString() != "")
-                    {
-                        model.IssueDate = DateTime.Parse(dt.Rows[n]["IssueDate"].ToString());
-                    }
-                    if (dt.Rows[n]["Level"] != null && dt.Rows[n]["Level"].ToString() != "")
-                    {
-                        model.Level = int.Parse(dt.Rows[n]["Level"].ToString());
-                    }
-
-                    modelList.Add(model);
                 }
             }
-
-            return modelList;
+            return (CmsEvent)cache;
         }
-        /// <summary>
-        /// 获得数据列表 DataSet
-        /// </summary>
-        public DataSet GetDataSet(string strWhere)
+
+        public CmsEvent GetModelByGuid(string langGuid, string languageId)
         {
-            StringBuilder strSql = new StringBuilder();
-            strSql.Append("select * ");
-            strSql.Append(" FROM CmsEvent ");
-            if (strWhere.Trim() != "")
+            StringBuilder builder = new StringBuilder();
+            builder.Append("select *  ");
+            builder.Append("  from CmsEvent ");
+            builder.Append(" where LangGuid=@LangGuid ");
+            builder.Append(" and LanguageCode=@LanguageCode ");
+            SqlParameter[] cmdParms = new SqlParameter[] { new SqlParameter("@LangGuid", SqlDbType.NVarChar, 0x3e8), new SqlParameter("@LanguageCode", SqlDbType.NVarChar, 50) };
+            cmdParms[0].Value = langGuid;
+            cmdParms[1].Value = languageId;
+            CmsEvent event2 = new CmsEvent();
+            DataSet set = DbHelperSQL.Query(builder.ToString(), cmdParms);
+            if (set.Tables[0].Rows.Count <= 0)
             {
-                strSql.Append(" where " + strWhere);
-
+                return null;
             }
-            strSql.Append(" order by CreateDate desc ");
-            
-            return DbHelperSQL.Query(strSql.ToString());
+            if ((set.Tables[0].Rows[0]["ID"] != null) && (set.Tables[0].Rows[0]["ID"].ToString() != ""))
+            {
+                event2.ID = int.Parse(set.Tables[0].Rows[0]["ID"].ToString());
+            }
+            if ((set.Tables[0].Rows[0]["Guid"] != null) && (set.Tables[0].Rows[0]["Guid"].ToString() != ""))
+            {
+                event2.Guid = set.Tables[0].Rows[0]["Guid"].ToString();
+            }
+            if ((set.Tables[0].Rows[0]["LangGuid"] != null) && (set.Tables[0].Rows[0]["LangGuid"].ToString() != ""))
+            {
+                event2.LangGuid = set.Tables[0].Rows[0]["LangGuid"].ToString();
+            }
+            if ((set.Tables[0].Rows[0]["LanguageCode"] != null) && (set.Tables[0].Rows[0]["LanguageCode"].ToString() != ""))
+            {
+                event2.LanguageCode = set.Tables[0].Rows[0]["LanguageCode"].ToString();
+            }
+            if ((set.Tables[0].Rows[0]["Title"] != null) && (set.Tables[0].Rows[0]["Title"].ToString() != ""))
+            {
+                event2.Title = set.Tables[0].Rows[0]["Title"].ToString();
+            }
+            if ((set.Tables[0].Rows[0]["Content"] != null) && (set.Tables[0].Rows[0]["Content"].ToString() != ""))
+            {
+                event2.Content = set.Tables[0].Rows[0]["Content"].ToString();
+            }
+            event2.CreateDate = DateTime.Parse(set.Tables[0].Rows[0]["CreateDate"].ToString());
+            event2.ModifyDate = DateTime.Parse(set.Tables[0].Rows[0]["ModifyDate"].ToString());
+            if (set.Tables[0].Rows[0]["Status"].ToString() != "")
+            {
+                event2.Status = int.Parse(set.Tables[0].Rows[0]["Status"].ToString());
+            }
+            if (set.Tables[0].Rows[0]["IssueDate"] == null)
+            {
+                event2.IssueDate = DateTime.Parse(set.Tables[0].Rows[0]["IssueDate"].ToString());
+            }
+            if (set.Tables[0].Rows[0]["Level"].ToString() != "")
+            {
+                event2.Level = int.Parse(set.Tables[0].Rows[0]["Level"].ToString());
+            }
+            return event2;
         }
 
-        /// <summary>
-        /// 获取记录总数
-        /// </summary>
+        public IList<CmsEvent> GetPagingByLangCode(int Top, string orderby, string LangCode)
+        {
+            DataTable table = this.GetDataSetByLangCode(Top, orderby, LangCode).Tables[0];
+            IList<CmsEvent> list = new List<CmsEvent>();
+            int count = table.Rows.Count;
+            if (count > 0)
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    CmsEvent item = new CmsEvent();
+                    if ((table.Rows[i]["ID"] != null) && (table.Rows[i]["ID"].ToString() != ""))
+                    {
+                        item.ID = int.Parse(table.Rows[i]["ID"].ToString());
+                    }
+                    if ((table.Rows[i]["Guid"] != null) && (table.Rows[i]["Guid"].ToString() != ""))
+                    {
+                        item.Guid = table.Rows[i]["Guid"].ToString();
+                    }
+                    if ((table.Rows[i]["LangGuid"] != null) && (table.Rows[i]["LangGuid"].ToString() != ""))
+                    {
+                        item.LangGuid = table.Rows[i]["LangGuid"].ToString();
+                    }
+                    if ((table.Rows[i]["LanguageCode"] != null) && (table.Rows[i]["LanguageCode"].ToString() != ""))
+                    {
+                        item.LanguageCode = table.Rows[i]["LanguageCode"].ToString();
+                    }
+                    if ((table.Rows[i]["Title"] != null) && (table.Rows[i]["Title"].ToString() != ""))
+                    {
+                        item.Title = table.Rows[i]["Title"].ToString();
+                    }
+                    if ((table.Rows[i]["Content"] != null) && (table.Rows[i]["Content"].ToString() != ""))
+                    {
+                        item.Content = table.Rows[i]["Content"].ToString();
+                    }
+                    item.CreateDate = DateTime.Parse(table.Rows[i]["CreateDate"].ToString());
+                    item.ModifyDate = DateTime.Parse(table.Rows[i]["ModifyDate"].ToString());
+                    if ((table.Rows[i]["Status"] != null) && (table.Rows[i]["Status"].ToString() != ""))
+                    {
+                        item.Status = int.Parse(table.Rows[i]["Status"].ToString());
+                    }
+                    if ((table.Rows[i]["IssueDate"] == null) && (table.Rows[i]["Content"].ToString() != ""))
+                    {
+                        item.IssueDate = DateTime.Parse(table.Rows[i]["IssueDate"].ToString());
+                    }
+                    if ((table.Rows[i]["Level"] != null) && (table.Rows[i]["Level"].ToString() != ""))
+                    {
+                        item.Level = int.Parse(table.Rows[i]["Level"].ToString());
+                    }
+                    list.Add(item);
+                }
+            }
+            return list;
+        }
+
+        public IList<CmsEvent> GetPagingByLangCode(int startIndex, int endIndex, string orderby, string LangCode)
+        {
+            DataTable table = this.GetDataSetByLangCode(startIndex, endIndex, orderby, LangCode).Tables[0];
+            IList<CmsEvent> list = new List<CmsEvent>();
+            int count = table.Rows.Count;
+            if (count > 0)
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    CmsEvent item = new CmsEvent();
+                    if ((table.Rows[i]["ID"] != null) && (table.Rows[i]["ID"].ToString() != ""))
+                    {
+                        item.ID = int.Parse(table.Rows[i]["ID"].ToString());
+                    }
+                    if ((table.Rows[i]["Guid"] != null) && (table.Rows[i]["Guid"].ToString() != ""))
+                    {
+                        item.Guid = table.Rows[i]["Guid"].ToString();
+                    }
+                    if ((table.Rows[i]["LangGuid"] != null) && (table.Rows[i]["LangGuid"].ToString() != ""))
+                    {
+                        item.LangGuid = table.Rows[i]["LangGuid"].ToString();
+                    }
+                    if ((table.Rows[i]["LanguageCode"] != null) && (table.Rows[i]["LanguageCode"].ToString() != ""))
+                    {
+                        item.LanguageCode = table.Rows[i]["LanguageCode"].ToString();
+                    }
+                    if ((table.Rows[i]["Title"] != null) && (table.Rows[i]["Title"].ToString() != ""))
+                    {
+                        item.Title = table.Rows[i]["Title"].ToString();
+                    }
+                    if ((table.Rows[i]["Content"] != null) && (table.Rows[i]["Content"].ToString() != ""))
+                    {
+                        item.Content = table.Rows[i]["Content"].ToString();
+                    }
+                    item.CreateDate = DateTime.Parse(table.Rows[i]["CreateDate"].ToString());
+                    item.ModifyDate = DateTime.Parse(table.Rows[i]["ModifyDate"].ToString());
+                    if ((table.Rows[i]["Status"] != null) && (table.Rows[i]["Status"].ToString() != ""))
+                    {
+                        item.Status = int.Parse(table.Rows[i]["Status"].ToString());
+                    }
+                    if ((table.Rows[i]["IssueDate"] == null) && (table.Rows[i]["Content"].ToString() != ""))
+                    {
+                        item.IssueDate = DateTime.Parse(table.Rows[i]["IssueDate"].ToString());
+                    }
+                    if ((table.Rows[i]["Level"] != null) && (table.Rows[i]["Level"].ToString() != ""))
+                    {
+                        item.Level = int.Parse(table.Rows[i]["Level"].ToString());
+                    }
+                    list.Add(item);
+                }
+            }
+            return list;
+        }
+
         public int GetRecordCount(string strWhere)
         {
-            StringBuilder strSql = new StringBuilder();
-            strSql.Append("select count(1) FROM CmsEvent ");
+            StringBuilder builder = new StringBuilder();
+            builder.Append("select count(1) FROM CmsEvent ");
             if (strWhere.Trim() != "")
             {
-                strSql.Append(" where " + strWhere);
+                builder.Append(" where " + strWhere);
             }
-            object obj = DbHelperSQL.GetSingle(strSql.ToString());
-            if (obj == null)
+            object single = DbHelperSQL.GetSingle(builder.ToString());
+            if (single == null)
             {
                 return 0;
             }
-            else
-            {
-                return Convert.ToInt32(obj);
-            }
+            return Convert.ToInt32(single);
         }
 
-        /// <summary>
-        /// 获得分页数据列表
-        /// </summary>
-        public IList<Model.CMS.Event> GetListByPage(string strWhere, int startIndex, int endIndex)
+        public bool Update(CmsEvent model)
         {
-            DataSet ds = GetListDataSetByPage(strWhere, startIndex, endIndex);
-            DataTable dt = ds.Tables[0];
-            IList<Model.CMS.Event> modelList = new List<Model.CMS.Event>();
-            int rowsCount = dt.Rows.Count;
-            if (rowsCount > 0)
-            {
-                Model.CMS.Event model;
-                for (int n = 0; n < rowsCount; n++)
-                {
-                    model = new Model.CMS.Event();
-
-                    if (dt.Rows[n]["ID"] != null && dt.Rows[n]["ID"].ToString() != "")
-                    {
-                        model.ID = int.Parse(dt.Rows[n]["ID"].ToString());
-                    }
-                    if (dt.Rows[n]["Guid"] != null && dt.Rows[n]["Guid"].ToString() != "")
-                    {
-                        model.Guid = dt.Rows[n]["Guid"].ToString();
-                    }
-                    if (dt.Rows[n]["LangGuid"] != null && dt.Rows[n]["LangGuid"].ToString() != "")
-                    {
-                        model.LangGuid = dt.Rows[n]["LangGuid"].ToString();
-                    }
-                    if (dt.Rows[n]["LanguageCode"] != null && dt.Rows[n]["LanguageCode"].ToString() != "")
-                    {
-                        model.LanguageCode = dt.Rows[n]["LanguageCode"].ToString();
-                    }
-                    if (dt.Rows[n]["Title"] != null && dt.Rows[n]["Title"].ToString() != "")
-                    {
-                        model.Title = dt.Rows[n]["Title"].ToString();
-                    }
-                    if (dt.Rows[n]["Content"] != null && dt.Rows[n]["Content"].ToString() != "")
-                    {
-                        model.Content = dt.Rows[n]["Content"].ToString();
-                    }
-                    model.CreateDate = DateTime.Parse(dt.Rows[n]["CreateDate"].ToString());
-                    model.ModifyDate = DateTime.Parse(dt.Rows[n]["ModifyDate"].ToString());
-                    if (dt.Rows[n]["Status"] != null && dt.Rows[n]["Status"].ToString() != "")
-                    {
-                        model.Status = int.Parse(dt.Rows[n]["Status"].ToString());
-                    }
-                    if (dt.Rows[n]["IssueDate"] == null && dt.Rows[n]["Content"].ToString() != "")
-                    {
-                        model.IssueDate = DateTime.Parse(dt.Rows[n]["IssueDate"].ToString());
-                    }
-                    if (dt.Rows[n]["Level"] != null && dt.Rows[n]["Level"].ToString() != "")
-                    {
-                        model.Level = int.Parse(dt.Rows[n]["Level"].ToString());
-                    }
-
-                    modelList.Add(model);
-                }
-            }
-            return modelList;
+            StringBuilder builder = new StringBuilder();
+            builder.Append("update CmsEvent set ");
+            builder.Append(" Guid = @Guid , ");
+            builder.Append(" LangGuid = @LangGuid , ");
+            builder.Append(" LanguageCode = @LanguageCode , ");
+            builder.Append(" Title = @Title , ");
+            builder.Append(" Content = @Content , ");
+            builder.Append(" ModifyDate = @ModifyDate , ");
+            builder.Append(" Status = @Status , ");
+            builder.Append(" IssueDate = @IssueDate , ");
+            builder.Append(" Level = @Level ");
+            builder.Append(" where ID=@ID ");
+            SqlParameter[] cmdParms = new SqlParameter[] { new SqlParameter("@ID", SqlDbType.Int, 4), new SqlParameter("@Guid", SqlDbType.NVarChar, 0x3e8), new SqlParameter("@LangGuid", SqlDbType.NVarChar, 0x3e8), new SqlParameter("@LanguageCode", SqlDbType.VarChar, 50), new SqlParameter("@Title", SqlDbType.NVarChar, 0x3e8), new SqlParameter("@Content", SqlDbType.NText), new SqlParameter("@ModifyDate", SqlDbType.DateTime), new SqlParameter("@Status", SqlDbType.Int, 4), new SqlParameter("@IssueDate", SqlDbType.DateTime), new SqlParameter("@Level", SqlDbType.Int, 4) };
+            cmdParms[0].Value = model.ID;
+            cmdParms[1].Value = model.Guid;
+            cmdParms[2].Value = model.LangGuid;
+            cmdParms[3].Value = model.LanguageCode;
+            cmdParms[4].Value = model.Title;
+            cmdParms[5].Value = model.Content;
+            cmdParms[6].Value = DateTime.Now;
+            cmdParms[7].Value = 1;
+            cmdParms[8].Value = DateTime.Now;
+            cmdParms[9].Value = 0;
+            return (DbHelperSQL.ExecuteSql(builder.ToString(), cmdParms) > 0);
         }
 
-        public DataSet GetListDataSetByPage(string strWhere, int startIndex, int endIndex)
+        public bool UpdateSeo(CmsEvent model)
         {
-            var strSql = new StringBuilder();
-            strSql.Append(
-                "SELECT  *  FROM ( ");
-            strSql.Append(" SELECT ROW_NUMBER() OVER (");
-            strSql.Append("order by T.CreateDate desc");
-            strSql.Append(")AS Row, T.*  from CmsEvent T ");
-            if (!string.IsNullOrEmpty(strWhere.Trim()))
-            {
-                strSql.Append(" WHERE " + strWhere);
-            }
-            strSql.Append(" ) TT");
-            strSql.AppendFormat(" WHERE TT.Row between {0} and {1}", startIndex, endIndex);
-            return DbHelperSQL.Query(strSql.ToString());
+            StringBuilder builder = new StringBuilder();
+            builder.Append("update CmsEvent set ");
+            builder.Append(" Keywords = @Keywords , ");
+            builder.Append(" Description = @Description , ");
+            builder.Append(" SeoTitle = @SeoTitle ,  ");
+            builder.Append(" Url = @Url  ");
+            builder.Append(" where ID=@ID  ");
+            SqlParameter[] cmdParms = new SqlParameter[] { new SqlParameter("@ID", SqlDbType.Int, 4), new SqlParameter("@Keywords", SqlDbType.NVarChar, 50), new SqlParameter("@Description", SqlDbType.NText), new SqlParameter("@SeoTitle", SqlDbType.NVarChar, 0x3e8), new SqlParameter("@Url", SqlDbType.NVarChar, 0xe1) };
+            cmdParms[0].Value = model.ID;
+            return (DbHelperSQL.ExecuteSql(builder.ToString(), cmdParms) > 0);
         }
-
-        /// <summary>
-        /// 获得前几行数据
-        /// </summary>
-        public IList<Model.CMS.Event> GetList(int Top, string strWhere)
-        {
-            DataSet ds = GetListDataSet(Top, strWhere);
-            DataTable dt = ds.Tables[0];
-            IList<Model.CMS.Event> modelList = new List<Model.CMS.Event>();
-            int rowsCount = dt.Rows.Count;
-            if (rowsCount > 0)
-            {
-                Model.CMS.Event model;
-                for (int n = 0; n < rowsCount; n++)
-                {
-                    model = new Model.CMS.Event();
-
-                    if (dt.Rows[n]["ID"] != null && dt.Rows[n]["ID"].ToString() != "")
-                    {
-                        model.ID = int.Parse(dt.Rows[n]["ID"].ToString());
-                    }
-                    if (dt.Rows[n]["Guid"] != null && dt.Rows[n]["Guid"].ToString() != "")
-                    {
-                        model.Guid = dt.Rows[n]["Guid"].ToString();
-                    }
-                    if (dt.Rows[n]["LangGuid"] != null && dt.Rows[n]["LangGuid"].ToString() != "")
-                    {
-                        model.LangGuid = dt.Rows[n]["LangGuid"].ToString();
-                    }
-                    if (dt.Rows[n]["LanguageCode"] != null && dt.Rows[n]["LanguageCode"].ToString() != "")
-                    {
-                        model.LanguageCode = dt.Rows[n]["LanguageCode"].ToString();
-                    }
-                    if (dt.Rows[n]["Title"] != null && dt.Rows[n]["Title"].ToString() != "")
-                    {
-                        model.Title = dt.Rows[n]["Title"].ToString();
-                    }
-                    if (dt.Rows[n]["Content"] != null && dt.Rows[n]["Content"].ToString() != "")
-                    {
-                        model.Content = dt.Rows[n]["Content"].ToString();
-                    }
-                    model.CreateDate = DateTime.Parse(dt.Rows[n]["CreateDate"].ToString());
-                    model.ModifyDate = DateTime.Parse(dt.Rows[n]["ModifyDate"].ToString());
-                    if (dt.Rows[n]["Status"] != null && dt.Rows[n]["Status"].ToString() != "")
-                    {
-                        model.Status = int.Parse(dt.Rows[n]["Status"].ToString());
-                    }
-                    if (dt.Rows[n]["IssueDate"] == null && dt.Rows[n]["Content"].ToString() != "")
-                    {
-                        model.IssueDate = DateTime.Parse(dt.Rows[n]["IssueDate"].ToString());
-                    }
-                    if (dt.Rows[n]["Level"] != null && dt.Rows[n]["Level"].ToString() != "")
-                    {
-                        model.Level = int.Parse(dt.Rows[n]["Level"].ToString());
-                    }
-
-                    modelList.Add(model);
-                }
-            }
-            return modelList;
-        }
-
-        public DataSet GetListDataSet(int Top, string strWhere)
-        {
-            StringBuilder strSql = new StringBuilder();
-            strSql.Append("select ");
-            if (Top > 0)
-            {
-                strSql.Append(" top " + Top.ToString());
-            }
-            strSql.Append(" * ");
-            strSql.Append(" FROM CmsEvent ");
-            if (strWhere.Trim() != "")
-            {
-                strSql.Append(" where " + strWhere);
-            }
-            strSql.Append(" order by CreateDate desc");
-            return DbHelperSQL.Query(strSql.ToString());
-        }
-
-        /// <summary>
-        /// 根据Language分页获得数据列表
-        /// </summary>
-        public IList<Model.CMS.Event> GetPagingByLangCode(int startIndex, int endIndex, string orderby, string LangCode)
-        {
-            DataSet ds = GetDataSetByLangCode(startIndex, endIndex, orderby, LangCode);
-            DataTable dt = ds.Tables[0];
-            IList<Model.CMS.Event> modelList = new List<Model.CMS.Event>();
-            int rowsCount = dt.Rows.Count;
-            if (rowsCount > 0)
-            {
-                Model.CMS.Event model;
-                for (int n = 0; n < rowsCount; n++)
-                {
-                    model = new Model.CMS.Event();
-
-                    if (dt.Rows[n]["ID"] != null && dt.Rows[n]["ID"].ToString() != "")
-                    {
-                        model.ID = int.Parse(dt.Rows[n]["ID"].ToString());
-                    }
-                    if (dt.Rows[n]["Guid"] != null && dt.Rows[n]["Guid"].ToString() != "")
-                    {
-                        model.Guid = dt.Rows[n]["Guid"].ToString();
-                    }
-                    if (dt.Rows[n]["LangGuid"] != null && dt.Rows[n]["LangGuid"].ToString() != "")
-                    {
-                        model.LangGuid = dt.Rows[n]["LangGuid"].ToString();
-                    }
-                    if (dt.Rows[n]["LanguageCode"] != null && dt.Rows[n]["LanguageCode"].ToString() != "")
-                    {
-                        model.LanguageCode = dt.Rows[n]["LanguageCode"].ToString();
-                    }
-                    if (dt.Rows[n]["Title"] != null && dt.Rows[n]["Title"].ToString() != "")
-                    {
-                        model.Title = dt.Rows[n]["Title"].ToString();
-                    }
-                    if (dt.Rows[n]["Content"] != null && dt.Rows[n]["Content"].ToString() != "")
-                    {
-                        model.Content = dt.Rows[n]["Content"].ToString();
-                    }
-                    model.CreateDate = DateTime.Parse(dt.Rows[n]["CreateDate"].ToString());
-                    model.ModifyDate = DateTime.Parse(dt.Rows[n]["ModifyDate"].ToString());
-                    if (dt.Rows[n]["Status"] != null && dt.Rows[n]["Status"].ToString() != "")
-                    {
-                        model.Status = int.Parse(dt.Rows[n]["Status"].ToString());
-                    }
-                    if (dt.Rows[n]["IssueDate"] == null && dt.Rows[n]["Content"].ToString() != "")
-                    {
-                        model.IssueDate = DateTime.Parse(dt.Rows[n]["IssueDate"].ToString());
-                    }
-                    if (dt.Rows[n]["Level"] != null && dt.Rows[n]["Level"].ToString() != "")
-                    {
-                        model.Level = int.Parse(dt.Rows[n]["Level"].ToString());
-                    }
-
-                    modelList.Add(model);
-                }
-            }
-            return modelList;
-        }
-        public DataSet GetDataSetByLangCode(int startIndex, int endIndex, string orderby, string LangCode)
-        {
-            StringBuilder strSql = new StringBuilder();
-            strSql.Append("SELECT * FROM ( ");
-            strSql.Append(" SELECT ROW_NUMBER() OVER (");
-            if (!string.IsNullOrEmpty(orderby.Trim()))
-            {
-                strSql.Append("order by T." + orderby + " desc ");
-            }
-            else
-            {
-                strSql.Append("order by T.ID desc");
-            }
-            strSql.Append(")AS Row, T.*  from CmsEvent T ");
-            if (!string.IsNullOrEmpty(LangCode.Trim()))
-            {
-                strSql.Append(" WHERE T.LanguageCode=@LanguageCode ");
-                 SqlParameter[] parameters = {
-                    new SqlParameter("@LanguageCode", SqlDbType.NVarChar,50)
-                 };
-                 parameters[0].Value = LangCode;
-            }
-            strSql.Append(" ) TT");
-            strSql.AppendFormat(" WHERE TT.Row between {0} and {1}", startIndex, endIndex);
-            return DbHelperSQL.Query(strSql.ToString());
-        }
-        /// <summary>
-        /// 根据Language获得前几行数据
-        /// </summary>
-        public IList<Model.CMS.Event> GetPagingByLangCode(int Top, string orderby, string LangCode)
-        {
-            DataSet ds = GetDataSetByLangCode(Top, orderby, LangCode);
-            DataTable dt = ds.Tables[0];
-            IList<Model.CMS.Event> modelList = new List<Model.CMS.Event>();
-            int rowsCount = dt.Rows.Count;
-            if (rowsCount > 0)
-            {
-                Model.CMS.Event model;
-                for (int n = 0; n < rowsCount; n++)
-                {
-                    model = new Model.CMS.Event();
-
-                    if (dt.Rows[n]["ID"] != null && dt.Rows[n]["ID"].ToString() != "")
-                    {
-                        model.ID = int.Parse(dt.Rows[n]["ID"].ToString());
-                    }
-                    if (dt.Rows[n]["Guid"] != null && dt.Rows[n]["Guid"].ToString() != "")
-                    {
-                        model.Guid = dt.Rows[n]["Guid"].ToString();
-                    }
-                    if (dt.Rows[n]["LangGuid"] != null && dt.Rows[n]["LangGuid"].ToString() != "")
-                    {
-                        model.LangGuid = dt.Rows[n]["LangGuid"].ToString();
-                    }
-                    if (dt.Rows[n]["LanguageCode"] != null && dt.Rows[n]["LanguageCode"].ToString() != "")
-                    {
-                        model.LanguageCode = dt.Rows[n]["LanguageCode"].ToString();
-                    }
-                    if (dt.Rows[n]["Title"] != null && dt.Rows[n]["Title"].ToString() != "")
-                    {
-                        model.Title = dt.Rows[n]["Title"].ToString();
-                    }
-                    if (dt.Rows[n]["Content"] != null && dt.Rows[n]["Content"].ToString() != "")
-                    {
-                        model.Content = dt.Rows[n]["Content"].ToString();
-                    }
-                    model.CreateDate = DateTime.Parse(dt.Rows[n]["CreateDate"].ToString());
-                    model.ModifyDate = DateTime.Parse(dt.Rows[n]["ModifyDate"].ToString());
-                    if (dt.Rows[n]["Status"] != null && dt.Rows[n]["Status"].ToString() != "")
-                    {
-                        model.Status = int.Parse(dt.Rows[n]["Status"].ToString());
-                    }
-                    if (dt.Rows[n]["IssueDate"] == null && dt.Rows[n]["Content"].ToString() != "")
-                    {
-                        model.IssueDate = DateTime.Parse(dt.Rows[n]["IssueDate"].ToString());
-                    }
-                    if (dt.Rows[n]["Level"] != null && dt.Rows[n]["Level"].ToString() != "")
-                    {
-                        model.Level = int.Parse(dt.Rows[n]["Level"].ToString());
-                    }
-
-                    modelList.Add(model);
-                }
-            }
-            return modelList;
-        }
-        public DataSet GetDataSetByLangCode(int Top, string orderby, string LangCode)
-        {
-            StringBuilder strSql = new StringBuilder();
-            strSql.Append("select ");
-            if (Top > 0)
-            {
-                strSql.Append(" top " + Top.ToString());
-            }
-            strSql.Append(" * ");
-            strSql.Append(" FROM CmsEvent ");
-            if (LangCode.Trim() != "")
-            {
-                strSql.Append(" WHERE LanguageCode=@LanguageCode ");
-                SqlParameter[] parameters = {
-                    new SqlParameter("@LanguageCode", SqlDbType.NVarChar,50)
-                 };
-                parameters[0].Value = LangCode;
-            }
-            if (!string.IsNullOrEmpty(orderby.Trim()))
-            {
-                strSql.Append("order by " + orderby + " desc ");
-            }
-            else
-            {
-                strSql.Append("order by ID desc");
-            }
-            return DbHelperSQL.Query(strSql.ToString());
-        }
-
-        #endregion  Method
     }
 }

@@ -9,22 +9,17 @@ namespace MS.ECP.AAMAPrd.Controllers
 {
     public class LangController : Controller
     {
-
-        /// <summary>
-        /// 切换到指定语言，跳转到来源页新的语言页面url
-        /// </summary>
         public ActionResult ChangeLanguage(string language)
         {
-            if (this.Request.UrlReferrer == null)
+            if (base.Request.UrlReferrer == null)
             {
                 return this.Redirect("/" + language);
             }
-
-            string langStr = language.ToLower() == "zh-cn" ? "/" + language : "";
-            string referrerPath = General.Regions.Aggregate(this.Request.UrlReferrer.PathAndQuery, (current, c) => current.Replace(c + "", ""));
-            string url = langStr + referrerPath;
-            url = string.IsNullOrWhiteSpace(url) ? "/" : url;
-            return this.Redirect(url);
+            string str = (language.ToLower() == "zh-cn") ? ("/" + language) : "";
+            string str2 = General.Regions.Aggregate<string, string>(base.Request.UrlReferrer.PathAndQuery, (current, c) => current.Replace(c ?? "", ""));
+            string str3 = str + str2;
+            str3 = string.IsNullOrWhiteSpace(str3) ? "/" : str3;
+            return this.Redirect(str3);
         }
     }
 }

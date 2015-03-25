@@ -1,192 +1,118 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using MS.ECP.DALFactory;
-using MS.ECP.IDAL.CMS;
+﻿using MS.ECP.DALFactory;
 
-namespace MS.ECP.BLL.CMS  
+namespace MS.ECP.BLL.CMS
 {
-    public partial class AboutusBll
+    using MS.ECP.IDAL.CMS;
+    using MS.ECP.Model.CMS;
+    using System;
+    using System.Collections.Generic;
+
+    public class AboutusBll
     {
         private readonly IAboutusDal dal = DataAccess.CreateAboutus();
 
-        public AboutusBll()
-        { }
-
-        #region  Method
-
-        /// <summary>
-        /// 得到最大ID
-        /// </summary>
-        public int GetMaxId()
+        public bool Add(Aboutus model)
         {
-            return dal.GetMaxId();
+            return this.dal.Add(model);
         }
 
-        /// <summary>
-        /// 是否存在该记录
-        /// </summary>
-        public bool Exists(int ID)
+        public bool AddOrUpdate(Aboutus model)
         {
-            return dal.Exists(ID);
-        }
-
-        /// <summary>
-        /// 增加一条数据
-        /// </summary>
-        public bool Add(Model.CMS.Aboutus model)
-        {
-            return dal.Add(model);
-        }
-
-        /// <summary>
-        /// 更新一条数据
-        /// </summary>
-        public bool Update(Model.CMS.Aboutus model)
-        {
-            return dal.Update(model);
-        }
-
-        /// <summary>
-        /// 添加或更新一条数据
-        /// </summary>
-        public bool AddOrUpdate(Model.CMS.Aboutus model)
-        {
-            bool result;
             if (model.ID == 0)
             {
-                result = dal.Add(model);
-                
+                return this.dal.Add(model);
             }
-            else
-            {
-                result = dal.Update(model);
-            }
-            return result;
+            return this.dal.Update(model);
         }
 
-        /// <summary>
-        /// 更新一条SEO数据
-        /// </summary>
-        public bool UpdateSeo(Model.CMS.Aboutus model)
-        {
-            return dal.UpdateSeo(model);
-        }
-
-        /// <summary>
-        /// 删除一条数据
-        /// </summary>
         public bool Delete(int ID)
         {
-            return dal.Delete(ID);
+            return this.dal.Delete(ID);
         }
 
-        /// <summary>
-        /// 根据LangGuid删除数据
-        /// </summary>
         public bool DeleteByLangGuid(string langGuid)
         {
-            return dal.DeleteByLangGuid(langGuid);
+            return this.dal.DeleteByLangGuid(langGuid);
         }
 
-        /// <summary>
-        /// 批量删除数据
-        /// </summary>
         public bool DeleteList(string IDlist)
         {
-            return dal.DeleteList(IDlist);
+            return this.dal.DeleteList(IDlist);
         }
 
-        /// <summary>
-        /// 根据ID得到一个对象实体
-        /// </summary>
-        public Model.CMS.Aboutus GetModelByID(int ID)
+        public bool Exists(int ID)
         {
-
-            return dal.GetModelByID(ID);
+            return this.dal.Exists(ID);
         }
 
-        /// <summary>
-        /// 根据LangGuid和LangCode得到一个对象实体
-        /// </summary>
-        public Model.CMS.Aboutus GetModelByLangGuidAndLangCode(string langGuid, string languageCode)
+        public IList<Aboutus> GetAllList()
         {
-            return dal.GetModelByLangGuidAndLangCode(langGuid, languageCode);
-        }
-         
-        /// <summary>
-        /// 根据Language得到一个对象实体
-        /// </summary>
-        public Model.CMS.Aboutus GetModelByLangCode(string LanguageCode)
-        {
-            return dal.GetModelByLangCode(LanguageCode);
+            return this.GetList("");
         }
 
-        /// <summary>
-        /// 得到一个对象实体，从缓存中
-        /// </summary>
-        public Model.CMS.Aboutus GetModelByCache(int ID)
+        public IList<Aboutus> GetList(string strWhere)
         {
-            return dal.GetModelByCache(ID);
+            return this.dal.GetList(strWhere);
         }
 
-        /// <summary>
-        /// 获得数据列表
-        /// </summary>
-        public IList<Model.CMS.Aboutus> GetList(string strWhere)
+        public IList<Aboutus> GetListByPage(string strWhere, int startIndex, int endIndex)
         {
-            return dal.GetList(strWhere);
+            return this.dal.GetListByPage(strWhere, startIndex, endIndex);
         }
 
-        /// <summary>
-        /// 获取总记录数
-        /// </summary>
+        public int GetMaxId()
+        {
+            return this.dal.GetMaxId();
+        }
+
+        public Aboutus GetModelByCache(int ID)
+        {
+            return this.dal.GetModelByCache(ID);
+        }
+
+        public Aboutus GetModelByID(int ID)
+        {
+            return this.dal.GetModelByID(ID);
+        }
+
+        public Aboutus GetModelByLangCode(string LanguageCode)
+        {
+            return this.dal.GetModelByLangCode(LanguageCode);
+        }
+
+        public Aboutus GetModelByLangGuidAndLangCode(string langGuid, string languageCode)
+        {
+            return this.dal.GetModelByLangGuidAndLangCode(langGuid, languageCode);
+        }
+
+        public IList<Aboutus> GetPagingByLangCode(int startIndex, int endIndex, string orderby, string LangCode)
+        {
+            return this.dal.GetPagingByLangCode(startIndex, endIndex, orderby, LangCode);
+        }
+
         public int GetRecordCount(string strWhere)
         {
-            return dal.GetRecordCount(strWhere);
+            return this.dal.GetRecordCount(strWhere);
         }
 
-        /// <summary>
-        /// 获得分页数据列表
-        /// </summary>
-        public IList<Model.CMS.Aboutus> GetListByPage(string strWhere, int startIndex, int endIndex)
+        public IList<Aboutus> GetTop(int Top, string strWhere)
         {
-            return dal.GetListByPage(strWhere, startIndex, endIndex);
+            return this.dal.GetTop(Top, strWhere);
         }
 
-        /// <summary>
-        /// 获得前几行数据
-        /// </summary>
-        public IList<Model.CMS.Aboutus> GetTop(int Top, string strWhere)
+        public IList<Aboutus> GetTopByLangCode(int Top, string orderby, string LangCode)
         {
-            return dal.GetTop(Top, strWhere);
+            return this.dal.GetTopByLangCode(Top, orderby, LangCode);
         }
 
-        //// <summary>
-        /// 获得数据列表
-        /// </summary>
-        public IList<Model.CMS.Aboutus> GetAllList()
+        public bool Update(Aboutus model)
         {
-            return GetList("");
+            return this.dal.Update(model);
         }
 
-        /// <summary>
-        /// 根据Language获得分页数据列表
-        /// </summary>
-        public IList<Model.CMS.Aboutus> GetPagingByLangCode(int startIndex, int endIndex, string orderby, string LangCode)
+        public bool UpdateSeo(Aboutus model)
         {
-            return dal.GetPagingByLangCode(startIndex, endIndex, orderby, LangCode);
+            return this.dal.UpdateSeo(model);
         }
-        /// <summary>
-        /// 根据Language获得前几行数据
-        /// </summary>
-        public IList<Model.CMS.Aboutus> GetTopByLangCode(int Top, string orderby, string LangCode)
-        {
-            return dal.GetTopByLangCode(Top, orderby, LangCode);
-        }
-
-        #endregion
     }
 }

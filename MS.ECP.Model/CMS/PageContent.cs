@@ -1,101 +1,165 @@
-﻿using System;
-
-namespace MS.ECP.Model.CMS
+﻿namespace MS.ECP.Model.CMS
 {
-    /// <summary>
-    /// PageContent：内容实体类
-    /// </summary>
-    [Serializable]
-    public partial class PageContent
-    {
-        public PageContent() { }
+    using System;
 
-        #region Model
-        private int _id;
-        private string _guid;
-        private int _pageNumber;
-        private string _item;
-        private string _itemContent;
-        private string _languageCode;
+    [Serializable]
+    public class PageContent
+    {
         private int _categoryID;
         private DateTime _createdate;
-
-        private string _keywords;
         private string _description;
+        private string _guid;
+        private int _id;
+        private string _item;
+        private string _itemContent;
+        private string _keywords;
+        private string _languageCode;
+        private int _pageNumber;
         private string _seotitle;
         private string _url;
 
-        public int ID
-        {
-            set { _id = value; }
-            get { return _id; }
-        }
-
-        public string Guid
-        {
-            set { _guid = value; }
-            get { return _guid; }
-        }
-
-        public int PageNumber
-        {
-            set { _pageNumber = value; }
-            get { return _pageNumber; }
-        }
-
-        public string Item
-        {
-            set { _item = value; }
-            get { return _item; }
-        }
-
-        public string ItemContent
-        {
-            set { _itemContent = value; }
-            get { return _itemContent; }
-        }
-
-        public string LanguageCode
-        {
-            set { _languageCode = value; }
-            get { return _languageCode; }
-        }
-
         public int CategoryID
         {
-            set { _categoryID = value; }
-            get { return _categoryID; }
+            get
+            {
+                return this._categoryID;
+            }
+            set
+            {
+                this._categoryID = value;
+            }
         }
 
         public DateTime CreateDate
         {
-            set { _createdate = value; }
-            get { return _createdate; }
+            get
+            {
+                return this._createdate;
+            }
+            set
+            {
+                this._createdate = value;
+            }
+        }
+
+        public string Description
+        {
+            get
+            {
+                return this._description;
+            }
+            set
+            {
+                this._description = value;
+            }
+        }
+
+        public string Guid
+        {
+            get
+            {
+                return this._guid;
+            }
+            set
+            {
+                this._guid = value;
+            }
+        }
+
+        public int ID
+        {
+            get
+            {
+                return this._id;
+            }
+            set
+            {
+                this._id = value;
+            }
+        }
+
+        public string Item
+        {
+            get
+            {
+                return this._item;
+            }
+            set
+            {
+                this._item = value;
+            }
+        }
+
+        public string ItemContent
+        {
+            get
+            {
+                return this._itemContent;
+            }
+            set
+            {
+                this._itemContent = value;
+            }
         }
 
         public string Keywords
         {
-            set { _keywords = value; }
-            get { return _keywords; }
+            get
+            {
+                return this._keywords;
+            }
+            set
+            {
+                this._keywords = value;
+            }
         }
-        public string Description
+
+        public string LanguageCode
         {
-            set { _description = value; }
-            get { return _description; }
+            get
+            {
+                return this._languageCode;
+            }
+            set
+            {
+                this._languageCode = value;
+            }
+        }
+
+        public int PageNumber
+        {
+            get
+            {
+                return this._pageNumber;
+            }
+            set
+            {
+                this._pageNumber = value;
+            }
         }
 
         public string SeoTitle
         {
-            set { _seotitle = value; }
-            get { return _seotitle; }
+            get
+            {
+                return this._seotitle;
+            }
+            set
+            {
+                this._seotitle = value;
+            }
         }
 
         public string Url
         {
-            set { _url = value; }
-            get { return _url; }
+            get
+            {
+                return this._url;
+            }
+            set
+            {
+                this._url = value;
+            }
         }
-
-        #endregion
     }
 }

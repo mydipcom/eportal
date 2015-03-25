@@ -1,134 +1,230 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace MS.ECP.Model.CMS
+﻿namespace MS.ECP.Model.CMS
 {
-    /// <summary>
-    /// Job：招聘职位 实体类
-    /// </summary>
-    [Serializable]
-    public partial class Job
-    {
-        public Job() { }
+    using System;
 
-        private int _id;
+    [Serializable]
+    public class Job
+    {
+        private DateTime _createdate;
+        private string _description;
         private string _guid;
-        private string _langguid; 
-        private string _languageCode;
-        private string _jobTitle;
-        private int _needNum;
-        private string _workplace;
-        private string _salary;
-        private string _languageRequired;
+        private int _id;
         private string _jobBligation;
         private string _jobDesc;
-        private int _orderNum;
-        private DateTime _createdate;
-
+        private string _jobTitle;
         private string _keywords;
-        private string _description;
+        private string _langguid;
+        private string _languageCode;
+        private string _languageRequired;
+        private int _needNum;
+        private int _orderNum;
+        private string _salary;
         private string _seotitle;
         private string _url;
+        private string _workplace;
 
+        public DateTime CreateDate
+        {
+            get
+            {
+                return this._createdate;
+            }
+            set
+            {
+                this._createdate = value;
+            }
+        }
+
+        public string Description
+        {
+            get
+            {
+                return this._description;
+            }
+            set
+            {
+                this._description = value;
+            }
+        }
+
+        public string Guid
+        {
+            get
+            {
+                return this._guid;
+            }
+            set
+            {
+                this._guid = value;
+            }
+        }
 
         public int ID
         {
-            set { _id = value; }
-            get { return _id; }
-        }
-        public string Guid
-        {
-            set { _guid = value; }
-            get { return _guid; }
-        }
-
-        public string LangGuid
-        {
-            set { _langguid = value; }
-            get { return _langguid; }
-        }
-
-        public string LanguageCode
-        {
-            set { _languageCode = value; }
-            get { return _languageCode; }
-        }
-
-        public string JobTitle
-        {
-            set { _jobTitle = value; }
-            get { return _jobTitle; }
-        }
-
-        public int NeedNum
-        {
-            set { _needNum = value; }
-            get { return _needNum; }
-        }
-        public string Workplace
-        {
-            set { _workplace = value; }
-            get { return _workplace; }
-        }
-
-        public string Salary
-        {
-            set { _salary = value; }
-            get { return _salary; }
-        }
-
-        public string LanguageRequired
-        {
-            set { _languageRequired = value; }
-            get { return _languageRequired; }
+            get
+            {
+                return this._id;
+            }
+            set
+            {
+                this._id = value;
+            }
         }
 
         public string JobBligation
         {
-            set { _jobBligation = value; }
-            get { return _jobBligation; }
+            get
+            {
+                return this._jobBligation;
+            }
+            set
+            {
+                this._jobBligation = value;
+            }
         }
+
         public string JobDesc
         {
-            set { _jobDesc = value; }
-            get { return _jobDesc; }
+            get
+            {
+                return this._jobDesc;
+            }
+            set
+            {
+                this._jobDesc = value;
+            }
         }
 
-        public int OrderNum
+        public string JobTitle
         {
-            set { _orderNum = value; }
-            get { return _orderNum; }
-        }
-
-        public DateTime CreateDate
-        {
-            set { _createdate = value; }
-            get { return _createdate; }
+            get
+            {
+                return this._jobTitle;
+            }
+            set
+            {
+                this._jobTitle = value;
+            }
         }
 
         public string Keywords
         {
-            set { _keywords = value; }
-            get { return _keywords; }
+            get
+            {
+                return this._keywords;
+            }
+            set
+            {
+                this._keywords = value;
+            }
         }
-        public string Description
+
+        public string LangGuid
         {
-            set { _description = value; }
-            get { return _description; }
+            get
+            {
+                return this._langguid;
+            }
+            set
+            {
+                this._langguid = value;
+            }
+        }
+
+        public string LanguageCode
+        {
+            get
+            {
+                return this._languageCode;
+            }
+            set
+            {
+                this._languageCode = value;
+            }
+        }
+
+        public string LanguageRequired
+        {
+            get
+            {
+                return this._languageRequired;
+            }
+            set
+            {
+                this._languageRequired = value;
+            }
+        }
+
+        public int NeedNum
+        {
+            get
+            {
+                return this._needNum;
+            }
+            set
+            {
+                this._needNum = value;
+            }
+        }
+
+        public int OrderNum
+        {
+            get
+            {
+                return this._orderNum;
+            }
+            set
+            {
+                this._orderNum = value;
+            }
+        }
+
+        public string Salary
+        {
+            get
+            {
+                return this._salary;
+            }
+            set
+            {
+                this._salary = value;
+            }
         }
 
         public string SeoTitle
         {
-            set { _seotitle = value; }
-            get { return _seotitle; }
+            get
+            {
+                return this._seotitle;
+            }
+            set
+            {
+                this._seotitle = value;
+            }
         }
 
         public string Url
         {
-            set { _url = value; }
-            get { return _url; }
+            get
+            {
+                return this._url;
+            }
+            set
+            {
+                this._url = value;
+            }
+        }
+
+        public string Workplace
+        {
+            get
+            {
+                return this._workplace;
+            }
+            set
+            {
+                this._workplace = value;
+            }
         }
     }
 }

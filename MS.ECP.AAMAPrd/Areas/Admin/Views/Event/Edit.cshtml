@@ -44,8 +44,14 @@
                              @Html.ValidationMessageFor(model => model.EnTitle)
                          </p>
                     
+                         
+                         <p>
+                             @Html.LabelFor(m => m.EnCreateTime)
+                             @Html.TextBoxFor(m => m.EnCreateTime)
+                             @Html.ValidationMessageFor(model => model.EnCreateTime)
+                         </p>
 
-                             @Html.LabelFor(m => m.EnContent) 
+                         @Html.LabelFor(m => m.EnContent) 
                          <div class="content paddingbottom22" >
                              @Html.TextAreaFor(m => m.EnContent, new {id = "UEContent", rows = "100", cols = "100"})
                               @Html.ValidationMessageFor(model => model.EnContent)
@@ -60,9 +66,18 @@
                          <p>
                              @Html.LabelFor(m => m.ZhTitle)
                              @Html.TextBoxFor(m => m.ZhTitle)
-                              @Html.ValidationMessageFor(model => model.ZhTitle)
+                             @Html.ValidationMessageFor(model => model.ZhTitle)
                          </p>
-                             @Html.LabelFor(m => m.ZhContent)
+                         
+                                        
+                         <p>
+                             @Html.LabelFor(m => m.ZhCreateTime)
+                             @Html.TextBoxFor(m => m.ZhCreateTime)
+                             @Html.ValidationMessageFor(model => model.ZhCreateTime)
+                         </p>
+                         
+
+                         @Html.LabelFor(m => m.ZhContent)
                          <div class="content paddingbottom22" >
                              @Html.TextAreaFor(m => m.ZhContent, new {id = "CUEContent", rows = "100", cols = "100"})
                                  @Html.ValidationMessageFor(model => model.ZhContent)

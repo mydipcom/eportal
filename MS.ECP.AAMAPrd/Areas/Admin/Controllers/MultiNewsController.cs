@@ -1,198 +1,163 @@
-﻿
-
-
-using System;
-using System.Linq;
-using System.Web.Mvc;
-using MS.ECP.AAMAPrd.Areas.Admin.Models;
-using MS.ECP.AAMAPrd.Areas.Admin.WebHelp;
-using MS.ECP.AAMAPrd.WebPager;
-using MS.ECP.Bll.EntityContext;
-using MS.ECP.Model;
-using MS.ECP.Model.CMS;
-
-namespace MS.ECP.AAMAPrd.Areas.Admin.Controllers
+﻿namespace MS.ECP.AAMAPrd.Areas.Admin.Controllers
 {
-    public class MultiNewsController : Controller
+    using MS.ECP.AAMAPrd.Areas.Admin.Models;
+    using MS.ECP.AAMAPrd.Areas.Admin.WebHelp;
+    using MS.ECP.AAMAPrd.WebPager;
+    using MS.ECP.Model;
+    using System;
+    using System.Collections.Generic;
+    using System.Data.Entity;
+    using System.Linq;
+    using System.Runtime.InteropServices;
+    using System.Web.Mvc;
+
+    public class MultiNewsController : BaseController
     {
-        private const int Pagesize = 10;
-        private const int LanguageSelect = 2;
-        readonly AAMAPrdContext _context = new AAMAPrdContext();
+        private readonly DbSet<MultiNews> _aamanewsquery;
 
-
-
-        public ActionResult List(int id = 1)
+        public MultiNewsController()
         {
-            var dt = _context.MultiNewss.OrderByDescending(m => m.ModifyDate).Skip(id - 1).Take(Pagesize).ToList();
-            var listcount = _context.MultiNewss.Count();
-            var viewmodel = new PagedList<MultiNews>(dt, id, Pagesize, listcount);
-            if (Request.IsAjaxRequest())
-                return PartialView("_NewsPagingPartialPage", viewmodel);
-            return View(viewmodel);
+            this._aamanewsquery = base.Contentx.AAMANews;
         }
-
 
         public ActionResult Add()
         {
-            return View();
+            return base.View();
         }
 
-
-        [HttpPost]
-        [ValidateInput(false)]
+        [HttpPost, ValidateInput(false)]
         public ActionResult Add(MutilNewsViewModel model)
         {
-            if (!ModelState.IsValid) return View(model);
-
-            var datetimenow = DateTime.Now;
-            var languguid = Guid.NewGuid().ToString();
-
-            var enlishnews = new MS.ECP.Model.MultiNews()
+            if (!base.ModelState.IsValid)
             {
-                LangGuid = languguid,
+                return base.View(model);
+            }
+            DateTime now = DateTime.Now;
+            string str = Guid.NewGuid().ToString();
+            MultiNews entity = new MultiNews
+            {
+                LangGuid = str,
                 Guid = Guid.NewGuid().ToString(),
                 Title = model.EnTitle,
                 Content = model.EnContent,
                 LanguageCode = LanageConfig.EnLan,
-                CreateDate = datetimenow,
-                ModifyDate = datetimenow,
-                IssueDate = datetimenow
+                CreateDate = now,
+                ModifyDate = now,
+                IssueDate = new DateTime?(now)
             };
-
-            var zhnews = new MS.ECP.Model.MultiNews()
+            MultiNews news2 = new MultiNews
             {
-                LangGuid = languguid,
+                LangGuid = str,
                 Guid = Guid.NewGuid().ToString(),
                 Title = model.ZhTitle ?? model.EnTitle,
                 Content = model.ZhContent ?? model.EnContent,
                 LanguageCode = LanageConfig.ZhLan,
-                CreateDate = datetimenow,
-                ModifyDate = datetimenow,
-                IssueDate = datetimenow
+                CreateDate = now,
+                ModifyDate = now,
+                IssueDate = new DateTime?(now)
             };
-            _context.MultiNewss.Add(enlishnews);
-            _context.MultiNewss.Add(zhnews);
-            _context.SaveChanges();
-            return RedirectToAction("List");
+            this._aamanewsquery.Add(entity);
+            this._aamanewsquery.Add(news2);
+            base.SaveChange();
+            return base.RedirectToAction("List");
         }
 
+        public ActionResult Del(int id = 0)
+        {
+            if ((id != 0) && (id >= 0))
+            {
+                MultiNews entity = this._aamanewsquery.FirstOrDefault<MultiNews>(m => m.ID == id);
+                this._aamanewsquery.Remove(entity);
+                base.SaveChange();
+            }
+            return base.RedirectToAction("List");
+        }
 
+        [ValidateInput(false), HttpPost]
+        public ActionResult Edit(MutilNewsViewModel model)
+        {
+            if (!base.ModelState.IsValid)
+            {
+                return base.View(model);
+            }
+            Tuple<MultiNews, MultiNews> tuple = this.EventsViewModelToEvent(model, new Tuple<MultiNews, MultiNews>(this._aamanewsquery.FirstOrDefault<MultiNews>(m => m.ID == model.EnId), this._aamanewsquery.FirstOrDefault<MultiNews>(m => m.ID == model.ZhId)));
+            MultiNews entity = tuple.Item1;
+            MultiNews news2 = tuple.Item2;
+            string str = Guid.NewGuid().ToString();
+            DateTime now = DateTime.Now;
+            entity.CreateDate = base.DateTimeFormat(model.EnCreateTime);
+            entity.ModifyDate = now;
+            entity.IssueDate = new DateTime?(now);
+            entity.Guid = Guid.NewGuid().ToString();
+            entity.LangGuid = str;
+            if ((entity.LangGuid == null) && (entity.ID == 0))
+            {
+                this._aamanewsquery.Add(entity);
+            }
+            news2.CreateDate = base.DateTimeFormat(model.ZhCreateTime);
+            news2.ModifyDate = now;
+            news2.IssueDate = new DateTime?(now);
+            news2.Guid = Guid.NewGuid().ToString();
+            news2.LangGuid = str;
+            if (((news2.LangGuid == null) && (news2.ID == 0)) && (news2.Content != entity.Content))
+            {
+                this._aamanewsquery.Add(news2);
+            }
+            base.SaveChange();
+            return base.RedirectToAction("List");
+        }
 
         public ActionResult Edit(string languid)
         {
-
-            var lanlist =
-                _context.MultiNewss.Where(m => m.LangGuid == languid)
-                    .OrderByDescending(m => m.ModifyDate)
-                    .Take(LanguageSelect)
-                    .ToList();
-
-            var newsViewModel = new MutilNewsViewModel();
-            var elmodel = lanlist.FirstOrDefault(d => d.LanguageCode == LanageConfig.EnLan);
-            var zhmodel = lanlist.FirstOrDefault(d => d.LanguageCode == LanageConfig.ZhLan);
-            if (null != elmodel)
+            List<MultiNews> source = (from m in this._aamanewsquery
+                                      where m.LangGuid == languid
+                                      orderby m.ModifyDate descending
+                                      select m).Take<MultiNews>(2).ToList<MultiNews>();
+            MutilNewsViewModel model = new MutilNewsViewModel();
+            MultiNews news = source.FirstOrDefault<MultiNews>(d => d.LanguageCode == LanageConfig.EnLan);
+            MultiNews news2 = source.FirstOrDefault<MultiNews>(d => d.LanguageCode == LanageConfig.ZhLan);
+            if (news != null)
             {
-                newsViewModel.EnTitle = elmodel.Title;
-                newsViewModel.EnContent = elmodel.Content;
-                newsViewModel.EnId = elmodel.ID;
+                model.EnTitle = news.Title;
+                model.EnContent = news.Content;
+                model.EnId = news.ID;
+                model.EnCreateTime = base.DateToString(news.CreateDate);
             }
-
-            if (null != zhmodel)
+            if (news2 != null)
             {
-                newsViewModel.ZhTitle = zhmodel.Title;
-                newsViewModel.ZhContent = zhmodel.Content;
-                newsViewModel.ZhId = zhmodel.ID;
+                model.ZhTitle = news2.Title;
+                model.ZhContent = news2.Content;
+                model.ZhId = news2.ID;
+                model.ZhCreateTime = base.DateToString(news2.CreateDate);
             }
-            return View(newsViewModel);
+            return base.View(model);
         }
 
-
-        [HttpPost]
-        [ValidateInput(false)]
-        public ActionResult Edit(MutilNewsViewModel model)
+        private Tuple<MultiNews, MultiNews> EventsViewModelToEvent(MutilNewsViewModel model, Tuple<MultiNews, MultiNews> tuple)
         {
-            if (!ModelState.IsValid) return View(model);
-
-            var tuple = EventsViewModelToEvent(model,
-                new Tuple<MultiNews, MultiNews>(_context.MultiNewss.FirstOrDefault(m => m.ID == model.EnId),
-                    _context.MultiNewss.FirstOrDefault(m => m.ID == model.ZhId)));
-
-            var elmodel = tuple.Item1;
-            var zhmodel = tuple.Item2;
-
-            if (elmodel.LangGuid == null && elmodel.ID == 0)
-            {
-                var datetimenow = DateTime.Now;
-                elmodel.CreateDate = datetimenow;
-                elmodel.ModifyDate = datetimenow;
-                elmodel.IssueDate = datetimenow;
-                elmodel.Guid = Guid.NewGuid().ToString();
-                elmodel.LangGuid = Guid.NewGuid().ToString();
-                _context.MultiNewss.Add(elmodel);
-            }
-            else if (elmodel.LangGuid != null && elmodel.ID != 0)
-            {
-                _context.SaveChanges();
-            }
-
-            if (zhmodel.LangGuid == null && zhmodel.ID == 0 && zhmodel.Content != elmodel.Content)
-            {
-                var datetimenow = DateTime.Now;
-                zhmodel.CreateDate = datetimenow;
-                zhmodel.ModifyDate = datetimenow;
-                zhmodel.IssueDate = datetimenow;
-                zhmodel.Guid = Guid.NewGuid().ToString();
-                zhmodel.LangGuid = elmodel.LangGuid;
-                   _context.MultiNewss.Add(zhmodel);
-            }
-            else if (zhmodel.LangGuid != null && zhmodel.ID != 0)
-            {
-                zhmodel.LangGuid = elmodel.LangGuid;
-                _context.SaveChanges();
-            }
-
-            return RedirectToAction("List");
+            MultiNews news = tuple.Item1 ?? new MultiNews();
+            news.Title = model.EnTitle;
+            news.Content = model.EnContent;
+            news.LanguageCode = LanageConfig.EnLan;
+            MultiNews news2 = tuple.Item2 ?? new MultiNews();
+            news2.Title = model.ZhTitle ?? model.EnTitle;
+            news2.Content = model.ZhContent ?? model.EnContent;
+            news2.LanguageCode = LanageConfig.ZhLan;
+            return new Tuple<MultiNews, MultiNews>(news, news2);
         }
 
-
-        /// <summary>
-        /// Delete
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public ActionResult Del(int id = 0)
+        public ActionResult List(int id = 1)
         {
-            if (id == 0 || id < 0)
+            List<MultiNews> currentPageItems = (from m in this._aamanewsquery
+                                                orderby m.ModifyDate descending
+                                                select m).Skip<MultiNews>(((id - 1) * 10)).Take<MultiNews>(10).ToList<MultiNews>();
+            int totalItemCount = this._aamanewsquery.Count<MultiNews>();
+            PagedList<MultiNews> model = new PagedList<MultiNews>(currentPageItems, id, 10, totalItemCount);
+            if (base.Request.IsAjaxRequest())
             {
-                return RedirectToAction("List");
+                return this.PartialView("_NewsPagingPartialPage", model);
             }
-
-            var news = _context.MultiNewss.FirstOrDefault(m => m.ID == id);
-            _context.MultiNewss.Remove(news);
-            _context.SaveChanges();
-            return RedirectToAction("List");
+            return base.View(model);
         }
-
-
-
-        #region private method
-
-        private Tuple<MultiNews, MultiNews> EventsViewModelToEvent(MutilNewsViewModel model,
-            Tuple<MultiNews, MultiNews> tuple)
-        {
-            var elmodel = tuple.Item1 ?? new MultiNews();
-            elmodel.Title = model.EnTitle;
-            elmodel.Content = model.EnContent;
-            elmodel.LanguageCode = LanageConfig.EnLan;
-
-            var zhmodel = tuple.Item2 ?? new MultiNews();
-            zhmodel.Title = model.ZhTitle ?? model.EnTitle;
-            zhmodel.Content = model.ZhContent ?? model.EnContent;
-            zhmodel.LanguageCode = LanageConfig.ZhLan;
-            return new Tuple<MultiNews, MultiNews>(elmodel, zhmodel);
-        }
-        #endregion
-
     }
 }
-

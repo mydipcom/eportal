@@ -1,104 +1,126 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MS.ECP.Model
+﻿namespace MS.ECP.Model
 {
-    /// <summary>
-    /// SysResource:实体类(属性说明自动提取数据库字段的描述信息)
-    /// </summary>
+    using System;
+
     [Serializable]
-    public partial class SysResource
+    public class SysResource
     {
-        public SysResource()
-        { }
-        #region Model
+        private int? _codeorder = 0;
+        private string _codestate = "1";
         private int _id;
         private string _languagecode;
+        private string _resourcekey;
         private string _resourcepage;
         private string _resourcetype;
-        private string _resourcekey;
         private string _resourcevalue;
         private string _webregion = "en-us";
-        private string _codestate = "1";
-        private int? _codeorder = 0;
-        /// <summary>
-        /// 
-        /// </summary>
-        public int ID
-        {
-            set { _id = value; }
-            get { return _id; }
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string LanguageCode
-        {
-            set { _languagecode = value; }
-            get { return _languagecode; }
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string ResourcePage
-        {
-            set { _resourcepage = value; }
-            get { return _resourcepage; }
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string WebRegion
-        {
-            set { _webregion = value; }
-            get { return _webregion; }
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string ResourceType
-        {
-            set { _resourcetype = value; }
-            get { return _resourcetype; }
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string ResourceKey
-        {
-            set { _resourcekey = value; }
-            get { return _resourcekey; }
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string ResourceValue
-        {
-            set { _resourcevalue = value; }
-            get { return _resourcevalue; }
-        }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public string CodeState
-        {
-            set { _codestate = value; }
-            get { return _codestate; }
-        }
-        /// <summary>
-        /// 
-        /// </summary>
         public int? CodeOrder
         {
-            set { _codeorder = value; }
-            get { return _codeorder; }
+            get
+            {
+                return this._codeorder;
+            }
+            set
+            {
+                this._codeorder = value;
+            }
         }
-        #endregion Model
 
+        public string CodeState
+        {
+            get
+            {
+                return this._codestate;
+            }
+            set
+            {
+                this._codestate = value;
+            }
+        }
+
+        public int ID
+        {
+            get
+            {
+                return this._id;
+            }
+            set
+            {
+                this._id = value;
+            }
+        }
+
+        public string LanguageCode
+        {
+            get
+            {
+                return this._languagecode;
+            }
+            set
+            {
+                this._languagecode = value;
+            }
+        }
+
+        public string ResourceKey
+        {
+            get
+            {
+                return this._resourcekey;
+            }
+            set
+            {
+                this._resourcekey = value;
+            }
+        }
+
+        public string ResourcePage
+        {
+            get
+            {
+                return this._resourcepage;
+            }
+            set
+            {
+                this._resourcepage = value;
+            }
+        }
+
+        public string ResourceType
+        {
+            get
+            {
+                return this._resourcetype;
+            }
+            set
+            {
+                this._resourcetype = value;
+            }
+        }
+
+        public string ResourceValue
+        {
+            get
+            {
+                return this._resourcevalue;
+            }
+            set
+            {
+                this._resourcevalue = value;
+            }
+        }
+
+        public string WebRegion
+        {
+            get
+            {
+                return this._webregion;
+            }
+            set
+            {
+                this._webregion = value;
+            }
+        }
     }
 }
-

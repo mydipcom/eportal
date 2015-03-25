@@ -1,77 +1,126 @@
-﻿using System;
-
-namespace MS.ECP.Model.CMS
+﻿namespace MS.ECP.Model.CMS
 {
-    /// <summary>
-    /// Category：目录（类别）实体类
-    /// </summary>
-    [Serializable]
-    public partial class Category
-    {
-        public Category() { }
+    using System;
 
-        private int _id;
-        private string _guid;
+    [Serializable]
+    public class Category
+    {
         private string _categoryName;
+        private string _description;
+        private string _guid;
+        private int _id;
+        private string _keywords;
         private string _languageCode;
         private string _parentGuid;
-
-        private string _keywords;
-        private string _description;
         private string _seotitle;
         private string _url;
 
-        public int ID
+        public string CategoryName
         {
-            set { _id = value; }
-            get { return _id; }
+            get
+            {
+                return this._categoryName;
+            }
+            set
+            {
+                this._categoryName = value;
+            }
+        }
+
+        public string Description
+        {
+            get
+            {
+                return this._description;
+            }
+            set
+            {
+                this._description = value;
+            }
         }
 
         public string Guid
         {
-            set { _guid = value; }
-            get { return _guid; }
+            get
+            {
+                return this._guid;
+            }
+            set
+            {
+                this._guid = value;
+            }
         }
 
-        public string CategoryName
+        public int ID
         {
-            set { _categoryName = value; }
-            get { return _categoryName; }
-        }
-
-        public string LanguageCode
-        {
-            set { _languageCode = value; }
-            get { return _languageCode; }
-        }
-
-        public string ParentGuid
-        {
-            set { _parentGuid = value; }
-            get { return _parentGuid; }
+            get
+            {
+                return this._id;
+            }
+            set
+            {
+                this._id = value;
+            }
         }
 
         public string Keywords
         {
-            set { _keywords = value; }
-            get { return _keywords; }
+            get
+            {
+                return this._keywords;
+            }
+            set
+            {
+                this._keywords = value;
+            }
         }
-        public string Description
+
+        public string LanguageCode
         {
-            set { _description = value; }
-            get { return _description; }
+            get
+            {
+                return this._languageCode;
+            }
+            set
+            {
+                this._languageCode = value;
+            }
+        }
+
+        public string ParentGuid
+        {
+            get
+            {
+                return this._parentGuid;
+            }
+            set
+            {
+                this._parentGuid = value;
+            }
         }
 
         public string SeoTitle
         {
-            set { _seotitle = value; }
-            get { return _seotitle; }
+            get
+            {
+                return this._seotitle;
+            }
+            set
+            {
+                this._seotitle = value;
+            }
         }
 
         public string Url
         {
-            set { _url = value; }
-            get { return _url; }
+            get
+            {
+                return this._url;
+            }
+            set
+            {
+                this._url = value;
+            }
         }
     }
 }

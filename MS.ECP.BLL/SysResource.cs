@@ -1,191 +1,137 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MS.ECP.DALFactory;
-using MS.ECP.IDAL;
-using System.Collections;
-
+﻿using MS.ECP.DALFactory;
 
 namespace MS.ECP.BLL
 {
-    public partial class SysResource
+    using MS.ECP.Common;
+    using MS.ECP.IDAL;
+    using MS.ECP.Model;
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+
+    public class SysResource
     {
         private readonly ISysResource dal = DataAccess.CreateSysResource();
-        public SysResource()
-        { }
-        #region  Method
 
-        /// <summary>
-        /// 得到最大ID
-        /// </summary>
-        public int GetMaxId()
+        public bool Add(MS.ECP.Model.SysResource model)
         {
-            return dal.GetMaxId();
+            return this.dal.Add(model);
         }
 
-        /// <summary>
-        /// 是否存在该记录
-        /// </summary>
-        public bool Exists(int ID)
+        public bool AddOrUpdate(MS.ECP.Model.SysResource model)
         {
-            return dal.Exists(ID);
-        }
-
-        /// <summary>
-        /// 增加一条数据
-        /// </summary>
-        public bool Add(Model.SysResource model)
-        {
-            return dal.Add(model);
-        }
-
-        /// <summary>
-        /// 更新一条数据
-        /// </summary>
-        public bool Update(Model.SysResource model)
-        {
-            return dal.Update(model);
-        }
-
-        /// <summary>
-        /// 添加或更新一条数据
-        /// </summary>
-        public bool AddOrUpdate(Model.SysResource model)
-        {
-            bool result;
             if (model.ID == 0)
             {
-                result = dal.Add(model);
-
+                return this.dal.Add(model);
             }
-            else
-            {
-                result = dal.Update(model);
-            }
-            return result;
+            return this.dal.Update(model);
         }
 
-        /// <summary>
-        /// 删除一条数据
-        /// </summary>
         public bool Delete(int ID)
         {
-            return dal.Delete(ID);
+            return this.dal.Delete(ID);
         }
-        /// <summary>
-        /// 删除一条数据
-        /// </summary>
+
         public bool DeleteList(string IDlist)
         {
-            return dal.DeleteList(IDlist);
+            return this.dal.DeleteList(IDlist);
         }
 
-        /// <summary>
-        /// 得到一个对象实体
-        /// </summary>
-        public Model.SysResource GetModelByID(int ID)
+        public bool Exists(int ID)
         {
-            return dal.GetModel(ID);
+            return this.dal.Exists(ID);
         }
 
-        /// <summary>
-        /// 得到一个对象实体，从缓存中
-        /// </summary>
-        public Model.SysResource GetModelByCache(int ID)
+        public DataSet GetALLList()
         {
-
-            string CacheKey = "SysResourceModel-" + ID;
-            object objModel = Common.DataCache.GetCache(CacheKey);
-            if (objModel == null)
-            {
-                try
-                {
-                    objModel = dal.GetModel(ID);
-                    if (objModel != null)
-                    {
-                        int ModelCache = ECP.Common.ConfigHelper.GetConfigInt("ModelCache");
-                        ECP.Common.DataCache.SetCache(CacheKey, objModel, DateTime.Now.AddMinutes(ModelCache), TimeSpan.Zero);
-                    }
-                }
-                catch { }
-            }
-            return (ECP.Model.SysResource)objModel;
+            return this.GetListDataSet("");
         }
 
-        /// <summary>
-        /// 获得数据列表
-        /// </summary>
-        public IList<Model.SysResource> GetList(string strWhere)
+        public IList<MS.ECP.Model.SysResource> GetAllResourcePageList()
         {
-            return dal.GetList(strWhere);
+            return this.dal.GetResourcePageList("");
         }
 
-        /// <summary>
-        /// 获取总记录数
-        /// </summary>
-        public int GetRecordCount(string strWhere)
+        public IList<MS.ECP.Model.SysResource> GetList(string strWhere)
         {
-            return dal.GetRecordCount(strWhere);
+            return this.dal.GetList(strWhere);
         }
 
-        /// <summary>
-        /// 获得分页数据列表
-        /// </summary>
-        public IList<Model.SysResource> GetListByPage(string strWhere, int startIndex, int endIndex)
+        public IList<MS.ECP.Model.SysResource> GetListByPage(string strWhere, int startIndex, int endIndex)
         {
-            return dal.GetListByPage(strWhere, startIndex, endIndex);
-        }
-
-        /// <summary>
-        /// 根据Resourcepage和ResourceValue获得分页数据列表
-        /// </summary>
-        public IList<Model.SysResource> GetPagingByPageAndValue(int startIndex, int endIndex, string orderby, string resourcePage, string resourceValue)
-        {
-            return dal.GetPagingByPageAndValue(startIndex, endIndex, orderby, resourcePage, resourceValue);
-        }
-
-        /// <summary>
-        /// 获得所有ResourcePage数据列表
-        /// </summary>
-        public IList<Model.SysResource> GetAllResourcePageList()
-        {
-            return dal.GetResourcePageList("");
-        }
-
-        /// <summary>
-        ///  根据Resourcepage和ResourceValue获取总记录数
-        /// </summary>
-        public int GetRecordCountByPageAndValue(string resourcePage, string resourceValue)
-        {
-            return dal.GetRecordCountByPageAndValue(resourcePage, resourceValue);
-        }
-
-        public IList<Model.SysResource> GetResourcePageList(string strWhere)
-        {
-            return dal.GetResourcePageList(strWhere);
+            return this.dal.GetListByPage(strWhere, startIndex, endIndex);
         }
 
         public DataSet GetListDataSet(string strWhere)
         {
-            return dal.GetDataSet(strWhere);
+            return this.dal.GetDataSet(strWhere);
         }
+
         public DataSet GetListDataSet(int Top, string strWhere, string filedOrder)
         {
-            return dal.GetDataSet(Top, strWhere, filedOrder);
+            return this.dal.GetDataSet(Top, strWhere, filedOrder);
         }
-        public DataSet GetALLList()
-        {
-            return GetListDataSet("");
-        }
+
         public DataSet GetListPaging(string strWhere, int startIndex, int endIndex)
         {
-            return dal.GetListDataSetByPage(strWhere, startIndex, endIndex);
+            return this.dal.GetListDataSetByPage(strWhere, startIndex, endIndex);
         }
-        
 
-        #endregion  Method
+        public int GetMaxId()
+        {
+            return this.dal.GetMaxId();
+        }
+
+        public MS.ECP.Model.SysResource GetModelByCache(int ID)
+        {
+            string cacheKey = "SysResourceModel-" + ID;
+            object cache = DataCache.GetCache(cacheKey);
+            if (cache == null)
+            {
+                try
+                {
+                    cache = this.dal.GetModel(ID);
+                    if (cache != null)
+                    {
+                        int configInt = ConfigHelper.GetConfigInt("ModelCache");
+                        DataCache.SetCache(cacheKey, cache, DateTime.Now.AddMinutes((double)configInt), TimeSpan.Zero);
+                    }
+                }
+                catch
+                {
+                }
+            }
+            return (MS.ECP.Model.SysResource)cache;
+        }
+
+        public MS.ECP.Model.SysResource GetModelByID(int ID)
+        {
+            return this.dal.GetModel(ID);
+        }
+
+        public IList<MS.ECP.Model.SysResource> GetPagingByPageAndValue(int startIndex, int endIndex, string orderby, string resourcePage, string resourceValue)
+        {
+            return this.dal.GetPagingByPageAndValue(startIndex, endIndex, orderby, resourcePage, resourceValue);
+        }
+
+        public int GetRecordCount(string strWhere)
+        {
+            return this.dal.GetRecordCount(strWhere);
+        }
+
+        public int GetRecordCountByPageAndValue(string resourcePage, string resourceValue)
+        {
+            return this.dal.GetRecordCountByPageAndValue(resourcePage, resourceValue);
+        }
+
+        public IList<MS.ECP.Model.SysResource> GetResourcePageList(string strWhere)
+        {
+            return this.dal.GetResourcePageList(strWhere);
+        }
+
+        public bool Update(MS.ECP.Model.SysResource model)
+        {
+            return this.dal.Update(model);
+        }
     }
 }

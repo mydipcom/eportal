@@ -6,7 +6,7 @@
 @using MS.ECP.AAMAPrd.WebPager
 @using MS.ECP.Utility
 
-@model MS.ECP.AAMAPrd.WebPager.PagedList<MS.ECP.Model.CMS.Event> 
+@model MS.ECP.AAMAPrd.WebPager.PagedList<MS.ECP.Model.CMS.CmsEvent> 
            
 
 <table cellspacing="0" style="table-layout: fixed" > 
@@ -27,11 +27,11 @@
           <tr class="listtr">
                                 <th class="spec">
                                     <div >
-                                    @Html.Label(item.LanguageCode)
+                                    @item.LanguageCode
                                      </div>
                                 </th>
                                 <td>
-                                    @Html.Label(item.Title)
+                                    @item.Title
                                 </td>
                                 <td >
                                     <div style="overflow-y: hidden;max-height: 200px; max-width: 500px;overflow-x: hidden;">

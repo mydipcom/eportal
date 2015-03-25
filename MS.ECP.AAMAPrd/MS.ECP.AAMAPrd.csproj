@@ -128,8 +128,8 @@
     <Compile Include="Areas\Admin\Models\AdminAuthorize.cs" />
     <Compile Include="Areas\Admin\Models\DefaultModel.cs" />
     <Compile Include="Areas\Admin\Models\EventsViewModels.cs" />
+    <Compile Include="Areas\Admin\Models\MutilNewsViewModel.cs" />
     <Compile Include="Areas\Admin\Models\NewsModels.cs" />
-    <Compile Include="Areas\Admin\Models\NewsViewModel.cs" />
     <Compile Include="Areas\Admin\Models\PageContentDto.cs" />
     <Compile Include="Areas\Admin\Models\ResourceModels.cs" />
     <Compile Include="Areas\Admin\WebHelp\HtmlHelp.cs" />

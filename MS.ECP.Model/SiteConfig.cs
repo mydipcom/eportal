@@ -1,132 +1,178 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace MS.ECP.Model
+﻿namespace MS.ECP.Model
 {
+    using System;
+
     [Serializable]
     public class SiteConfig
     {
-        public SiteConfig() { }
-
-    //        <webname>Mission sky</webname>
-    //<webcompany>Mssion Sky Company</webcompany>
-    //<weburl>http://www.missionsky.com</weburl>
-    //<webtel>123456</webtel>
-    //<webfax>123456798</webfax>
-    //<webmail>lucker.xia@missionsky.com</webmail>
-    //<webcopyright>CopyRight @2013 - 2015 MissionSky.Com All Rights Reserved.</webcopyright>
-    //<emailsmtp>smtp.exmail.qq.com</emailsmtp>
-    //<emailport>465</emailport>
-    //<emailfrom>lucker</emailfrom>
-    //<emailusername>lucker.xia@missionsky.com</emailusername>
-    //<emailpassword>lucker20131104</emailpassword>
-    //<emailnickname>Mission Sky</emailnickname>
-
-        private string _webname = "";
-
-        public string webname
-        {
-            get { return _webname; }
-            set { _webname = value; }
-        }
-
-        private string _webcompany = "";
-
-        public string webcompany
-        {
-            get { return _webcompany; }
-            set { _webcompany = value; }
-        }
-
-        private string _weburl = "";
-
-        public string weburl
-        {
-            get { return _weburl; }
-            set { _weburl = value; }
-        }
-
-        private string _webtel = "";
-
-        public string webtel
-        {
-            get { return _webtel; }
-            set { _webtel = value; }
-        }
-
-        private string _webfax = "";
-
-        public string webfax
-        {
-            get { return _webfax; }
-            set { _webfax = value; }
-        }
-
-        private string _webmail = "";
-
-        public string webmail
-        {
-            get { return _webmail; }
-            set { _webmail = value; }
-        }
-
-        private string _webcopyright = "";
-
-        public string webcopyright
-        {
-            get { return _webcopyright; }
-            set { _webcopyright = value; }
-        }
-
-        private string _emailsmtp = "";
-
-        public string emailsmtp
-        {
-            get { return _emailsmtp; }
-            set { _emailsmtp = value; }
-        }
-
-        private string _emailport = "";
-
-        public string emailport
-        {
-            get { return _emailport; }
-            set { _emailport = value; }
-        }
-
         private string _emailfrom = "";
+        private string _emailnickname = "";
+        private string _emailpassword = "";
+        private string _emailport = "";
+        private string _emailsmtp = "";
+        private string _emailusername = "";
+        private string _webcompany = "";
+        private string _webcopyright = "";
+        private string _webfax = "";
+        private string _webmail = "";
+        private string _webname = "";
+        private string _webtel = "";
+        private string _weburl = "";
 
         public string emailfrom
         {
-            get { return _emailfrom; }
-            set { _emailfrom = value; }
+            get
+            {
+                return this._emailfrom;
+            }
+            set
+            {
+                this._emailfrom = value;
+            }
         }
-
-        private string _emailusername = "";
-
-        public string emailusername
-        {
-            get { return _emailusername; }
-            set { _emailusername = value; }
-        }
-
-        private string _emailpassword = "";
-
-        public string emailpassword
-        {
-            get { return _emailpassword; }
-            set { _emailpassword = value; }
-        }
-
-        private string _emailnickname = "";
 
         public string emailnickname
         {
-            get { return _emailnickname; }
-            set { _emailnickname = value; }
+            get
+            {
+                return this._emailnickname;
+            }
+            set
+            {
+                this._emailnickname = value;
+            }
         }
 
+        public string emailpassword
+        {
+            get
+            {
+                return this._emailpassword;
+            }
+            set
+            {
+                this._emailpassword = value;
+            }
+        }
+
+        public string emailport
+        {
+            get
+            {
+                return this._emailport;
+            }
+            set
+            {
+                this._emailport = value;
+            }
+        }
+
+        public string emailsmtp
+        {
+            get
+            {
+                return this._emailsmtp;
+            }
+            set
+            {
+                this._emailsmtp = value;
+            }
+        }
+
+        public string emailusername
+        {
+            get
+            {
+                return this._emailusername;
+            }
+            set
+            {
+                this._emailusername = value;
+            }
+        }
+
+        public string webcompany
+        {
+            get
+            {
+                return this._webcompany;
+            }
+            set
+            {
+                this._webcompany = value;
+            }
+        }
+
+        public string webcopyright
+        {
+            get
+            {
+                return this._webcopyright;
+            }
+            set
+            {
+                this._webcopyright = value;
+            }
+        }
+
+        public string webfax
+        {
+            get
+            {
+                return this._webfax;
+            }
+            set
+            {
+                this._webfax = value;
+            }
+        }
+
+        public string webmail
+        {
+            get
+            {
+                return this._webmail;
+            }
+            set
+            {
+                this._webmail = value;
+            }
+        }
+
+        public string webname
+        {
+            get
+            {
+                return this._webname;
+            }
+            set
+            {
+                this._webname = value;
+            }
+        }
+
+        public string webtel
+        {
+            get
+            {
+                return this._webtel;
+            }
+            set
+            {
+                this._webtel = value;
+            }
+        }
+
+        public string weburl
+        {
+            get
+            {
+                return this._weburl;
+            }
+            set
+            {
+                this._weburl = value;
+            }
+        }
     }
 }

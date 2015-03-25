@@ -1,24 +1,23 @@
-﻿using System.Web.Mvc;
-
-namespace MS.ECP.AAMAPrd.Areas.Admin.Models
+﻿namespace MS.ECP.AAMAPrd.Areas.Admin.Models
 {
+    using System;
+    using System.Web.Mvc;
+
     public class AdminAuthorize : AuthorizeAttribute
     {
-        public override void OnAuthorization(AuthorizationContext filterContext)
-        {
-            //base.OnAuthorization(filterContext);
-            ReturnLogin(filterContext);
-        }
-
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {
-            //base.HandleUnauthorizedRequest(filterContext);
-            ReturnLogin(filterContext);
+            this.ReturnLogin(filterContext);
+        }
+
+        public override void OnAuthorization(AuthorizationContext filterContext)
+        {
+            this.ReturnLogin(filterContext);
         }
 
         private void ReturnLogin(AuthorizationContext filterContext)
         {
-            if (filterContext.HttpContext.Session["AdminUser"] == null || string.IsNullOrWhiteSpace(filterContext.HttpContext.Session["AdminUser"].ToString()))
+            if ((filterContext.HttpContext.Session["AdminUser"] == null) || string.IsNullOrWhiteSpace(filterContext.HttpContext.Session["AdminUser"].ToString()))
             {
                 filterContext.HttpContext.Response.Redirect("/admin/default/exit");
             }

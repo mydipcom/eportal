@@ -1,54 +1,61 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace MS.ECP.Model
+﻿namespace MS.ECP.Model
 {
+    using System;
+
     [Serializable]
-    public partial class SysWebRegion
+    public class SysWebRegion
     {
-        #region Model
+        private int _displayorder = 1;
         private string _langcode;
         private string _langtext;
-        private int _displayorder = 1;
         private int _status = 1;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public string LangCode
-        {
-            set { _langcode = value; }
-            get { return _langcode; }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public string LangText
-        {
-            set { _langtext = value; }
-            get { return _langtext; }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
         public int DisplayOrder
         {
-            set { _displayorder = value; }
-            get { return _displayorder; }
+            get
+            {
+                return this._displayorder;
+            }
+            set
+            {
+                this._displayorder = value;
+            }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
+        public string LangCode
+        {
+            get
+            {
+                return this._langcode;
+            }
+            set
+            {
+                this._langcode = value;
+            }
+        }
+
+        public string LangText
+        {
+            get
+            {
+                return this._langtext;
+            }
+            set
+            {
+                this._langtext = value;
+            }
+        }
+
         public int Status
         {
-            set { _status = value; }
-            get { return _status; }
+            get
+            {
+                return this._status;
+            }
+            set
+            {
+                this._status = value;
+            }
         }
-        #endregion Model
     }
 }

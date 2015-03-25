@@ -21,19 +21,19 @@
     {
           <tr class="listtr">
                                 <th  class="spec">
-                                    @Html.Label(item.LanguageCode)
+                                    @item.LanguageCode
                                 </th>
                                 <td>
-                                    @Html.Label(item.ResourcePage)
+                                    @item.ResourcePage
                                 </td>
                                 <td>
-                                    @Html.Label(item.ResourceType)
+                                    @item.ResourceType
                                 </td>
                                 <td>
-                                    @Html.Label(item.ResourceKey)
+                                    @item.ResourceKey
                                 </td>
                                 <td>
-                                    @Html.Label(item.ResourceValue)
+                                    @item.ResourceValue
                                 </td>
               <td>
                    @Html.ActionLink("Edit", "Edit", new { id=item.ID }) 

@@ -1,101 +1,165 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace MS.ECP.Model.CMS
+﻿namespace MS.ECP.Model.CMS
 {
-    /// <summary>
-    /// Aboutus：关于我们 实体类
-    /// </summary>
-    [Serializable]
-    public partial class Aboutus
-    {
-        public Aboutus() { }
+    using System;
 
-        private int _id;
+    [Serializable]
+    public class Aboutus
+    {
+        private string _content;
+        private string _description;
         private string _guid;
-        private string _langguid; 
+        private int _id;
+        private string _keywords;
+        private string _langguid;
         private string _languageCode;
         private string _linkTitle;
-        private string _content;
-        private int? _status;
-        private int? _sortorder;
-
-        private string _keywords;
-        private string _description;
         private string _seotitle;
+        private int? _sortorder;
+        private int? _status;
         private string _url;
-
-
-        public int ID
-        {
-            set { _id = value; }
-            get { return _id; }
-        }
-        public string Guid
-        {
-            set { _guid = value; }
-            get { return _guid; }
-        }
-
-        public string LangGuid
-        {
-            set { _langguid = value; }
-            get { return _langguid; }
-        }
-
-        public string LanguageCode
-        {
-            set { _languageCode = value; }
-            get { return _languageCode; }
-        }
-
-        public string LinkTitle
-        {
-            set { _linkTitle = value; }
-            get { return _linkTitle; }
-        }
 
         public string Content
         {
-            set { _content = value; }
-            get { return _content; }
+            get
+            {
+                return this._content;
+            }
+            set
+            {
+                this._content = value;
+            }
         }
 
-        public int? Status
+        public string Description
         {
-            set { _status = value; }
-            get { return _status; }
+            get
+            {
+                return this._description;
+            }
+            set
+            {
+                this._description = value;
+            }
         }
 
-        public int? SortOrder
+        public string Guid
         {
-            set { _sortorder = value; }
-            get { return _sortorder; }
+            get
+            {
+                return this._guid;
+            }
+            set
+            {
+                this._guid = value;
+            }
+        }
+
+        public int ID
+        {
+            get
+            {
+                return this._id;
+            }
+            set
+            {
+                this._id = value;
+            }
         }
 
         public string Keywords
         {
-            set { _keywords = value; }
-            get { return _keywords; }
+            get
+            {
+                return this._keywords;
+            }
+            set
+            {
+                this._keywords = value;
+            }
         }
-        public string Description
+
+        public string LangGuid
         {
-            set { _description = value; }
-            get { return _description; }
+            get
+            {
+                return this._langguid;
+            }
+            set
+            {
+                this._langguid = value;
+            }
+        }
+
+        public string LanguageCode
+        {
+            get
+            {
+                return this._languageCode;
+            }
+            set
+            {
+                this._languageCode = value;
+            }
+        }
+
+        public string LinkTitle
+        {
+            get
+            {
+                return this._linkTitle;
+            }
+            set
+            {
+                this._linkTitle = value;
+            }
         }
 
         public string SeoTitle
         {
-            set { _seotitle = value; }
-            get { return _seotitle; }
+            get
+            {
+                return this._seotitle;
+            }
+            set
+            {
+                this._seotitle = value;
+            }
+        }
+
+        public int? SortOrder
+        {
+            get
+            {
+                return this._sortorder;
+            }
+            set
+            {
+                this._sortorder = value;
+            }
+        }
+
+        public int? Status
+        {
+            get
+            {
+                return this._status;
+            }
+            set
+            {
+                this._status = value;
+            }
         }
 
         public string Url
         {
-            set { _url = value; }
-            get { return _url; }
+            get
+            {
+                return this._url;
+            }
+            set
+            {
+                this._url = value;
+            }
         }
     }
 }

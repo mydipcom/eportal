@@ -1,184 +1,164 @@
-﻿using System;
-using System.Linq;
-using System.Web.Mvc;
-using MS.ECP.AAMAPrd.Areas.Admin.Models;
-using MS.ECP.AAMAPrd.Areas.Admin.WebHelp;
-using MS.ECP.AAMAPrd.WebPager;
-using MS.ECP.Model.CMS;
-
-namespace MS.ECP.AAMAPrd.Areas.Admin.Controllers
+﻿namespace MS.ECP.AAMAPrd.Areas.Admin.Controllers
 {
+    using MS.ECP.AAMAPrd.Areas.Admin.Models;
+    using MS.ECP.AAMAPrd.Areas.Admin.WebHelp;
+    using MS.ECP.AAMAPrd.WebPager;
+    using MS.ECP.Model.CMS;
+    using System;
+    using System.Collections.Generic;
+    using System.Data.Entity;
+    using System.Linq;
+    using System.Runtime.InteropServices;
+    using System.Web.Mvc;
+
     public class NewsController : BaseController
     {
-        private readonly BLL.CMS.News _newsBLL = new BLL.CMS.News();
-        private const int Pagesize = 10;
-        private const int LanguageSelect = 2;
+        private readonly DbSet<News> _upcomingNewsQuery;
 
-        public ActionResult List(int id = 1)
+        public NewsController()
         {
-            var dt = _newsBLL.GetListByPage("", id == 1 ? 0 : (id - 1)*Pagesize + 1, id*Pagesize);
-            var listcount = _newsBLL.GetRecordCount("");
-            var viewmodel = new PagedList<News>(dt, id, Pagesize, listcount);
-            if (Request.IsAjaxRequest())
-                return PartialView("_NewsPagingPartialPage", viewmodel);
-            return View(viewmodel);
+            this._upcomingNewsQuery = base.Contentx.UpcomingNews;
         }
-
 
         public ActionResult Add()
         {
-            return View();
+            return base.View();
         }
 
-
-        [HttpPost]
-        [ValidateInput(false)]
+        [HttpPost, ValidateInput(false)]
         public ActionResult Add(NewsViewModel model)
         {
-            if (!ModelState.IsValid) return View(model);
-
-            var datetimenow = DateTime.Now;
-            var languguid = Guid.NewGuid().ToString();
-
-            var enlishnews = new News
+            if (!base.ModelState.IsValid)
             {
-                LangGuid = languguid,
+                return base.View(model);
+            }
+            DateTime now = DateTime.Now;
+            string str = Guid.NewGuid().ToString();
+            News entity = new News
+            {
+                LangGuid = str,
                 Guid = Guid.NewGuid().ToString(),
                 Title = model.EnTitle,
                 Content = model.EnContent,
                 Specification = model.EnSpecification,
                 LanguageCode = LanageConfig.EnLan,
-                CreateDate = datetimenow,
-                ModifyDate = datetimenow,
-                IssueDate = datetimenow
+                CreateDate = now,
+                ModifyDate = now,
+                IssueDate = now
             };
-
-            var zhnews = new News
+            News news2 = new News
             {
-                LangGuid = languguid,
+                LangGuid = str,
                 Guid = Guid.NewGuid().ToString(),
                 Title = model.ZhTitle ?? model.EnTitle,
                 Content = model.ZhContent ?? model.EnContent,
                 Specification = model.ZhSpecification ?? model.EnContent,
                 LanguageCode = LanageConfig.ZhLan,
-                CreateDate = datetimenow,
-                ModifyDate = datetimenow,
-                IssueDate = datetimenow
+                CreateDate = now,
+                ModifyDate = now,
+                IssueDate = now
             };
-
-            _newsBLL.Add(enlishnews);
-            _newsBLL.Add(zhnews);
-
-            return RedirectToAction("List");
+            this._upcomingNewsQuery.Add(entity);
+            this._upcomingNewsQuery.Add(news2);
+            base.SaveChange();
+            return base.RedirectToAction("List");
         }
 
+        public ActionResult Del(int id = 0)
+        {
+            if ((id != 0) && (id >= 0))
+            {
+                News entity = this._upcomingNewsQuery.FirstOrDefault<News>(m => m.ID == id);
+                this._upcomingNewsQuery.Remove(entity);
+                base.SaveChange();
+            }
+            return base.RedirectToAction("List");
+        }
 
+        [HttpPost, ValidateInput(false)]
+        public ActionResult Edit(NewsViewModel model)
+        {
+            if (!base.ModelState.IsValid)
+            {
+                return base.View(model);
+            }
+            Tuple<News, News> tuple = this.NewsViewModelToNews(model, new Tuple<News, News>(this._upcomingNewsQuery.FirstOrDefault<News>(m => m.ID == model.EnId), this._upcomingNewsQuery.FirstOrDefault<News>(m => m.ID == model.ZhId)));
+            News entity = tuple.Item1;
+            News news2 = tuple.Item2;
+            string str = Guid.NewGuid().ToString();
+            entity.CreateDate = base.DateTimeFormat(model.EnCreateTime);
+            entity.LangGuid = str;
+            if ((entity.ID == 0) && (entity.LangGuid == null))
+            {
+                this._upcomingNewsQuery.Add(entity);
+            }
+            news2.CreateDate = base.DateTimeFormat(model.ZhCreateTime);
+            news2.LangGuid = str;
+            if (((news2.LangGuid == null) && (news2.ID == 0)) && (news2.Content != entity.Content))
+            {
+                this._upcomingNewsQuery.Add(news2);
+            }
+            base.SaveChange();
+            return base.RedirectToAction("List");
+        }
 
         public ActionResult Edit(string languid)
         {
-            var lanlist = _newsBLL.GetList(LanguageSelect, String.Format(" LangGuid='{0}' ", languid));
-            var newsViewModel = new NewsViewModel();
-            var elmodel = lanlist.FirstOrDefault(d => d.LanguageCode == LanageConfig.EnLan);
-            var zhmodel = lanlist.FirstOrDefault(d => d.LanguageCode == LanageConfig.ZhLan);
-            if (null != elmodel)
+            List<News> source = (from m in this._upcomingNewsQuery
+                                 where m.LangGuid == languid
+                                 orderby m.ModifyDate descending
+                                 select m).Take<News>(2).ToList<News>();
+            NewsViewModel model = new NewsViewModel();
+            News news = source.FirstOrDefault<News>(d => d.LanguageCode == LanageConfig.EnLan);
+            News news2 = source.FirstOrDefault<News>(d => d.LanguageCode == LanageConfig.ZhLan);
+            if (news != null)
             {
-                newsViewModel.EnTitle = elmodel.Title;
-                newsViewModel.EnContent = elmodel.Content;
-                newsViewModel.EnSpecification = elmodel.Specification;
-                newsViewModel.EnId = elmodel.ID;
+                model.EnTitle = news.Title;
+                model.EnContent = news.Content;
+                model.EnSpecification = news.Specification;
+                model.EnId = news.ID;
+                model.EnCreateTime = base.DateToString(news.CreateDate);
             }
-
-            if (null != zhmodel)
+            if (news2 != null)
             {
-                newsViewModel.ZhTitle = zhmodel.Title;
-                newsViewModel.ZhContent = zhmodel.Content;
-                newsViewModel.ZhSpecification = zhmodel.Specification;
-                newsViewModel.ZhId = zhmodel.ID;
+                model.ZhTitle = news2.Title;
+                model.ZhContent = news2.Content;
+                model.ZhSpecification = news2.Specification;
+                model.ZhId = news2.ID;
+                model.ZhCreateTime = base.DateToString(news2.CreateDate);
             }
-            return View(newsViewModel);
+            return base.View(model);
         }
 
-
-        [HttpPost]
-        [ValidateInput(false)]
-        public ActionResult Edit(NewsViewModel model)
+        public ActionResult List(int id = 1)
         {
-            if (!ModelState.IsValid) return View(model);
-            var tuple = NewsViewModelToNews(model,
-                new Tuple<News, News>(_newsBLL.GetModelByID(model.EnId), _newsBLL.GetModelByID(model.ZhId)));
-            var elmodel = tuple.Item1;
-            var zhmodel = tuple.Item2;
-            if (0 == elmodel.ID && null == elmodel.LangGuid)
+            List<News> currentPageItems = (from m in this._upcomingNewsQuery
+                                           orderby m.ModifyDate descending
+                                           select m).Skip<News>(((id - 1) * 10)).Take<News>(10).ToList<News>();
+            int totalItemCount = this._upcomingNewsQuery.Count<News>();
+            PagedList<News> model = new PagedList<News>(currentPageItems, id, 10, totalItemCount);
+            if (base.Request.IsAjaxRequest())
             {
-                elmodel.CreateDate = DateTime.Now;
-                elmodel.LangGuid = Guid.NewGuid().ToString();
-                _newsBLL.Add(elmodel);
+                return this.PartialView("_NewsPagingPartialPage", model);
             }
-            else if (elmodel.LangGuid != null && elmodel.ID != 0)
-            {
-                _newsBLL.Update(elmodel);
-            }
-
-
-            if (zhmodel.LangGuid == null && zhmodel.ID == 0 && zhmodel.Content != elmodel.Content)
-            {
-                zhmodel.CreateDate = DateTime.Now;
-                zhmodel.LangGuid = elmodel.LangGuid;
-                _newsBLL.Add(zhmodel);
-            }
-            else if (zhmodel.LangGuid != null && zhmodel.ID != 0)
-            {
-                zhmodel.LangGuid = elmodel.LangGuid;
-                _newsBLL.Update(zhmodel);
-            }
-            return RedirectToAction("List");
+            return base.View(model);
         }
-
-
-        /// <summary>
-        /// Delete
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public ActionResult Del(int id = 0)
-        {
-            if (id == 0 || id < 0)
-            {
-                return RedirectToAction("List");
-            }
-
-            if (!_newsBLL.Exists(id))
-            {
-                return RedirectToAction("List");
-            }
-
-            _newsBLL.Delete(id);
-            return RedirectToAction("List");
-
-        }
-
-        #region private method
 
         private Tuple<News, News> NewsViewModelToNews(NewsViewModel model, Tuple<News, News> tuple)
         {
-            var elmodel = tuple.Item1 ?? new News();
-            var zhmodel = tuple.Item2 ?? new News();
-
-            elmodel.Title = model.EnTitle;
-            elmodel.Content = model.EnContent;
-            elmodel.Specification = model.EnSpecification;
-            elmodel.ModifyDate = DateTime.Now;
-            elmodel.LanguageCode = LanageConfig.EnLan;
-
-            zhmodel.Title = model.ZhTitle;
-            zhmodel.Content = model.ZhContent;
-            zhmodel.Specification = model.ZhSpecification;
-            zhmodel.ModifyDate = DateTime.Now;
-            zhmodel.LanguageCode = LanageConfig.ZhLan;
-            return new Tuple<News, News>(elmodel, zhmodel);
+            News news = tuple.Item1 ?? new News();
+            News news2 = tuple.Item2 ?? new News();
+            news.Title = model.EnTitle;
+            news.Content = model.EnContent;
+            news.Specification = model.EnSpecification;
+            news.ModifyDate = DateTime.Now;
+            news.LanguageCode = LanageConfig.EnLan;
+            news2.Title = model.ZhTitle;
+            news2.Content = model.ZhContent;
+            news2.Specification = model.ZhSpecification;
+            news2.ModifyDate = DateTime.Now;
+            news2.LanguageCode = LanageConfig.ZhLan;
+            return new Tuple<News, News>(news, news2);
         }
-
-        #endregion
-
     }
 }

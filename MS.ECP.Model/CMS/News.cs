@@ -1,218 +1,146 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace MS.ECP.Model.CMS
+﻿namespace MS.ECP.Model.CMS
 {
-    /// <summary>
-    /// News :实体类(属性说明自动提取数据库字段的描述信息)
-    /// </summary>
+    using System;
+    using System.Collections.Generic;
+    using System.Runtime.CompilerServices;
+
     [Serializable]
-    public partial class News
+    public class News
     {
-        public News()
-        {
-            Inputs = new List<NewsInput>();
-        }
-
-        #region Model
-
-        private int _id;
-        private string _guid;
-        private string _langguid;
-        private string _languagecode;
-        private string _title;
         private string _content;
         private DateTime _createdate;
-        private DateTime _modifydate;
-        private DateTime _issuedate;
-        private int _status;
-        private int _level;
-
-        private string _keywords;
         private string _description;
+        private string _guid;
+        private int _id;
+        private DateTime _issuedate;
+        private string _keywords;
+        private string _langguid;
+        private string _languagecode;
+        private int _level;
+        private DateTime _modifydate;
         private string _seotitle;
+        private int _status;
+        private string _title;
         private string _url;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public int ID
+        public News()
         {
-            set { _id = value; }
-            get { return _id; }
+            this.Inputs = new List<NewsInput>();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public string Guid
-        {
-            set { _guid = value; }
-            get { return _guid; }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public string LangGuid
-        {
-            set { _langguid = value; }
-            get { return _langguid; }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public string LanguageCode
-        {
-            set { _languagecode = value; }
-            get { return _languagecode; }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public string Title
-        {
-            set { _title = value; }
-            get { return _title; }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
         public string Content
         {
-            set { _content = value; }
-            get { return _content; }
+            get { return this._content; }
+            set { this._content = value; }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         public DateTime CreateDate
         {
-            set { _createdate = value; }
-            get { return _createdate; }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public DateTime ModifyDate
-        {
-            set { _modifydate = value; }
-            get { return _modifydate; }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public DateTime IssueDate
-        {
-            set { _issuedate = value; }
-            get { return _issuedate; }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public int Status
-        {
-            set { _status = value; }
-            get { return _status; }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public int Level
-        {
-            set { _level = value; }
-            get { return _level; }
-        }
-
-        public string Keywords
-        {
-            set { _keywords = value; }
-            get { return _keywords; }
+            get { return this._createdate; }
+            set { this._createdate = value; }
         }
 
         public string Description
         {
-            set { _description = value; }
-            get { return _description; }
+            get { return this._description; }
+            set { this._description = value; }
+        }
+
+        public string Guid
+        {
+            get { return this._guid; }
+            set { this._guid = value; }
+        }
+
+        public int ID
+        {
+            get { return this._id; }
+            set { this._id = value; }
+        }
+
+        public IList<NewsInput> Inputs { get; set; }
+
+        public DateTime IssueDate
+        {
+            get { return this._issuedate; }
+            set { this._issuedate = value; }
+        }
+
+        public string Keywords
+        {
+            get { return this._keywords; }
+            set { this._keywords = value; }
+        }
+
+        public string LangGuid
+        {
+            get { return this._langguid; }
+            set { this._langguid = value; }
+        }
+
+        public string LanguageCode
+        {
+            get { return this._languagecode; }
+            set { this._languagecode = value; }
+        }
+
+        public int Level
+        {
+            get { return this._level; }
+            set { this._level = value; }
+        }
+
+        public DateTime ModifyDate
+        {
+            get { return this._modifydate; }
+            set { this._modifydate = value; }
         }
 
         public string SeoTitle
         {
-            set { _seotitle = value; }
-            get { return _seotitle; }
+            get { return this._seotitle; }
+            set { this._seotitle = value; }
+        }
+
+        public string Specification { get; set; }
+
+        public int Status
+        {
+            get { return this._status; }
+            set { this._status = value; }
+        }
+
+        public string Title
+        {
+            get { return this._title; }
+            set { this._title = value; }
         }
 
         public string Url
         {
-            set { _url = value; }
-            get { return _url; }
+            get { return this._url; }
+            set { this._url = value; }
         }
-        public string Specification { get; set; }
-
-        #endregion Model
-
-        public IList<NewsInput> Inputs { get; set; }
     }
 
 
-    public partial class NewsInput
+
+    public class NewsInput
     {
+        public int ID { get; set; }
 
-        public int ID
-        {
-            get; set;
-        }
+        public string InputName { get; set; }
 
+        public string Inputtitle { get; set; }
 
-        public string LangGuid
-        {
-            get;
-            set;
-        }
+        public int InputType { get; set; }
 
+        public string InputValue { get; set; }
 
-        public string Inputtitle
-        {
-            get;
-            set;
-        }
+        public bool IsAllowNull { get; set; }
 
-
-
-        public int InputType
-        {
-            get;
-            set;
-        }
-
-
-        public bool IsAllowNull
-        {
-            get;
-            set;
-        }
-
-
-        public string InputName
-        {
-            get;
-            set;
-        }
-
-        public string InputValue
-        {
-            get;
-            set; 
-        }
+        public string LangGuid { get; set; }
     }
+
+
 }

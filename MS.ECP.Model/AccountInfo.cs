@@ -1,144 +1,139 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace MS.ECP.Model
+﻿namespace MS.ECP.Model
 {
-    /// <summary>
-    /// AccountInfo：用户 实体类
-    /// </summary>
+    using System;
+
     [Serializable]
     public class AccountInfo
     {
-        public AccountInfo() { }
-
-        private int _id;
-       // private string _userGUID;
-        private string _username; 
-        private string _password;
-        private string _passwordsalt;
-        private string _name;
-        private string _mobilephone;
-        private string _email;
         private string _address;
         private string _companyname;
-      //  private int _usertype;
-     //   private int _active;
-     //   private string _lastIPaddress;
-     //   private DateTime _createonUTC ;
-     //   private DateTime _lastlogindateUTC;
-     //   private DateTime _modifydateUTC;
-     //   private int _status;
+        private string _email;
+        private int _id;
+        private string _mobilephone;
+        private string _name;
+        private string _password;
+        private string _passwordsalt;
         private bool _rememberme;
-
-
-        public int ID
-        {
-            set { _id = value; }
-            get { return _id; }
-        }
-
-        public string UserName 
-        {
-            set { _username = value; }
-            get { return _username; }
-        }
-
-        public string Password
-        {
-            set { _password = value; }
-            get { return _password; }
-        }
-
-        public string PasswordSalt
-        {
-            set { _passwordsalt = value; }
-            get { return _passwordsalt; }
-        }
-
-        public string Name
-        {
-            set { _name = value; }
-            get { return _name; }
-        }
-
-        public string MobilePhone 
-        {
-            set { _mobilephone = value; }
-            get { return _mobilephone; }
-        }
-
-        public string Email
-        {
-            set { _email = value; }
-            get { return _email; }
-        }
+        private string _username;
 
         public string Address
         {
-            set { _address = value; }
-            get { return _address; }
+            get
+            {
+                return this._address;
+            }
+            set
+            {
+                this._address = value;
+            }
         }
 
         public string CompanyName
         {
-            set { _companyname = value; }
-            get { return _companyname; }
+            get
+            {
+                return this._companyname;
+            }
+            set
+            {
+                this._companyname = value;
+            }
         }
 
+        public string Email
+        {
+            get
+            {
+                return this._email;
+            }
+            set
+            {
+                this._email = value;
+            }
+        }
 
-        //public string UserGUID
-        //{
-        //    set { _userGUID = value; }
-        //    get { return _userGUID; }
-        //}
+        public int ID
+        {
+            get
+            {
+                return this._id;
+            }
+            set
+            {
+                this._id = value;
+            }
+        }
 
-        //public int UserType
-        //{
-        //    set { _usertype = value; }
-        //    get { return _usertype; }
-        //}
-        //public int Active
-        //{
-        //    set { _active = value; }
-        //    get { return _active; }
-        //}
+        public string MobilePhone
+        {
+            get
+            {
+                return this._mobilephone;
+            }
+            set
+            {
+                this._mobilephone = value;
+            }
+        }
 
-        //public string LastIPAddress
-        //{
-        //    set { _lastIPaddress = value; }
-        //    get { return _lastIPaddress; }
-        //}
+        public string Name
+        {
+            get
+            {
+                return this._name;
+            }
+            set
+            {
+                this._name = value;
+            }
+        }
 
-        //public DateTime CreateOnUTC
-        //{
-        //    set { _createonUTC = value; }
-        //    get { return _createonUTC; }
-        //}
+        public string Password
+        {
+            get
+            {
+                return this._password;
+            }
+            set
+            {
+                this._password = value;
+            }
+        }
 
-        //public DateTime LastLoginDateUTC
-        //{
-        //    set { _lastlogindateUTC = value; }
-        //    get { return _lastlogindateUTC; }
-        //}
-
-        //public DateTime ModifyDateUTC
-        //{
-        //    set { _modifydateUTC = value; }
-        //    get { return _modifydateUTC; }
-        //}
-
-        //public int Status 
-        //{
-        //    set { _status = value; }
-        //    get { return _status; }
-        //}
+        public string PasswordSalt
+        {
+            get
+            {
+                return this._passwordsalt;
+            }
+            set
+            {
+                this._passwordsalt = value;
+            }
+        }
 
         public bool RememberMe
         {
-            set { _rememberme = value; }
-            get { return _rememberme; }
+            get
+            {
+                return this._rememberme;
+            }
+            set
+            {
+                this._rememberme = value;
+            }
+        }
+
+        public string UserName
+        {
+            get
+            {
+                return this._username;
+            }
+            set
+            {
+                this._username = value;
+            }
         }
     }
 }

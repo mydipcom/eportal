@@ -1,188 +1,163 @@
-﻿using System;
-using System.Linq;
-using System.Web.Mvc;
-using MS.ECP.AAMAPrd.Areas.Admin.Models;
-using MS.ECP.AAMAPrd.Areas.Admin.WebHelp;
-using MS.ECP.AAMAPrd.WebPager;
-using MS.ECP.Model.CMS;
-
-namespace MS.ECP.AAMAPrd.Areas.Admin.Controllers
+﻿namespace MS.ECP.AAMAPrd.Areas.Admin.Controllers
 {
-    public class EventController : Controller
+    using MS.ECP.AAMAPrd.Areas.Admin.Models;
+    using MS.ECP.AAMAPrd.Areas.Admin.WebHelp;
+    using MS.ECP.AAMAPrd.WebPager;
+    using MS.ECP.Model.CMS;
+    using System;
+    using System.Collections.Generic;
+    using System.Data.Entity;
+    using System.Linq;
+    using System.Runtime.InteropServices;
+    using System.Web.Mvc;
+
+    public class EventController : BaseController
     {
-        private readonly BLL.Event _event = new BLL.Event(); 
-        private const int Pagesize = 10;
-        private const int LanguageSelect = 2;
+        private readonly DbSet<CmsEvent> _recentEventsQuery;
 
-        public ActionResult List(int id = 1)
+        public EventController()
         {
-            var dt = _event.GetListByPage("", id == 1 ? 0 : (id - 1) * Pagesize + 1, id * Pagesize);
-            var listcount = _event.GetRecordCount("");
-            var viewmodel = new PagedList<Event>(dt, id, Pagesize, listcount);
-            if (Request.IsAjaxRequest())
-                return PartialView("_EventPagingPartialPage", viewmodel);
-            return View(viewmodel);
+            this._recentEventsQuery = base.Contentx.RecentEvents;
         }
-
 
         public ActionResult Add()
         {
-            return View();
+            return base.View();
         }
 
-
-        [HttpPost]
-        [ValidateInput(false)]
+        [HttpPost, ValidateInput(false)]
         public ActionResult Add(EventsViewModel model)
-        { 
-            if (!ModelState.IsValid) return View(model); 
-
-            var datetimenow = DateTime.Now;
-            var languguid = Guid.NewGuid().ToString();
-
-            var enlishnews = new MS.ECP.Model.CMS.Event
+        {
+            if (!base.ModelState.IsValid)
             {
-                LangGuid = languguid,
+                return base.View(model);
+            }
+            DateTime now = DateTime.Now;
+            string str = Guid.NewGuid().ToString();
+            CmsEvent entity = new CmsEvent
+            {
+                LangGuid = str,
                 Guid = Guid.NewGuid().ToString(),
                 Title = model.EnTitle,
                 Content = model.EnContent,
                 LanguageCode = LanageConfig.EnLan,
-                CreateDate = datetimenow,
-                ModifyDate = datetimenow,
-                IssueDate = datetimenow
+                CreateDate = now,
+                ModifyDate = now,
+                IssueDate = now
             };
-
-            var zhnews = new MS.ECP.Model.CMS.Event
+            CmsEvent event3 = new CmsEvent
             {
-                LangGuid = languguid,
+                LangGuid = str,
                 Guid = Guid.NewGuid().ToString(),
                 Title = model.ZhTitle ?? model.EnTitle,
                 Content = model.ZhContent ?? model.EnContent,
                 LanguageCode = LanageConfig.ZhLan,
-                CreateDate = datetimenow,
-                ModifyDate = datetimenow,
-                IssueDate = datetimenow
+                CreateDate = now,
+                ModifyDate = now,
+                IssueDate = now
             };
+            this._recentEventsQuery.Add(entity);
+            this._recentEventsQuery.Add(event3);
+            base.SaveChange();
+            return base.RedirectToAction("List");
+        }
 
-            _event.Add(enlishnews);
-            _event.Add(zhnews);
+        public ActionResult Del(int id = 0)
+        {
+            if ((id != 0) && (id >= 0))
+            {
+                CmsEvent entity = this._recentEventsQuery.FirstOrDefault<CmsEvent>(m => m.ID == id);
+                this._recentEventsQuery.Remove(entity);
+                base.SaveChange();
+            }
+            return base.RedirectToAction("List");
+        }
 
-            return RedirectToAction("List");
-        } 
-
-
+        [ValidateInput(false), HttpPost]
+        public ActionResult Edit(EventsViewModel model)
+        {
+            if (!base.ModelState.IsValid)
+            {
+                return base.View(model);
+            }
+            Tuple<CmsEvent, CmsEvent> tuple = this.EventsViewModelToEvent(model, new Tuple<CmsEvent, CmsEvent>(this._recentEventsQuery.FirstOrDefault<CmsEvent>(m => m.ID == model.EnId), this._recentEventsQuery.FirstOrDefault<CmsEvent>(m => m.ID == model.ZhId)));
+            CmsEvent entity = tuple.Item1;
+            CmsEvent event3 = tuple.Item2;
+            string str = Guid.NewGuid().ToString();
+            DateTime now = DateTime.Now;
+            entity.CreateDate = base.DateTimeFormat(model.EnCreateTime);
+            entity.ModifyDate = now;
+            entity.IssueDate = now;
+            entity.Guid = Guid.NewGuid().ToString();
+            entity.LangGuid = str;
+            if ((entity.LangGuid == null) && (entity.ID == 0))
+            {
+                this._recentEventsQuery.Add(entity);
+            }
+            event3.CreateDate = base.DateTimeFormat(model.ZhCreateTime);
+            event3.ModifyDate = now;
+            event3.IssueDate = now;
+            event3.Guid = Guid.NewGuid().ToString();
+            event3.LangGuid = str;
+            if ((event3.LangGuid == null) && (event3.ID == 0))
+            {
+                this._recentEventsQuery.Add(event3);
+            }
+            base.SaveChange();
+            return base.RedirectToAction("List");
+        }
 
         public ActionResult Edit(string languid)
         {
-            var lanlist = _event.GetList(LanguageSelect, String.Format(" LangGuid='{0}' ", languid));
-            var newsViewModel = new EventsViewModel();
-            var elmodel = lanlist.FirstOrDefault(d => d.LanguageCode == LanageConfig.EnLan);
-            var zhmodel = lanlist.FirstOrDefault(d => d.LanguageCode == LanageConfig.ZhLan);
-            if (null != elmodel)
+            List<CmsEvent> source = (from m in this._recentEventsQuery
+                                     where m.LangGuid == languid
+                                     orderby m.ModifyDate descending
+                                     select m).Take<CmsEvent>(2).ToList<CmsEvent>();
+            EventsViewModel model = new EventsViewModel();
+            CmsEvent event2 = source.FirstOrDefault<CmsEvent>(d => d.LanguageCode == LanageConfig.EnLan);
+            CmsEvent event3 = source.FirstOrDefault<CmsEvent>(d => d.LanguageCode == LanageConfig.ZhLan);
+            if (event2 != null)
             {
-                newsViewModel.EnTitle = elmodel.Title;
-                newsViewModel.EnContent = elmodel.Content;
-                newsViewModel.EnId = elmodel.ID;
+                model.EnTitle = event2.Title;
+                model.EnContent = event2.Content;
+                model.EnId = event2.ID;
+                model.EnCreateTime = base.DateToString(event2.CreateDate);
             }
-
-            if (null != zhmodel)
+            if (event3 != null)
             {
-                newsViewModel.ZhTitle = zhmodel.Title;
-                newsViewModel.ZhContent = zhmodel.Content;
-                newsViewModel.ZhId = zhmodel.ID;
+                model.ZhTitle = event3.Title;
+                model.ZhContent = event3.Content;
+                model.ZhId = event3.ID;
+                model.ZhCreateTime = base.DateToString(event3.CreateDate);
             }
-            return View(newsViewModel);
+            return base.View(model);
         }
 
-
-        [HttpPost]
-        [ValidateInput(false)]
-        public ActionResult Edit(EventsViewModel model)
+        private Tuple<CmsEvent, CmsEvent> EventsViewModelToEvent(EventsViewModel model, Tuple<CmsEvent, CmsEvent> tuple)
         {
-            if (!ModelState.IsValid) return View(model);
-
-            var tuple = EventsViewModelToEvent(model,
-                new Tuple<Event, Event>(_event.GetModelByID(model.EnId),
-                    _event.GetModelByID(model.ZhId)));
-            var elmodel = tuple.Item1;
-            var zhmodel = tuple.Item2;
-
-            if (elmodel.LangGuid == null && elmodel.ID == 0)
-            {
-                var datetimenow = DateTime.Now;
-                elmodel.CreateDate = datetimenow;
-                elmodel.ModifyDate = datetimenow;
-                elmodel.IssueDate = datetimenow;
-                elmodel.Guid = Guid.NewGuid().ToString();
-                elmodel.LangGuid = Guid.NewGuid().ToString();
-                _event.Add(elmodel);
-            }
-            else if (elmodel.LangGuid != null && elmodel.ID != 0)
-            {
-                _event.Update(elmodel);
-            }
-
-            if (zhmodel.LangGuid == null && zhmodel.ID == 0 && zhmodel.Content != elmodel.Content)
-            {
-                var datetimenow = DateTime.Now;
-                zhmodel.CreateDate = datetimenow;
-                zhmodel.ModifyDate = datetimenow;
-                zhmodel.IssueDate = datetimenow;
-                zhmodel.Guid = Guid.NewGuid().ToString();
-                zhmodel.LangGuid = elmodel.LangGuid;
-                _event.Add(zhmodel);
-            }
-            else if (zhmodel.LangGuid != null && zhmodel.ID != 0)
-            {
-                zhmodel.LangGuid = elmodel.LangGuid;
-                _event.Update(zhmodel);
-            }
-
-            return RedirectToAction("List");
+            CmsEvent event2 = tuple.Item1 ?? new CmsEvent();
+            event2.Title = model.EnTitle;
+            event2.Content = model.EnContent;
+            event2.LanguageCode = LanageConfig.EnLan;
+            CmsEvent event3 = tuple.Item2 ?? new CmsEvent();
+            event3.Title = model.ZhTitle ?? model.EnTitle;
+            event3.Content = model.ZhContent ?? model.EnContent;
+            event3.LanguageCode = LanageConfig.ZhLan;
+            return new Tuple<CmsEvent, CmsEvent>(event2, event3);
         }
 
-
-        /// <summary>
-        /// Delete
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public ActionResult Del(int id = 0)
+        public ActionResult List(int id = 1)
         {
-            if (id == 0 || id < 0)
+            List<CmsEvent> currentPageItems = (from m in this._recentEventsQuery
+                                               orderby m.ModifyDate descending
+                                               select m).Skip<CmsEvent>(((id - 1) * 10)).Take<CmsEvent>(10).ToList<CmsEvent>();
+            int totalItemCount = this._recentEventsQuery.Count<CmsEvent>();
+            PagedList<CmsEvent> model = new PagedList<CmsEvent>(currentPageItems, id, 10, totalItemCount);
+            if (base.Request.IsAjaxRequest())
             {
-                return RedirectToAction("List");
+                return this.PartialView("_EventPagingPartialPage", model);
             }
-
-            if (!_event.Exists(id))
-            {
-                return RedirectToAction("List");
-            }
-
-            _event.Delete(id);
-            return RedirectToAction("List");
-
+            return base.View(model);
         }
-
-
-
-        #region private method
-
-        private Tuple<Event, Event> EventsViewModelToEvent(EventsViewModel model,
-            Tuple<Event, Event> tuple)
-        {
-            var elmodel = tuple.Item1 ?? new Event();
-            elmodel.Title = model.EnTitle;
-            elmodel.Content = model.EnContent;
-            elmodel.LanguageCode = LanageConfig.EnLan;
-
-            var zhmodel = tuple.Item2 ?? new Event();
-            zhmodel.Title = model.ZhTitle ?? model.EnTitle;
-            zhmodel.Content = model.ZhContent ?? model.EnContent;
-            zhmodel.LanguageCode = LanageConfig.ZhLan;
-            return new Tuple<Event, Event>(elmodel, zhmodel);
-        }
-        #endregion
-
     }
 }

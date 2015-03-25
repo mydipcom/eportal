@@ -1,48 +1,28 @@
-﻿using System;
-using System.Linq;
-using System.Web.Mvc;
-using MS.ECP.AAMAPrd.Areas.Admin.Models;
-using MS.ECP.AAMAPrd.Areas.Admin.WebHelp;
-using MS.ECP.AAMAPrd.WebPager;
-using MS.ECP.Model.CMS;
-
-
-namespace MS.ECP.AAMAPrd.Areas.Admin.Controllers
+﻿namespace MS.ECP.AAMAPrd.Areas.Admin.Controllers
 {
+    using MS.ECP.AAMAPrd.Areas.Admin.Models;
+    using MS.ECP.AAMAPrd.WebPager;
+    using MS.ECP.BLL.CMS;
+    using MS.ECP.Model.CMS;
+    using System;
+    using System.Collections.Generic;
+    using System.Runtime.InteropServices;
+    using System.Web.Mvc;
+
     public class NewsCampaignController : Controller
     {
-        private readonly BLL.CMS.News _newsBLL = new BLL.CMS.News();
-        private const int Pagesize = 10;
+        private readonly MS.ECP.BLL.CMS.News _newsBLL = new MS.ECP.BLL.CMS.News();
         private const int LanguageSelect = 2;
+        private const int Pagesize = 10;
 
-        public ActionResult List(int id = 1)
-        {
-            var dt = _newsBLL.GetListByPage("", id == 1 ? 0 : (id - 1) * Pagesize + 1, id * Pagesize);
-            var listcount = _newsBLL.GetRecordCount("");
-            var viewmodel = new PagedList<News>(dt, id, Pagesize, listcount);
-            if (Request.IsAjaxRequest())
-                return PartialView("_NewsPagingPartialPage", viewmodel); 
-            return View(viewmodel);
-        }
-
-
-        public ActionResult Add(string languid)
-        {
-            var modle = new NewsInputViewModel()
-            {
-                LangGuid = languid
-            };
-            return View(modle);
-        }
-
-
-        [HttpPost]
-        [ValidateInput(false)]
+        [HttpPost, ValidateInput(false)]
         public ActionResult Add(NewsInputViewModel model)
         {
-            if (!ModelState.IsValid) return View(model);
-
-            var enlishnews = new NewsInput
+            if (!base.ModelState.IsValid)
+            {
+                return base.View(model);
+            }
+            NewsInput input = new NewsInput
             {
                 LangGuid = model.LangGuid,
                 InputName = Guid.NewGuid().ToString(),
@@ -51,66 +31,72 @@ namespace MS.ECP.AAMAPrd.Areas.Admin.Controllers
                 Inputtitle = model.Inputtitle,
                 InputValue = model.InputValue
             };
-
-            _newsBLL.Add(enlishnews);
-            return RedirectToAction("List");
+            this._newsBLL.Add(input);
+            return base.RedirectToAction("List");
         }
 
-
-
-        public ActionResult Edit(int id)
+        public ActionResult Add(string languid)
         {
-            var inpumodel = _newsBLL.GetNewsInputByID(id);
-            var modle = new NewsInputViewModel()
+            NewsInputViewModel model = new NewsInputViewModel
             {
-                Id=id,
-                LangGuid = inpumodel.LangGuid,
-                Inputtitle = inpumodel.Inputtitle,
-                InputValue = inpumodel.InputValue,
-                InputType = inpumodel.InputType,
-                IsAllowNull = inpumodel.IsAllowNull,
+                LangGuid = languid
             };
-            return View(modle);
+            return base.View(model);
         }
 
+        public ActionResult Del(int id = 0)
+        {
+            if ((id != 0) && (id >= 0))
+            {
+                this._newsBLL.Deleteintput(id);
+            }
+            return base.RedirectToAction("List");
+        }
 
-        [HttpPost]
-        [ValidateInput(false)]
+        [ValidateInput(false), HttpPost]
         public ActionResult Edit(NewsInputViewModel model)
         {
-            if (!ModelState.IsValid) return View(model);
-            var enlishnews = new NewsInput
+            if (!base.ModelState.IsValid)
+            {
+                return base.View(model);
+            }
+            NewsInput input = new NewsInput
             {
                 ID = model.Id,
                 IsAllowNull = model.IsAllowNull,
                 InputType = model.InputType,
                 Inputtitle = model.Inputtitle,
-                InputValue = model.InputValue,
+                InputValue = model.InputValue
             };
-            _newsBLL.Update(enlishnews);
-            return RedirectToAction("List");
+            this._newsBLL.Update(input);
+            return base.RedirectToAction("List");
         }
 
-
-        /// <summary>
-        /// Delete
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public ActionResult Del(int id = 0)
+        public ActionResult Edit(int id)
         {
-            if (id == 0 || id < 0)
+            NewsInput newsInputByID = this._newsBLL.GetNewsInputByID(id);
+            NewsInputViewModel model = new NewsInputViewModel
             {
-                return RedirectToAction("List");
-            }
-
-
-            _newsBLL.Deleteintput(id);
-            return RedirectToAction("List");
-
+                Id = id,
+                LangGuid = newsInputByID.LangGuid,
+                Inputtitle = newsInputByID.Inputtitle,
+                InputValue = newsInputByID.InputValue,
+                InputType = newsInputByID.InputType,
+                IsAllowNull = newsInputByID.IsAllowNull
+            };
+            return base.View(model);
         }
 
-
-
+        public ActionResult List(int id = 1)
+        {
+            IList<MS.ECP.Model.CMS.News> currentPageItems = this._newsBLL.GetListByPage("", (id == 1) ? 0 : (((id - 1) * 10) + 1), id * 10);
+            int recordCount = this._newsBLL.GetRecordCount("");
+            PagedList<MS.ECP.Model.CMS.News> model = new PagedList<MS.ECP.Model.CMS.News>(currentPageItems, id, 10, recordCount);
+            if (base.Request.IsAjaxRequest())
+            {
+                return this.PartialView("_NewsPagingPartialPage", model);
+            }
+            return base.View(model);
+        }
     }
 }

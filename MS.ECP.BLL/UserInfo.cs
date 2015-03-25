@@ -1,97 +1,69 @@
 ﻿using MS.ECP.DALFactory;
-using MS.ECP.IDAL;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
 
 namespace MS.ECP.BLL
 {
+    using MS.ECP.IDAL;
+    using MS.ECP.Model;
+    using System;
+    using System.Data;
+
     public class UserInfo
     {
         private readonly IUserInfo dal = DataAccess.CreateUserInfo();
 
-        public UserInfo() { }
-
-        #region  Method
-        public bool ValidateUserName(string UserName, string Password)
+        public bool Add(MS.ECP.Model.UserInfo model)
         {
-            return dal.ValidateUserName(UserName, Password);
+            return this.dal.Add(model);
         }
 
-        public bool ValidatePassword(string UserName, string Password)
+        public bool Delete(int ID)
         {
-            return dal.ValidatePassword(UserName, Password);
-        }
-
-        public bool ExistUserName(string UserName)
-        {
-            return dal.ExistUserName(UserName);
+            return this.dal.Delete(ID);
         }
 
         public bool ExistEmail(string Email)
         {
-            return dal.ExistEmail(Email);
+            return this.dal.ExistEmail(Email);
         }
 
-        /// <summary>
-        /// 得到最大ID
-        /// </summary>
-        public int GetMaxId()
-        {
-            return dal.GetMaxId();
-        }
-
-        /// <summary>
-        /// 是否存在该记录
-        /// </summary>
         public bool Exists(int ID)
         {
-            return dal.Exists(ID);
+            return this.dal.Exists(ID);
         }
-        /// <summary>
-        /// 增加一条数据
-        /// </summary>
-        public bool Add(Model.UserInfo model)
+
+        public bool ExistUserName(string UserName)
         {
-            return dal.Add(model);
+            return this.dal.ExistUserName(UserName);
         }
 
-        /// <summary>
-        /// 更新一条数据
-        /// </summary>
-        public bool Update(Model.UserInfo model)
-        {
-            return dal.Update(model);
-        }
-
-        /// <summary>
-        /// 删除一条数据
-        /// </summary>
-        public bool Delete(int ID)
-        {
-
-            return dal.Delete(ID);
-        }
-
-        /// <summary>
-        /// 得到一个对象实体
-        /// </summary>
-        public Model.UserInfo GetModel(int ID)
-        {
-
-            return dal.GetModel(ID);
-        }
-
-        /// <summary>
-        /// 获得数据列表
-        /// </summary>
         public DataSet GetList(string strWhere)
         {
-            return dal.GetList(strWhere);
+            return this.dal.GetList(strWhere);
         }
 
-        #endregion
+        public int GetMaxId()
+        {
+            return this.dal.GetMaxId();
+        }
+
+        public MS.ECP.Model.UserInfo GetModel(int ID)
+        {
+            return this.dal.GetModel(ID);
+        }
+
+        public bool Update(MS.ECP.Model.UserInfo model)
+        {
+            return this.dal.Update(model);
+        }
+
+        public bool ValidatePassword(string UserName, string Password)
+        {
+            return this.dal.ValidatePassword(UserName, Password);
+        }
+
+        public bool ValidateUserName(string UserName, string Password)
+        {
+            return this.dal.ValidateUserName(UserName, Password);
+        }
     }
 }
